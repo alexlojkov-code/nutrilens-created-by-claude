@@ -2,6 +2,8 @@
 
 > Проект целиком создан **Claude** (Anthropic) в Claude Code по PRD и техспецификации NutriLens.
 
+**Открыть дневник:** https://alexlojkov-code.github.io/nutrilens-created-by-claude/ · **Варианты логотипа:** https://alexlojkov-code.github.io/nutrilens-created-by-claude/logos.html
+
 Статичный сайт без сборки и без сервера. Все данные (профиль, дневник, фото, ключ ИИ) хранятся только в браузере: `localStorage` и IndexedDB.
 
 ## Запуск
