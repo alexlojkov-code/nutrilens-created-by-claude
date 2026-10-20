@@ -1,0 +1,1264 @@
+/* NutriLens — интерфейс: роутер, экраны, анимации. */
+
+const ICON = {
+  arrow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
+  plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+  x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+  check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+  left: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>',
+  right: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>',
+  camera: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.6"/></svg>',
+  image: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><circle cx="9" cy="10" r="1.8"/><path d="M4 17l5-5 4 4 3-3 4 4"/></svg>',
+  trash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 7V4h4v3M6 7l1 13h10l1-13"/></svg>',
+  star: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.5l1.9 7.2 6.9-2.9-5.3 5.2 5.3 5.2-6.9-2.9L12 22.5l-1.9-7.2-6.9 2.9 5.3-5.2L3.2 7.8l6.9 2.9z"/></svg>',
+  book: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M5 4h11a3 3 0 013 3v13H8a3 3 0 01-3-3z"/><path d="M5 17a3 3 0 013-3h11"/></svg>',
+  chart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 20V11M10 20V5M15 20v-7M20 20V9"/></svg>',
+  list: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.2" fill="currentColor"/><circle cx="4.5" cy="12" r="1.2" fill="currentColor"/><circle cx="4.5" cy="18" r="1.2" fill="currentColor"/></svg>',
+  chat: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg>',
+  gear: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v3M12 18.2v3M2.8 12h3M18.2 12h3M5.5 5.5l2.1 2.1M16.4 16.4l2.1 2.1M5.5 18.5l2.1-2.1M16.4 7.6l2.1-2.1"/></svg>',
+  info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>',
+  search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>',
+  sun: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>',
+  moon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M20 14.5A8 8 0 019.5 4a8 8 0 1010.5 10.5z"/></svg>',
+  mono: '<svg viewBox="0 0 64 64" aria-hidden="true"><path class="mono-path" d="M13 52 V12 L36 52 V12 M36 52 H54" fill="none" stroke="currentColor" stroke-width="7" stroke-linejoin="miter"/><circle class="mono-dot" cx="50" cy="17" r="5.5" fill="#BEFF4F"/></svg>',
+};
+
+/* ---------- UI helpers ---------- */
+const $ = (sel, root = document) => root.querySelector(sel);
+const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
+const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const UI = {
+  split(text, cls = '', base = 0) {
+    let i = 0;
+    const words = String(text).split(/(\s+|<br>)/).map(w => {
+      if (w === '<br>') return '<br>';
+      if (/^\s+$/.test(w)) return ' ';
+      return `<span style="display:inline-block;white-space:nowrap">${[...w].map(c => `<span class="ch" style="--i:${i++}">${esc(c)}</span>`).join('')}</span>`;
+    }).join('');
+    const label = String(text).replace(/<br>/g, ' ');
+    return `<span class="split ${cls}" style="--base:${base}ms" aria-label="${esc(label)}"><span aria-hidden="true">${words}</span></span>`;
+  },
+  toast(msg, { err = false, action, onAction, ms = 3800 } = {}) {
+    const box = $('#toasts');
+    const el = document.createElement('div');
+    el.className = 'toast' + (err ? ' err' : '');
+    el.setAttribute('role', 'status');
+    el.innerHTML = `${err ? '' : `<span class="tick">${ICON.check}</span>`}<span>${esc(msg)}</span>${action ? `<button>${esc(action)}</button>` : ''}`;
+    box.appendChild(el);
+    const kill = () => { el.classList.add('out'); setTimeout(() => el.remove(), 400); };
+    if (action) el.querySelector('button').onclick = () => { onAction && onAction(); kill(); };
+    setTimeout(kill, ms);
+  },
+  modal(html, { onClose, cls = '' } = {}) {
+    const m = $('#modal');
+    m.innerHTML = `<div class="scrim" data-close></div><div class="sheet ${cls}" role="dialog" aria-modal="true"><button class="icon-btn x" data-close aria-label="${t('misc.close')}">${ICON.x}</button>${html}</div>`;
+    UI._onClose = onClose;
+    document.body.classList.add('locked');
+    requestAnimationFrame(() => requestAnimationFrame(() => m.classList.add('open')));
+    m.onclick = e => { if (e.target.closest('[data-close]')) UI.closeModal(); };
+    setTimeout(() => { const f = m.querySelector('input, button:not(.x)'); f && f.focus({ preventScroll: true }); }, 350);
+    return m.querySelector('.sheet');
+  },
+  closeModal() {
+    const m = $('#modal');
+    if (!m.classList.contains('open')) return;
+    m.classList.remove('open');
+    document.body.classList.remove('locked');
+    const cb = UI._onClose; UI._onClose = null;
+    setTimeout(() => { if (!m.classList.contains('open')) m.innerHTML = ''; }, 600);
+    cb && cb();
+  },
+  reveal(root) {
+    const els = $$('.rv, .rv-card', root);
+    if (reduced() || !('IntersectionObserver' in window)) { els.forEach(e => e.classList.add('in')); return; }
+    const io = new IntersectionObserver(entries => entries.forEach(en => {
+      if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+    }), { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+    els.forEach(e => io.observe(e));
+  },
+  countUp(root) {
+    $$('[data-count]', root).forEach(el => {
+      const to = Number(el.dataset.count), dur = 1300, t0 = performance.now();
+      if (reduced()) { el.textContent = Math.round(to).toLocaleString('ru-RU'); return; }
+      const step = now => {
+        const p = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - p, 4);
+        el.textContent = Math.round(to * e).toLocaleString('ru-RU');
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    });
+  },
+  animateBars(root) {
+    requestAnimationFrame(() => setTimeout(() => {
+      $$('[data-w]', root).forEach(el => el.style.width = el.dataset.w);
+      $$('[data-off]', root).forEach(el => el.style.strokeDashoffset = el.dataset.off);
+    }, 120));
+  },
+  magnet(root) {
+    if (reduced() || matchMedia('(hover: none)').matches) return;
+    $$('.btn, .fab', root).forEach(b => {
+      b.addEventListener('mousemove', e => {
+        const r = b.getBoundingClientRect();
+        b.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * .12}px, ${(e.clientY - r.top - r.height / 2) * .18}px)`;
+      });
+      b.addEventListener('mouseleave', () => b.style.transform = '');
+    });
+  },
+};
+
+const fmt = (v, d = 0) => (Math.round(v * Math.pow(10, d)) / Math.pow(10, d)).toLocaleString(Store.state.settings.lang === 'en' ? 'en-US' : 'ru-RU');
+const nUnit = k => k === 'kcal' ? t('u.kcal') : k.endsWith('_mg') ? t('u.mg') : t('u.g');
+const locale = () => Store.state.settings.lang === 'en' ? 'en-GB' : 'ru-RU';
+function dayTitle(key) {
+  const d = parseKey(key);
+  const wd = new Intl.DateTimeFormat(locale(), { weekday: 'long' }).format(d);
+  const dm = new Intl.DateTimeFormat(locale(), { day: 'numeric', month: 'long' }).format(d);
+  return { wd, dm };
+}
+function relDay(key) {
+  const tk = todayKey();
+  if (key === tk) return t('d.today');
+  if (key === addDays(tk, -1)) return t('d.yesterday');
+  if (key === addDays(tk, 1)) return t('d.tomorrow');
+  return new Intl.DateTimeFormat(locale(), { day: 'numeric', month: 'short' }).format(parseKey(key));
+}
+const guessMeal = () => { const h = new Date().getHours(); return h >= 5 && h < 11 ? 'breakfast' : h < 16 ? 'lunch' : h < 21 ? 'dinner' : 'snack'; };
+const dayNumber = () => Math.max(1, Math.floor((Date.now() - (Store.state.settings.createdAt || Date.now())) / 864e5) + 1);
+const ownerName = () => (Store.state.profile && Store.state.profile.name) || '';
+const target = k => (Store.state.targets && Store.state.targets[k]) || 0;
+const macroLine = n => `${t('n.p')} ${fmt(n.protein_g)} · ${t('n.f')} ${fmt(n.fat_g)} · ${t('n.c')} ${fmt(n.carbs_g)}`;
+
+/* ---------- theme ---------- */
+const darkMQ = window.matchMedia('(prefers-color-scheme: dark)');
+const effTheme = () => { const th = Store.state.settings.theme || 'auto'; return th === 'auto' ? (darkMQ.matches ? 'dark' : 'light') : th; };
+function applyTheme() {
+  const th = effTheme();
+  document.documentElement.dataset.theme = th;
+  const meta = document.querySelector('meta[name="theme-color"]');
+  meta && meta.setAttribute('content', th === 'dark' ? '#0E0F11' : '#E8E9ED');
+  $$('[data-theme-toggle]').forEach(b => b.innerHTML = th === 'dark' ? ICON.sun : ICON.moon);
+}
+const themeBtn = () => `<button class="theme-btn" data-theme-toggle aria-label="${t('theme.toggle')}" title="${t('theme.toggle')}">${effTheme() === 'dark' ? ICON.sun : ICON.moon}</button>`;
+// Смена темы: новая тема «растекается» кругом из точки клика (View Transitions API)
+function switchTheme(next, x = innerWidth / 2, y = 0) {
+  const run = () => { Store.state.settings.theme = next; Store.save(); applyTheme(); };
+  if (!document.startViewTransition || reduced()) return run();
+  const r = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+  const vt = document.startViewTransition(run);
+  vt.ready.then(() => document.documentElement.animate(
+    { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${r}px at ${x}px ${y}px)`] },
+    { duration: 750, easing: 'cubic-bezier(.7,0,.2,1)', pseudoElement: '::view-transition-new(root)' }
+  )).catch(() => {});
+}
+
+const foodTag = f => cuisineName(f.cuisine) || (f.src === 'usda' ? 'USDA' : 'DB');
+
+/* ---------- router ---------- */
+let draft = null;
+const Router = {
+  first: true,
+  parse() {
+    const h = location.hash.replace(/^#\/?/, '');
+    const [path, qs] = h.split('?');
+    const parts = path.split('/').filter(Boolean);
+    const q = Object.fromEntries(new URLSearchParams(qs || ''));
+    return { name: parts[0] || 'diary', parts, q };
+  },
+  go(hash) { if (location.hash === hash) Router.render(); else location.hash = hash; },
+  async render() {
+    const r = Router.parse();
+    let main = $('#view');
+    const onb =!Store.state.settings.onboarded;
+    if (onb && r.name !== 'welcome') { history.replaceState(null, '', '#/welcome'); return Router.render(); }
+    if (!onb && r.name === 'welcome') { history.replaceState(null, '', '#/'); return Router.render(); }
+    const view = Views[r.name] || Views.diary;
+    const doWipe = !Router.first && !reduced() && !Router.silent;
+    Router.silent = false;
+    if (doWipe) {
+      const w = $('#wipe');
+      w.className = 'cover';
+      await new Promise(res => setTimeout(res, 470));
+    }
+    UI._onClose = null;
+    UI.closeModal();
+    Shell.update(r.name, onb);
+    // свежий <main> на каждый экран — обработчики прошлого экрана не накапливаются
+    const fresh = main.cloneNode(false);
+    main.replaceWith(fresh);
+    main = fresh;
+    main.className = '';
+    main.innerHTML = view.html(r);
+    window.scrollTo(0, 0);
+    void main.offsetWidth;
+    main.className = 'view-enter';
+    view.mount && view.mount(main, r);
+    UI.reveal(main); UI.countUp(main); UI.animateBars(main); UI.magnet(main);
+    if (doWipe) { const w = $('#wipe'); w.className = 'reveal'; setTimeout(() => w.className = '', 650); }
+    Router.first = false;
+  },
+};
+
+/* ---------- shell ---------- */
+const NAV = [['diary', '#/', 'book'], ['stats', '#/stats', 'chart'], ['foods', '#/foods', 'list'], ['chat', '#/chat', 'chat'], ['settings', '#/settings', 'gear']];
+const Shell = {
+  update(name, onb) {
+    const top = $('#top'), dock = $('#dock'), fab = $('#fab');
+    top.hidden = dock.hidden = onb;
+    const active = name === 'day' || name === 'meal' ? 'diary' : name;
+    top.innerHTML = `
+      <a class="brand" href="#/" aria-label="NutriLens">
+        <span class="logo">${ICON.mono}</span>
+        <span><b>NutriLens</b><br><span class="serif">${esc(t('app.of'))}${ownerName() ? ' · ' + esc(ownerName()) : ''}</span></span>
+      </a>
+      <nav class="nav" aria-label="main">${NAV.map(([k, h]) => `<a href="${h}" class="${active === k ? 'on' : ''}">${t('nav.' + k)}</a>`).join('')}</nav>
+      ${themeBtn()}
+      <span class="when">${new Intl.DateTimeFormat(locale(), { day: 'numeric', month: 'long' }).format(new Date())} · ${t('d.day')} ${String(dayNumber()).padStart(3, '0')}</span>`;
+    dock.innerHTML = NAV.map(([k, h, ic]) => `<a href="${h}" class="${active === k ? 'on' : ''}">${ICON[ic]}<span>${t('nav.' + k)}</span></a>`).join('');
+    const showFab = !onb && ['diary', 'day', 'stats', 'meal'].includes(name);
+    fab.hidden = !showFab;
+    if (showFab) {
+      const r = Router.parse();
+      const date = name === 'day' ? r.parts[1] : name === 'meal' ? r.parts[1] : todayKey();
+      fab.href = `#/add?date=${date}`;
+    }
+    fab.setAttribute('aria-label', t('nav.add'));
+    document.documentElement.lang = Store.state.settings.lang;
+  },
+};
+
+/* ---------- sheets ---------- */
+function searchSheet({ title, query = '', onPick }) {
+  const sheet = UI.modal(`
+    <div class="kicker">${t('foods.search')}</div>
+    <h2 class="h2" style="margin:10px 0 16px">${esc(title)}</h2>
+    <div class="unitfield"><input class="input" id="sq" placeholder="${esc(t('foods.search.ph'))}" value="${esc(query)}" autocomplete="off"><em>${ICON.search.replace('<svg', '<svg width="18" height="18"')}</em></div>
+    <div class="search-res" id="sr"></div>`);
+  const inp = $('#sq', sheet), out = $('#sr', sheet);
+  const run = () => {
+    const res = searchFoods(inp.value);
+    out.innerHTML = res.map((r, i) => {
+      const name = r.kind === 'db' ? foodName(r.food) : r.my.name;
+      const p = r.kind === 'db' ? r.food.per100 : r.my.per100;
+      return `<button data-i="${i}"><span>${esc(name)}<br><small>${fmt(p.kcal)} ${t('u.kcal')} / 100 ${t('u.g')} · ${macroLine(p)}</small></span><small>${r.kind === 'my' ? t('src.user') : foodTag(r.food)}</small></button>`;
+    }).join('') || (inp.value ? `<p class="muted" style="padding:10px">—</p>` : '');
+    out.onclick = e => {
+      const b = e.target.closest('button[data-i]'); if (!b) return;
+      const r = res[Number(b.dataset.i)];
+      onPick(r.kind === 'db'
+        ? itemFromFood(r.food, null)
+        : makeItem({ name: r.my.name, grams: r.my.portion || 100, per100: r.my.per100, source: 'user', confidence: 1, grams_source: 'user', origin: 'manual' }));
+    };
+  };
+  inp.oninput = run; run();
+}
+
+function logSheet(tpl, { date = todayKey(), meal = guessMeal(), onDone } = {}) {
+  let grams = tpl.grams || 100, m = meal;
+  const sheet = UI.modal(`
+    <div class="kicker">${t('d.add.to')} · ${esc(relDay(date))}</div>
+    <h2 class="h2" style="margin:10px 0 18px">${esc(tpl.name)}</h2>
+    <div class="grid" style="gap:16px">
+      <div class="row"><b class="h1 num" id="lk" style="font-size:72px">0</b><span class="mono muted">${t('u.kcal')}</span><span class="spacer"></span><span class="mono muted" id="lm"></span></div>
+      <input type="range" id="lr" min="1" max="${Math.max(500, Math.ceil(grams * 3 / 50) * 50)}" value="${grams}">
+      <label class="field"><span>${t('misc.grams')}, ${massUnit()}</span><input class="input" id="lg" type="number" inputmode="decimal" value="${massOut(grams)}"></label>
+      <div class="seg" id="lmeal">${MEALS.map(x => `<button aria-pressed="${x === m}" data-m="${x}">${t('meal.' + x)}</button>`).join('')}</div>
+      <button class="btn big" id="lok">${t('foods.add')}<span class="arr">${ICON.arrow}</span></button>
+    </div>`);
+  const upd = () => {
+    const n = itemNutrients({ grams, per100: tpl.per100 });
+    $('#lk', sheet).textContent = fmt(n.kcal);
+    $('#lm', sheet).textContent = macroLine(n);
+    const r = $('#lr', sheet); r.style.setProperty('--p', (grams / r.max * 100) + '%');
+  };
+  $('#lr', sheet).oninput = e => { grams = Number(e.target.value); $('#lg', sheet).value = massOut(grams); upd(); };
+  $('#lg', sheet).oninput = e => { grams = clamp(massIn(e.target.value) || 0, 0, 5000); $('#lr', sheet).value = grams; upd(); };
+  $('#lmeal', sheet).onclick = e => { const b = e.target.closest('[data-m]'); if (!b) return; m = b.dataset.m; $$('#lmeal button', sheet).forEach(x => x.setAttribute('aria-pressed', x === b)); };
+  $('#lok', sheet).onclick = () => {
+    if (!(grams > 0)) return;
+    const it = makeItem(Object.assign({}, tpl, { grams, origin: tpl.origin || 'manual', confidence: tpl.confidence ?? 1 }));
+    Store.addItems(date, m, [it]);
+    UI.closeModal();
+    UI.toast(`${t('res.added')} · ${t('meal.' + m)}`);
+    onDone && onDone(date, m);
+  };
+  upd();
+}
+
+function sourceSheet(it) {
+  const src = it.source || 'local';
+  UI.modal(`
+    <div class="kicker">${t('res.where')}</div>
+    <h2 class="h2" style="margin:10px 0 14px">${esc(it.name)}</h2>
+    <div class="row" style="margin-bottom:14px">
+      <span class="tag ${src === 'ai_estimate' ? 'warn' : 'dark'}">${t('src.' + src)}</span>
+      <span class="tag">${t('gs.' + (it.grams_source || 'standard'))}</span>
+      <span class="tag">${t('res.conf')} ${Math.round((it.confidence ?? 1) * 100)}%</span>
+    </div>
+    <p class="lead" style="margin:0 0 18px">${t('src.' + src + '.d')}</p>
+    <table class="ntable"><thead><tr><th></th><th class="r">${t('res.per100')}</th><th class="r">${fmtMass(it.grams)}</th></tr></thead><tbody>
+      ${NUTRIENT_KEYS.map(k => `<tr><td>${t('n.' + k)}</td><td class="r num">${fmt(it.per100[k], 1)} ${nUnit(k)}</td><td class="r num"><b>${fmt(itemNutrients(it)[k], 1)}</b> ${nUnit(k)}</td></tr>`).join('')}
+    </tbody></table>
+    <p class="disc">nutrient = per_100g × grams / 100${it.analysisModel ? ` · ${esc(it.analysisModel)} · ${PROMPT_VERSION}` : ''}</p>`);
+}
+
+function itemSheet(date, itemId, onChange) {
+  const found = Store.findItem(date, itemId);
+  if (!found) return;
+  const it = found.item;
+  let meal = found.meal;
+  const max = Math.max(500, Math.ceil(it.grams * 3 / 50) * 50);
+  const sheet = UI.modal(`
+    <div class="kicker">${t('meal.' + meal)} · ${esc(relDay(date))}</div>
+    <h2 class="h2" style="margin:10px 0 18px">${esc(it.name)}</h2>
+    <div class="grid" style="gap:16px">
+      <div class="row"><b class="h1 num" id="ik" style="font-size:72px"></b><span class="mono muted">${t('u.kcal')}</span><span class="spacer"></span><span class="mono muted" id="im"></span></div>
+      <input type="range" id="ir" min="1" max="${max}" value="${it.grams}" aria-label="${t('misc.grams')}">
+      <label class="field"><span>${t('misc.grams')}, ${massUnit()}</span><input class="input" id="ig" type="number" inputmode="decimal" value="${massOut(it.grams)}"></label>
+      <div class="field"><span>${t('meal.move')}</span><div class="seg" id="imeal">${MEALS.map(x => `<button aria-pressed="${x === meal}" data-m="${x}">${t('meal.' + x)}</button>`).join('')}</div></div>
+      <div class="row">
+        <button class="pill" id="isrc">${ICON.info.replace('<svg', '<svg width="16" height="16"')} ${t('res.where')}</button>
+        <button class="pill" id="imy">${ICON.plus.replace('<svg', '<svg width="14" height="14"')} ${t('foods.tomy')}</button>
+        <span class="spacer"></span>
+        <button class="pill warn" id="idel"><span class="tick">${ICON.trash}</span>${t('res.delete')}</button>
+      </div>
+    </div>`, { onClose: onChange });
+  const upd = () => {
+    const n = itemNutrients(it);
+    $('#ik', sheet).textContent = fmt(n.kcal);
+    $('#im', sheet).textContent = macroLine(n);
+    const r = $('#ir', sheet); r.style.setProperty('--p', (it.grams / r.max * 100) + '%');
+  };
+  const save = () => { it.edited = true; Store.save(); };
+  $('#ir', sheet).oninput = e => { it.grams = Number(e.target.value); $('#ig', sheet).value = massOut(it.grams); upd(); save(); };
+  $('#ig', sheet).oninput = e => { const g = massIn(e.target.value); if (g > 0) { it.grams = clamp(g, 1, 5000); $('#ir', sheet).value = it.grams; upd(); save(); } };
+  $('#imeal', sheet).onclick = e => {
+    const b = e.target.closest('[data-m]'); if (!b || b.dataset.m === meal) return;
+    const day = Store.day(date);
+    day.meals[meal] = day.meals[meal].filter(x => x.id !== it.id);
+    meal = b.dataset.m; day.meals[meal].push(it); Store.save();
+    $$('#imeal button', sheet).forEach(x => x.setAttribute('aria-pressed', x === b));
+  };
+  $('#isrc', sheet).onclick = () => { UI.closeModal(); setTimeout(() => sourceSheet(it), 450); };
+  $('#imy', sheet).onclick = () => {
+    Store.state.myFoods.unshift({ id: uid(), name: it.name, per100: Object.assign({}, it.per100), portion: Math.round(it.grams) });
+    Store.save(); UI.toast(t('foods.saved'));
+  };
+  $('#idel', sheet).onclick = () => {
+    const day = Store.day(date), idx = day.meals[meal].findIndex(x => x.id === it.id), m0 = meal;
+    day.meals[meal].splice(idx, 1); Store.save();
+    UI.closeModal();
+    UI.toast(t('res.deleted'), { action: t('res.undo'), onAction: () => { Store.day(date).meals[m0].splice(idx, 0, it); Store.save(); Router.silent = true; Router.render(); } });
+  };
+  upd();
+}
+
+/* ---------- views ---------- */
+const Views = {};
+
+/* ===== Онбординг ===== */
+let onb = { step: 0, name: '', sex: 'f', age: '', height: '', weight: '', pregnant: false, activity: 'light', goal: 'maintain', targets: null };
+Views.welcome = {
+  html() {
+    const s = onb.step;
+    const ghost = `<div class="ghost outline" aria-hidden="true"><div class="track"><span>NutriLens · ${t('app.diary')} · </span><span>NutriLens · ${t('app.diary')} · </span></div></div>`;
+    const head = `<div class="row" style="position:relative;z-index:1"><span class="brand"><span class="logo">${ICON.mono}</span><b>NutriLens</b></span><span class="spacer"></span>${themeBtn()}
+      <div class="seg" id="olang"><button aria-pressed="${Store.state.settings.lang === 'ru'}" data-l="ru">RU</button><button aria-pressed="${Store.state.settings.lang === 'en'}" data-l="en">EN</button></div></div>`;
+    if (s === 0) return `<div class="onb">${head}
+      <div class="content">
+        <span class="kicker rv">${t('onb.kicker')}</span>
+        <h1 class="mega">${UI.split(t('onb.hello').replace('. ', '.<br>'), 'hoverable')}</h1>
+        <p class="lead rv" style="--d:4">${t('onb.lead')}</p>
+        <div class="row rv" style="--d:6">
+          ${['onb.s1', 'onb.s2', 'onb.s3', 'onb.s4'].map(k => `<span class="pill"><span class="tick">${ICON.check}</span>${t(k)}</span>`).join('')}
+        </div>
+      </div>
+      <div class="nav-b"><span></span><button class="btn big" data-next>${t('onb.start')}<span class="arr">${ICON.arrow}</span></button></div>
+      ${ghost}</div>`;
+    const steps = `<div class="steps"><span>${t('onb.step')} 0${s}</span>${[1, 2, 3, 4].map(i => `<i class="${i <= s ? 'on' : ''}"></i>`).join('')}<span class="muted">/ 04</span></div>`;
+    let body = '';
+    if (s === 1) body = `
+      <h1 class="h1">${UI.split(t('onb.s1'))}</h1>
+      <div class="formgrid rv">
+        <label class="field" style="grid-column:1/-1"><span>${t('onb.name')}</span><input class="input big" id="o-name" value="${esc(onb.name)}" placeholder="${esc(t('onb.name.ph'))}" maxlength="40"></label>
+        <div class="field" style="grid-column:1/-1"><span>${t('onb.sex')}</span><div class="seg" id="o-sex"><button aria-pressed="${onb.sex === 'f'}" data-v="f">${t('onb.sex.f')}</button><button aria-pressed="${onb.sex === 'm'}" data-v="m">${t('onb.sex.m')}</button></div></div>
+        <label class="field"><span>${t('onb.age')}</span><input class="input big" id="o-age" type="number" inputmode="numeric" value="${onb.age}" min="10" max="100"></label>
+        <label class="field"><span>${t('onb.height')}, ${t('u.cm')}</span><input class="input big" id="o-height" type="number" inputmode="numeric" value="${onb.height}" min="120" max="230"></label>
+        <label class="field"><span>${t('onb.weight')}, ${bodyUnit()}</span><input class="input big" id="o-weight" type="number" inputmode="decimal" value="${onb.weight ? bodyOut(onb.weight) : ''}"></label>
+        ${onb.sex === 'f' ? `<label class="check" style="grid-column:1/-1"><input type="checkbox" id="o-preg" ${onb.pregnant ? 'checked' : ''}> ${t('onb.pregnant')}</label>` : ''}
+      </div>`;
+    if (s === 2) body = `
+      <h1 class="h1">${UI.split(t('onb.s2'))}</h1>
+      <div class="choices" id="o-act">${Object.keys(ACTIVITY).map((k, i) => `<button class="choice rv-card" style="--d:${i}" aria-pressed="${onb.activity === k}" data-v="${k}"><span class="idx">/ 00${i + 1} · ×${ACTIVITY[k]}</span><b>${t('act.' + k)}</b><span>${t('act.' + k + '.d')}</span></button>`).join('')}</div>`;
+    if (s === 3) body = `
+      <h1 class="h1">${UI.split(t('onb.s3'))}</h1>
+      <div class="choices" id="o-goal">${Object.keys(GOAL_K).map((k, i) => `<button class="choice rv-card" style="--d:${i};min-height:180px" aria-pressed="${onb.goal === k}" data-v="${k}"><span class="idx">/ 00${i + 1}</span><b style="font-size:40px">${t('goal.' + k)}</b><span>${t('goal.' + k + '.d')}</span></button>`).join('')}</div>`;
+    if (s === 4) {
+      const p = { sex: onb.sex, age: +onb.age, height: +onb.height, weight: +onb.weight, activity: onb.activity, goal: onb.goal, pregnant: onb.pregnant };
+      const auto = autoTargetsAllowed(p);
+      const c = calcTargets(p);
+      if (!onb.targets) onb.targets = auto ? Object.assign({}, c.targets) : Object.assign({}, c.targets, { kcal: '', protein_g: '', fat_g: '', carbs_g: '', source: 'manual' });
+      const tg = onb.targets;
+      body = `
+        <h1 class="h1">${UI.split(t('onb.s4'))}</h1>
+        ${auto ? `<div class="row rv"><span class="pill"><span class="tick">${ICON.check}</span>${t('onb.formula')}</span><span class="pill ghosty">${t('onb.bmr')}: <b>${fmt(c.bmr)}</b></span><span class="pill ghosty">${t('onb.tdee')}: <b>${fmt(c.tdee)}</b></span></div>` : `<div class="callout warn rv">${t('onb.noauto')}</div>`}
+        ${auto && c.floored ? `<div class="callout rv">${t('onb.floor', { n: minKcal(p.sex) })}</div>` : ''}
+        <div class="tgrid rv" id="o-tg" style="--d:2">
+          <div class="tcell hero"><label>${t('n.kcal')}, ${t('u.kcal')}</label><input type="number" inputmode="numeric" data-k="kcal" value="${tg.kcal}"></div>
+          ${['protein_g', 'fat_g', 'carbs_g', 'fiber_g'].map(k => `<div class="tcell"><label>${t('n.' + k)}, ${t('u.g')}</label><input type="number" inputmode="numeric" data-k="${k}" value="${tg[k]}"></div>`).join('')}
+        </div>
+        <div id="o-warn"></div>
+        <p class="mono muted rv">${t('onb.edit')} · ${t('res.disclaimer')}</p>`;
+    }
+    return `<div class="onb">${head}<div class="content">${steps}${body}</div>
+      <div class="nav-b"><button class="btn light" data-back>${t('onb.back')}<span class="arr">${ICON.left}</span></button>
+      <button class="btn big" data-next>${s === 4 ? t('onb.done') : t('onb.next')}<span class="arr">${ICON.arrow}</span></button></div>${ghost}</div>`;
+  },
+  mount(el) {
+    const s = onb.step;
+    $('#olang', el).onclick = e => { const b = e.target.closest('[data-l]'); if (!b) return; Store.state.settings.lang = b.dataset.l; Store.save(); Router.silent = true; Router.render(); };
+    const seg = (id, key, rerender) => { const g = $(id, el); g && (g.onclick = e => { const b = e.target.closest('[data-v]'); if (!b) return; onb[key] = b.dataset.v; onb.targets = null; $$('[data-v]', g).forEach(x => x.setAttribute('aria-pressed', x === b)); if (rerender) { collect(); Router.silent = true; Router.render(); } }); };
+    const collect = () => {
+      if (s !== 1) return;
+      onb.name = $('#o-name', el).value.trim();
+      onb.age = $('#o-age', el).value; onb.height = $('#o-height', el).value;
+      const w = $('#o-weight', el).value; onb.weight = w ? round1(bodyIn(w)) : '';
+      const pg = $('#o-preg', el); onb.pregnant = onb.sex === 'f' && !!(pg && pg.checked);
+      onb.targets = null;
+    };
+    seg('#o-sex', 'sex', true); seg('#o-act', 'activity'); seg('#o-goal', 'goal');
+    const warnLow = () => {
+      const box = $('#o-warn', el); if (!box) return;
+      const k = Number(onb.targets.kcal), min = minKcal(onb.sex);
+      box.innerHTML = k && k < min ? `<div class="callout warn">${t('set.low', { n: min })}</div>` : '';
+    };
+    const tg = $('#o-tg', el);
+    if (tg) { tg.oninput = e => { const k = e.target.dataset.k; if (!k) return; onb.targets[k] = e.target.value; onb.targets.source = 'manual'; warnLow(); }; warnLow(); }
+    const next = $('[data-next]', el), back = $('[data-back]', el);
+    back && (back.onclick = () => { collect(); onb.step = Math.max(0, s - 1); Router.render(); });
+    next.onclick = () => {
+      if (s === 1) {
+        collect();
+        const a = +onb.age, h = +onb.height, w = +onb.weight;
+        if (!(a >= 10 && a <= 100 && h >= 120 && h <= 230 && w >= 30 && w <= 300)) { UI.toast(t('err.range'), { err: true }); return; }
+      }
+      if (s === 4) {
+        const tgt = {};
+        Object.keys(onb.targets).forEach(k => tgt[k] = k === 'source' ? onb.targets[k] : Number(onb.targets[k]) || 0);
+        if (!tgt.kcal) { UI.toast(t('err.range'), { err: true }); return; }
+        if (!tgt.protein_g && !tgt.fat_g && !tgt.carbs_g) { tgt.protein_g = Math.round(tgt.kcal * .2 / 4); tgt.fat_g = Math.round(tgt.kcal * .28 / 9); tgt.carbs_g = Math.round(tgt.kcal * .52 / 4); }
+        Store.state.profile = { name: onb.name, sex: onb.sex, age: +onb.age, height: +onb.height, weight: +onb.weight, activity: onb.activity, goal: onb.goal, pregnant: onb.pregnant };
+        Store.state.targets = tgt;
+        Store.state.settings.onboarded = true;
+        Store.state.settings.createdAt = Store.state.settings.createdAt || Date.now();
+        Store.state.weights.push({ date: todayKey(), kg: +onb.weight });
+        Store.save();
+        Router.go('#/');
+        return;
+      }
+      onb.step = s + 1; Router.render();
+    };
+  },
+};
+
+/* ===== Дневник ===== */
+const MEAL_BLOB = { breakfast: ['20%', '80%'], lunch: ['70%', '30%'], dinner: ['40%', '20%'], snack: ['85%', '85%'] };
+Views.diary = {
+  html(r) {
+    const key = r.name === 'day' && /^\d{4}-\d{2}-\d{2}$/.test(r.parts[1] || '') ? r.parts[1] : todayKey();
+    const day = Store.peekDay(key);
+    const tot = sumN(dayItems(day));
+    const tk = target('kcal') || 2000;
+    const { wd, dm } = dayTitle(key);
+    const left = tk - tot.kcal;
+    const over = left < 0;
+    const C = 2 * Math.PI * 52;
+    const frac = clamp(tot.kcal / tk, 0, 1);
+    // неделя вокруг выбранного дня (пн–вс)
+    const d0 = parseKey(key); const dow = (d0.getDay() + 6) % 7;
+    const weekKeys = Array.from({ length: 7 }, (_, i) => addDays(key, i - dow));
+    const wdFmt = new Intl.DateTimeFormat(locale(), { weekday: 'short' });
+    const extra = [['fiber_g', 'min'], ['sugar_g', 'max'], ['sat_fat_g', 'max'], ['sodium_mg', 'max'], ['cholesterol_mg', 'max']];
+    return `
+    <section class="diary-hero">
+      <div class="ghost outline" aria-hidden="true"><div class="track"><span>${t('app.diary')} · ${t('d.day')} ${String(dayNumber()).padStart(3, '0')} · </span><span>${t('app.diary')} · ${t('d.day')} ${String(dayNumber()).padStart(3, '0')} · </span></div></div>
+      <div class="inner">
+        <span class="kicker">${esc(relDay(key))}${ownerName() ? ' · ' + t('app.diary').toLowerCase() + ' ' + esc(ownerName()) : ''}</span>
+        <div class="datebar" style="margin-top:12px">
+          <h1 class="h1">${UI.split(`${wd},<br>${dm}`, 'hoverable')}</h1>
+          <div class="daynav">
+            <a class="icon-btn" href="#/day/${addDays(key, -1)}" aria-label="${t('d.yesterday')}">${ICON.left}</a>
+            ${key !== todayKey() ? `<a class="pill" href="#/">${t('d.today')}</a>` : ''}
+            <a class="icon-btn" href="#/day/${addDays(key, 1)}" aria-label="${t('d.tomorrow')}">${ICON.right}</a>
+          </div>
+        </div>
+        <nav class="week" aria-label="week">${weekKeys.map(k => {
+          const kc = dayTotals(k).kcal;
+          return `<a href="#/day/${k}" class="${k === key ? 'on' : ''} ${k > todayKey() ? 'future' : ''}" aria-current="${k === key ? 'date' : 'false'}"><span class="wd">${wdFmt.format(parseKey(k))}</span><span class="dn">${parseKey(k).getDate()}</span><span class="dot"><i style="width:${clamp(kc / tk, 0, 1) * 100}%"></i></span></a>`;
+        }).join('')}</nav>
+      </div>
+    </section>
+
+    <section class="summary">
+      <div class="card dark ringcard rv">
+        <div class="ring">
+          <svg viewBox="0 0 120 120" aria-hidden="true"><circle class="trk" cx="60" cy="60" r="52" fill="none" stroke-width="11"/><circle class="val ${over ? 'over' : ''}" cx="60" cy="60" r="52" fill="none" stroke-width="11" stroke-dasharray="${C}" stroke-dashoffset="${C}" data-off="${C * (1 - frac)}"/></svg>
+          <div class="mid"><b class="num ${over ? 'over' : ''}" data-count="${Math.round(Math.abs(left))}">0</b><span>${over ? t('d.over') : t('d.left')}, ${t('u.kcal')}</span></div>
+        </div>
+        <div class="ring-stats">
+          <div class="st"><span>${t('d.eaten')}</span><b class="num" data-count="${Math.round(tot.kcal)}">0</b></div>
+          <div class="st"><span>${t('d.goal')}</span><b class="num">${fmt(tk)}</b></div>
+          <div class="st"><span>${dayItems(day).length} ${t('d.entries')}</span><span class="serif" style="font-size:22px;color:#fff;font-family:var(--serif)">${esc(diaryMood(tot, tk, key))}</span></div>
+        </div>
+      </div>
+      <div class="card macros rv" style="--d:2">
+        ${['protein_g', 'fat_g', 'carbs_g'].map(k => {
+          const v = tot[k], tg = target(k) || 1;
+          return `<div class="macro"><div class="top-l"><b>${t('n.' + k)}</b><span class="num">${fmt(v)} / ${fmt(tg)} ${t('u.g')}</span></div><div class="bar"><i class="${v > tg * 1.1 ? 'over' : ''}" data-w="${clamp(v / tg, 0, 1) * 100}%"></i></div></div>`;
+        }).join('')}
+        <div class="chips">${extra.map(([k, kind]) => {
+          const v = tot[k], tg = target(k);
+          const bad = tg && (kind === 'max' ? v > tg : false);
+          return `<span class="pill ${bad ? 'warn' : ''}" title="${t('n.' + k)}"><span class="tick">${bad ? '!' : ICON.check}</span>${t('n.' + k)} <b class="num">${fmt(v, k.endsWith('_mg') ? 0 : 1)}</b><span class="muted">/ ${fmt(tg)} ${nUnit(k)}</span></span>`;
+        }).join('')}</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="sec-head"><h2 class="h2">${UI.split(Store.state.settings.lang === 'en' ? 'Meals' : 'Приёмы пищи')}</h2></div>
+      <div class="meals">${MEALS.map((m, i) => mealCard(key, m, day, i)).join('')}</div>
+    </section>
+
+    <section class="note">
+      <div><span class="kicker">${t('d.note')}</span><h2 class="h2" style="margin-top:10px">${UI.split(Store.state.settings.lang === 'en' ? 'Dear diary' : 'Дорогой дневник')}</h2></div>
+      <textarea id="note" placeholder="${esc(t('d.note.ph'))}" aria-label="${t('d.note')}">${esc(day ? day.note : '')}</textarea>
+    </section>`;
+  },
+  mount(el, r) {
+    const key = r.name === 'day' && r.parts[1] ? r.parts[1] : todayKey();
+    el.onclick = e => {
+      const b = e.target.closest('[data-item]');
+      if (b) itemSheet(key, b.dataset.item, () => { Router.silent = true; Router.render(); });
+    };
+    let to;
+    $('#note', el).oninput = e => { clearTimeout(to); to = setTimeout(() => { Store.day(key).note = e.target.value; Store.save(); }, 400); };
+    if (Views.diary.flash) {
+      const ids = Views.diary.flash; Views.diary.flash = null;
+      ids.forEach(id => { const li = el.querySelector(`[data-item="${id}"]`); li && li.parentElement.classList.add('flash'); });
+    }
+  },
+};
+Views.day = Views.diary;
+
+function diaryMood(tot, tk, key) {
+  const en = Store.state.settings.lang === 'en';
+  if (!tot.kcal) return key === todayKey() ? (en ? 'a blank page' : 'чистый лист') : (en ? 'nothing written' : 'ничего не записано');
+  const p = tot.kcal / tk;
+  if (p < .5) return en ? 'just getting started' : 'день только начинается';
+  if (p < .9) return en ? 'steady pace' : 'ровный темп';
+  if (p <= 1.05) return en ? 'right on target' : 'точно в цель';
+  return en ? 'a generous day' : 'щедрый день';
+}
+
+function mealCard(key, m, day, i) {
+  const items = day ? day.meals[m] : [];
+  const n = sumN(items);
+  const [bx, by] = MEAL_BLOB[m];
+  return `<article class="meal rv-card" style="--d:${i}">
+    <div class="head blob" style="--bx:${bx};--by:${by}"><span class="mono">/ 00${i + 1}</span><span class="mono">${items.length ? fmt(n.kcal) + ' ' + t('u.kcal') : ''}</span><span class="badge">${ICON.star}</span></div>
+    <div class="body">
+      <div class="title"><h3 class="h3">${t('meal.' + m)}</h3></div>
+      ${items.length ? `<ul class="items">${items.map(it => {
+        const nn = itemNutrients(it);
+        return `<li><button data-item="${it.id}"><span class="nm">${esc(it.name)}</span><span class="kk num">${fmt(nn.kcal)}</span><span class="sub"><span>${fmtMass(it.grams)}</span><span>${macroLine(nn)}</span>${it.source === 'ai_estimate' ? `<span>· ${t('src.ai_estimate')}</span>` : ''}</span></button></li>`;
+      }).join('')}</ul>
+      <div class="mono muted">${macroLine(n)}</div>`
+      : `<div class="empty"><span class="serif">${t('d.empty')}</span>${t('d.empty.hint')}</div>`}
+      <div class="foot">
+        <a class="pill" href="#/add?date=${key}&meal=${m}">${ICON.plus.replace('<svg', '<svg width="14" height="14"')} ${t('foods.add')}</a>
+        ${items.length ? `<a class="link" href="#/meal/${key}/${m}" style="margin-left:auto">${t('d.more')}</a>` : ''}
+      </div>
+    </div>
+  </article>`;
+}
+
+/* ===== Добавление ===== */
+let addState = null;
+Views.add = {
+  html(r) {
+    const date = /^\d{4}-\d{2}-\d{2}$/.test(r.q.date || '') ? r.q.date : todayKey();
+    if (!addState || addState.date !== date || (r.q.meal && addState.meal !== r.q.meal)) addState = { date, meal: MEALS.includes(r.q.meal) ? r.q.meal : guessMeal(), photos: [], text: '' };
+    const s = addState;
+    const ai = aiReady();
+    const recent = Store.state.recent.slice(0, 12);
+    const my = Store.state.myFoods.slice(0, 12);
+    return `
+      <span class="kicker">${t('nav.add')} · ${esc(relDay(date))}</span>
+      <h1 class="h1" style="margin-top:12px">${UI.split(t('add.title'), 'hoverable')}</h1>
+      <div class="add-wrap">
+        <div class="card composer rv" id="composer">
+          <div class="drop" id="drop">${photosHtml(s.photos)}</div>
+          <input type="file" id="f-gal" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.heic,.heif" multiple hidden>
+          <input type="file" id="f-cam" accept="image/*" capture="environment" hidden>
+          <label class="sr" for="txt">${t('add.title')}</label>
+          <textarea class="textarea" id="txt" placeholder="${esc(t('add.ph'))}">${esc(s.text)}</textarea>
+          <div class="note-ai">${ICON.info}<span>${t('add.hint')}</span></div>
+          <div class="field"><span>${t('add.meal')}</span><div class="seg" id="mealseg">${MEALS.map(m => `<button aria-pressed="${m === s.meal}" data-m="${m}">${t('meal.' + m)}</button>`).join('')}</div></div>
+          <div class="row" style="gap:18px">
+            <button class="btn big" id="calc">${t('add.calc')}<span class="arr">${ICON.arrow}</span></button>
+            <button class="link" id="manual">${t('add.manual')}</button>
+          </div>
+          ${ai ? '' : `<div class="callout" style="font-size:14px">${t('add.noai')} <a class="link" href="#/settings">${t('nav.settings')}</a></div>`}
+        </div>
+        <div class="quick">
+          <div class="card rv" style="--d:2"><span class="kicker">${t('add.recent')}</span>
+            <div class="list" style="margin-top:12px">${recent.length ? recent.map((x, i) => `<button class="pill" data-rec="${i}">${esc(x.name)} <span class="muted mono">${fmtMass(x.grams)}</span></button>`).join('') : `<p class="muted" style="margin:0">${t('foods.empty.recent')}</p>`}</div></div>
+          <div class="card rv" style="--d:3"><span class="kicker">${t('add.my')}</span>
+            <div class="list" style="margin-top:12px">${my.length ? my.map((x, i) => `<button class="pill" data-my="${i}"><span class="tick">${ICON.plus}</span>${esc(x.name)}</button>`).join('') : `<p class="muted" style="margin:0">${t('foods.empty.my')}</p>`}</div></div>
+          <div class="card dark rv blob" style="--d:4;--bx:80%;--by:90%;min-height:180px;border-radius:var(--r)">
+            <div style="position:relative;z-index:1;display:grid;gap:10px">
+              <span class="mono" style="color:#cfd3db">/ ${Store.state.settings.lang === 'en' ? 'tip' : 'совет'}</span>
+              <p class="serif" style="font-size:28px;line-height:1.05;margin:0">${Store.state.settings.lang === 'en' ? 'Shoot from above with a fork or a hand in frame — portions come out more accurate.' : 'Снимай сверху и держи в кадре вилку или ладонь — так порция оценивается точнее.'}</p>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  },
+  mount(el) {
+    const s = addState;
+    const txt = $('#txt', el);
+    txt.oninput = () => s.text = txt.value;
+    txt.onkeydown = e => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) $('#calc', el).click(); };
+    $('#mealseg', el).onclick = e => { const b = e.target.closest('[data-m]'); if (!b) return; s.meal = b.dataset.m; $$('#mealseg button', el).forEach(x => x.setAttribute('aria-pressed', x === b)); };
+    const drop = $('#drop', el);
+    const refresh = () => { drop.innerHTML = photosHtml(s.photos); };
+    const addFiles = async files => {
+      for (const f of [...files]) {
+        if (s.photos.length >= 4) { UI.toast(t('add.photos.max'), { err: true }); break; }
+        try { s.photos.push(await prepareImage(f)); refresh(); }
+        catch (e) { UI.toast(t('err.' + (e.code || 'UNSUPPORTED_FORMAT')), { err: true }); }
+      }
+    };
+    drop.onclick = e => {
+      const del = e.target.closest('[data-delph]');
+      if (del) { s.photos.splice(Number(del.dataset.delph), 1); refresh(); return; }
+      if (e.target.closest('[data-cam]')) return $('#f-cam', el).click();
+      if (e.target.closest('[data-gal]')) return $('#f-gal', el).click();
+    };
+    $('#f-gal', el).onchange = e => { addFiles(e.target.files); e.target.value = ''; };
+    $('#f-cam', el).onchange = e => { addFiles(e.target.files); e.target.value = ''; };
+    drop.ondragover = e => { e.preventDefault(); drop.classList.add('drag'); };
+    drop.ondragleave = () => drop.classList.remove('drag');
+    drop.ondrop = e => { e.preventDefault(); drop.classList.remove('drag'); addFiles(e.dataTransfer.files); };
+    el.onpaste = e => { const fs = [...(e.clipboardData && e.clipboardData.files || [])].filter(f => f.type.startsWith('image/')); if (fs.length) addFiles(fs); };
+
+    $('#manual', el).onclick = () => searchSheet({ title: t('add.manual'), query: s.text, onPick: it => { UI.closeModal(); setTimeout(() => logSheet(it, { date: s.date, meal: s.meal, onDone: (d) => { Router.go(`#/day/${d}`); } }), 450); } });
+    el.querySelector('.quick').onclick = e => {
+      const r = e.target.closest('[data-rec]'), m = e.target.closest('[data-my]');
+      let it = null;
+      if (r) { const x = Store.state.recent[Number(r.dataset.rec)]; it = makeItem({ name: x.name, grams: x.grams, per100: x.per100, source: x.source, foodId: x.foodId, confidence: 1, grams_source: 'user', origin: 'copy' }); }
+      if (m) { const x = Store.state.myFoods[Number(m.dataset.my)]; it = makeItem({ name: x.name, grams: x.portion || 100, per100: x.per100, source: 'user', confidence: 1, grams_source: 'user', origin: 'manual' }); }
+      if (!it) return;
+      Store.addItems(s.date, s.meal, [it]);
+      const added = Store.day(s.date).meals[s.meal].slice(-1)[0];
+      UI.toast(`${it.name} → ${t('meal.' + s.meal)}`, { action: t('res.undo'), onAction: () => { const d = Store.day(s.date); d.meals[s.meal] = d.meals[s.meal].filter(x => x.id !== added.id); Store.save(); } });
+    };
+    $('#calc', el).onclick = () => runAnalysis($('#composer', el));
+  },
+};
+function photosHtml(photos) {
+  if (!photos.length) return `<div>
+    <div class="h3">${UI.split(Store.state.settings.lang === 'en' ? 'Drop a photo here' : 'Перетащи фото сюда')}</div>
+    <p class="mono muted" style="margin:8px 0 0">JPEG · PNG · WebP · HEIC · ≤ 10 MB · ≤ 4</p>
+    <div class="acts"><button class="pill" data-gal>${ICON.image.replace('<svg', '<svg width="18" height="18"')} ${t('add.photo')}</button><button class="pill" data-cam>${ICON.camera.replace('<svg', '<svg width="18" height="18"')} ${t('add.camera')}</button></div></div>`;
+  return `<div class="thumbs">${photos.map((p, i) => `<div class="thumb"><img src="${p.thumb}" alt=""><button data-delph="${i}" aria-label="${t('res.delete')}">${ICON.x}</button></div>`).join('')}${photos.length < 4 ? `<button class="thumb addmore" data-gal aria-label="${t('add.photo')}">${ICON.plus.replace('<svg', '<svg width="22" height="22"')}</button>` : ''}</div>`;
+}
+
+async function runAnalysis(host, answers) {
+  const s = addState;
+  const text = (s.text || '').trim();
+  if (!text && !s.photos.length) { UI.toast(t('add.empty'), { err: true }); return; }
+  if (s.photos.length && !aiReady()) { UI.toast(t('add.noai.photo'), { err: true }); return; }
+  const ctrl = new AbortController();
+  const proc = document.createElement('div');
+  proc.className = 'proc';
+  proc.innerHTML = `<span class="scan"></span>
+    <div class="stages">${['recognize', 'match', 'calc'].map(k => `<div class="stage" data-st="${k}">${t('st.' + k)}<span class="dots"></span></div>`).join('')}</div>
+    <div style="display:grid;gap:18px;position:relative;z-index:1"><div class="skel"><i></i><i></i><i></i></div>
+    <button class="btn lime" id="cancel" style="justify-self:start">${t('st.cancel')}<span class="arr">${ICON.x}</span></button></div>`;
+  host.appendChild(proc);
+  const stage = k => {
+    const order = ['recognize', 'match', 'calc'];
+    $$('.stage', proc).forEach(x => { const i = order.indexOf(x.dataset.st), j = order.indexOf(k); x.className = 'stage' + (i < j ? ' done' : i === j ? ' on' : ''); });
+  };
+  $('#cancel', proc).onclick = () => ctrl.abort();
+  stage('recognize');
+  let result;
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  try {
+    if (aiReady()) {
+      try {
+        result = await aiAnalyze({ text, images: s.photos.map(p => p.full), answers }, { signal: ctrl.signal, onStage: stage });
+      } catch (e) {
+        if (['AI_UNAVAILABLE', 'TIMEOUT', 'RATE', 'AUTH'].includes(e.code) && text && !s.photos.length) {
+          UI.toast(t('err.' + e.code), { err: true });
+          result = localAnalyze(text);
+        } else throw e;
+      }
+    } else {
+      await sleep(380); if (ctrl.signal.aborted) throw new AIError('cancelled');
+      stage('match'); result = localAnalyze(text);
+      await sleep(320); if (ctrl.signal.aborted) throw new AIError('cancelled');
+      stage('calc'); await sleep(240);
+      if (result.status === 'no_food') throw new AIError('NO_FOOD_DETECTED');
+    }
+    draft = { date: s.date, meal: s.meal, text, photos: s.photos.slice(), items: result.items, questions: result.questions || [], unknown: result.unknown || [], answers: answers || [], model: result.model, ai: !!result.analysisId };
+    draft.items.forEach(it => it.analysisModel = result.model);
+    Router.go('#/result');
+  } catch (e) {
+    proc.style.transition = 'opacity .3s'; proc.style.opacity = 0; setTimeout(() => proc.remove(), 300);
+    const code = e.code || 'AI_UNAVAILABLE';
+    UI.toast(code === 'NO_FOOD_DETECTED' && e.detail ? e.detail : t('err.' + code), { err: code !== 'cancelled', ms: 5200 });
+  }
+}
+
+/* ===== Результат ===== */
+Views.result = {
+  html() {
+    if (!draft) return `<div class="empty-state"><span class="serif">${t('d.empty')}</span><a class="btn" href="#/add">${t('nav.add')}<span class="arr">${ICON.arrow}</span></a></div>`;
+    const d = draft;
+    return `
+      <span class="kicker">${t('res.title')} · ${t('meal.' + d.meal)} · ${esc(relDay(d.date))}</span>
+      <h1 class="h1" style="margin-top:12px">${UI.split(`${d.items.length} ${t('res.items')}`)}</h1>
+      <div class="res">
+        <div class="photos rv">
+          ${d.photos.map(p => `<img src="${p.full}" alt="">`).join('')}
+          ${d.text ? `<div class="card inputq"><span class="kicker">${Store.state.settings.lang === 'en' ? 'you wrote' : 'ты написал(а)'}</span><p>«${esc(d.text)}»</p></div>` : ''}
+          <div class="seg" id="rmeal">${MEALS.map(m => `<button aria-pressed="${m === d.meal}" data-m="${m}">${t('meal.' + m)}</button>`).join('')}</div>
+        </div>
+        <div>
+          ${d.questions.length ? `<div class="card lime qbox" id="qbox"><span class="kicker">${t('res.q')}</span>
+            ${d.questions.map((q, qi) => `<div class="q"><p>${esc(q.text)}</p><div class="row">${q.options.map(o => `<button class="pill" data-q="${qi}" data-o="${esc(o)}">${esc(o)}</button>`).join('')}</div></div>`).join('')}
+            <button class="link" id="qskip" style="justify-self:start">${t('res.q.skip')}</button></div>` : ''}
+          ${d.unknown.length ? `<div class="callout warn" style="margin-bottom:10px"><b>${t('res.unknown')}:</b> ${d.unknown.map((u, i) => `<button class="link" data-unk="${i}">${esc(u)}</button>`).join(', ')}<br><span class="muted">${t('res.unknown.hint')}</span></div>` : ''}
+          <div class="ritems" id="ritems" style="margin-top:${d.questions.length ? 10 : 0}px">${d.items.map((it, i) => ritemHtml(it, i)).join('')}</div>
+          <div class="row" style="margin-top:12px"><button class="pill ghosty" id="additem">${ICON.plus.replace('<svg', '<svg width="14" height="14"')} ${t('res.additem')}</button></div>
+          <div class="totals" id="totals"></div>
+          <p class="disc">${t('res.disclaimer')}</p>
+        </div>
+      </div>`;
+  },
+  mount(el) {
+    if (!draft) return;
+    const d = draft;
+    const list = $('#ritems', el);
+    const totals = () => {
+      const n = sumN(d.items);
+      $('#totals', el).innerHTML = `<div><span class="mono" style="color:#9aa0ae">${t('res.total')}</span><div class="tbig num">${fmt(n.kcal)}<small>${t('u.kcal')}</small></div></div>
+        <div class="mac"><span>${t('n.p')} <b>${fmt(n.protein_g)}</b></span><span>${t('n.f')} <b>${fmt(n.fat_g)}</b></span><span>${t('n.c')} <b>${fmt(n.carbs_g)}</b></span></div>
+        <span class="spacer"></span>
+        <button class="btn lime big" id="save" ${d.items.length ? '' : 'disabled'}>${t('res.add')}<span class="arr">${ICON.arrow}</span></button>`;
+      $('#save', el).onclick = save;
+      $('h1', el).setAttribute('aria-label', `${d.items.length} ${t('res.items')}`);
+    };
+    const updRow = (row, it) => {
+      const n = itemNutrients(it);
+      $('[data-kc]', row).textContent = fmt(n.kcal);
+      $('[data-mac]', row).textContent = macroLine(n);
+      const r = $('input[type=range]', row);
+      if (Number(it.grams) > Number(r.max)) r.max = Math.ceil(it.grams * 1.5 / 50) * 50;
+      r.style.setProperty('--p', (it.grams / r.max * 100) + '%');
+    };
+    const rerender = () => { $('h1', el).innerHTML = UI.split(`${d.items.length} ${t('res.items')}`); list.innerHTML =d.items.map((it, i) => ritemHtml(it, i)).join(''); $$('.ritem', list).forEach((row, i) => updRow(row, d.items[i])); totals(); };
+    $$('.ritem', list).forEach((row, i) => updRow(row, d.items[i]));
+    totals();
+    list.oninput = e => {
+      const row = e.target.closest('.ritem'); if (!row) return;
+      const it = d.items.find(x => x.id === row.dataset.id);
+      if (e.target.type === 'range') { it.grams = Number(e.target.value); $('input[type=number]', row).value = massOut(it.grams); }
+      else { const g = massIn(e.target.value); if (!(g > 0)) return; it.grams = clamp(g, 1, 5000); $('input[type=range]', row).value = it.grams; }
+      it.edited = true; it.grams_source = 'user';
+      updRow(row, it); totals();
+    };
+    list.onclick = e => {
+      const row = e.target.closest('.ritem'); if (!row) return;
+      const idx = d.items.findIndex(x => x.id === row.dataset.id), it = d.items[idx];
+      const act = e.target.closest('[data-act]'); if (!act) return;
+      if (act.dataset.act === 'del') {
+        row.classList.add('removing');
+        setTimeout(() => {
+          d.items.splice(idx, 1); rerender();
+          UI.toast(t('res.deleted'), { action: t('res.undo'), onAction: () => { d.items.splice(idx, 0, it); rerender(); } });
+        }, 300);
+      }
+      if (act.dataset.act === 'src') sourceSheet(it);
+      if (act.dataset.act === 'replace') searchSheet({ title: t('res.replace'), query: it.name, onPick: nw => {
+        Object.assign(it, { name: nw.name, per100: nw.per100, source: nw.source, foodId: nw.foodId, confidence: 1, edited: true, assumed: false, opts: nw.opts });
+        UI.closeModal(); rerender();
+      } });
+    };
+    $('#additem', el).onclick = () => searchSheet({ title: t('res.additem'), onPick: nw => { d.items.push(nw); UI.closeModal(); rerender(); } });
+    $('#rmeal', el).onclick = e => { const b = e.target.closest('[data-m]'); if (!b) return; d.meal = b.dataset.m; $$('#rmeal button', el).forEach(x => x.setAttribute('aria-pressed', x === b)); };
+    $$('[data-unk]', el).forEach(b => b.onclick = () => searchSheet({ title: t('add.manual'), query: d.unknown[Number(b.dataset.unk)].replace(/[\d.,]+\s*(г|гр|g|мл|ml|шт)?/gi, '').trim(), onPick: nw => { d.items.push(nw); d.unknown.splice(Number(b.dataset.unk), 1); UI.closeModal(); Router.silent = true; Router.render(); } }));
+    const qbox = $('#qbox', el);
+    if (qbox) {
+      const picked = {};
+      qbox.onclick = async e => {
+        const b = e.target.closest('[data-q]');
+        if (e.target.closest('#qskip')) { d.items.forEach(it => { if (d.questions.some(q => q.item_index === d.items.indexOf(it))) it.confidence = Math.min(it.confidence, 0.5); }); d.questions = []; qbox.remove(); rerender(); return; }
+        if (!b) return;
+        picked[b.dataset.q] = b.dataset.o;
+        $$(`[data-q="${b.dataset.q}"]`, qbox).forEach(x => x.classList.toggle('on', x === b));
+        if (Object.keys(picked).length < d.questions.length) return;
+        const answers = d.answers.concat(d.questions.map((q, i) => ({ q: q.text, a: picked[i] })));
+        addState = { date: d.date, meal: d.meal, photos: d.photos, text: d.text };
+        qbox.style.position = 'relative'; qbox.style.minHeight = '340px'; qbox.style.overflow = 'hidden';
+        await runAnalysis(qbox, answers);
+      };
+    }
+    async function save() {
+      let photoId = null;
+      if (d.photos.length && Store.state.settings.photoPolicy !== 'none') { photoId = 'ph_' + uid(); await PhotoDB.put(photoId, d.photos[0].thumb); }
+      const items = d.items.map(it => {
+        const o = Object.assign({}, it); delete o.input; delete o.analysisModel;
+        if (photoId) o.photoId = photoId;
+        return o;
+      });
+      Store.addItems(d.date, d.meal, items);
+      const ids = Store.day(d.date).meals[d.meal].slice(-items.length).map(x => x.id);
+      draft = null; addState = null;
+      UI.toast(`${t('res.added')} · ${t('meal.' + d.meal)}`);
+      Views.diary.flash = ids;
+      Router.go(d.date === todayKey() ? '#/' : `#/day/${d.date}`);
+    }
+  },
+};
+function ritemHtml(it, i) {
+  const low = (it.confidence ?? 1) < 0.6;
+  const max = Math.max(500, Math.ceil(it.grams * 2.5 / 50) * 50);
+  const cook = it.cooking && !/^(none|n\/a|-|raw|unknown)$/i.test(it.cooking) ? it.cooking : '';
+  return `<article class="ritem ${low ? 'low' : ''}" data-id="${it.id}" style="--d:${i}">
+    <div class="r1">
+      <button class="nm" data-act="replace" title="${t('res.replace')}">${esc(it.name)}<small>${cook ? esc(cook) + ' · ' : ''}${t('gs.' + (it.grams_source || 'standard'))}</small></button>
+      <div class="kc"><span class="num" data-kc></span><small>${t('u.kcal')}</small></div>
+      <button class="icon-btn sm" data-act="del" aria-label="${t('res.delete')}">${ICON.trash}</button>
+    </div>
+    <div class="r2">
+      <input type="range" min="1" max="${max}" step="1" value="${Math.round(it.grams)}" aria-label="${t('misc.grams')} — ${esc(it.name)}">
+      <label class="gram"><input type="number" inputmode="decimal" value="${massOut(it.grams)}" aria-label="${t('misc.grams')}"><span>${massUnit()}</span></label>
+    </div>
+    <div class="r3">
+      <span class="tag"><span class="confbar"><i style="width:${Math.round((it.confidence ?? 1) * 100)}%"></i></span>${Math.round((it.confidence ?? 1) * 100)}% ${t('res.conf')}</span>
+      ${low ? `<span class="tag warn">! ${t('res.lowconf')}</span>` : ''}
+      ${it.assumed ? `<span class="tag lime">${t('res.assumed')}</span>` : ''}
+      <span class="tag ${it.source === 'ai_estimate' ? 'dark' : ''}"><button data-act="src">${t('src.' + (it.source || 'local'))}</button></span>
+      <span class="mono muted" data-mac style="margin-left:auto"></span>
+    </div>
+  </article>`;
+}
+
+/* ===== Детали приёма пищи ===== */
+Views.meal = {
+  html(r) {
+    const [_, key, m] = r.parts;
+    if (!key || !MEALS.includes(m)) return Views.diary.html({ name: 'diary', parts: [], q: {} });
+    const day = Store.peekDay(key);
+    const items = day ? day.meals[m] : [];
+    const n = sumN(items);
+    const hasPhoto = items.find(x => x.photoId);
+    return `
+      <span class="kicker">${t('meal.details')} · ${esc(relDay(key))}</span>
+      <div class="datebar" style="margin-top:12px"><h1 class="h1">${UI.split(t('meal.' + m), 'hoverable')}</h1>
+        <div class="row"><a class="btn light" href="#/day/${key}">${t('nav.diary')}<span class="arr">${ICON.left}</span></a>
+        ${key !== todayKey() && items.length ? `<button class="btn" id="copy">${t('meal.copy')}<span class="arr">${ICON.arrow}</span></button>` : ''}</div></div>
+      <div class="res">
+        <div class="photos rv">
+          ${hasPhoto ? `<img id="mphoto" alt="" style="background:var(--bg-2)">` : ''}
+          <div class="card dark" style="display:grid;gap:6px"><span class="mono" style="color:#9aa0ae">${t('n.kcal')}</span><b class="h1 num" style="color:var(--lime)" data-count="${Math.round(n.kcal)}">0</b><span class="mono" style="color:#c8ccd6">${macroLine(n)} ${t('u.g')}</span></div>
+          <div class="card"><ul class="items" id="mitems">${items.map(it => { const nn = itemNutrients(it); return `<li><button data-item="${it.id}"><span class="nm">${esc(it.name)}</span><span class="kk num">${fmt(nn.kcal)}</span><span class="sub"><span>${fmtMass(it.grams)}</span><span>${t('src.' + (it.source || 'local'))}</span></span></button></li>`; }).join('') || `<li class="muted">${t('d.empty')}</li>`}</ul></div>
+        </div>
+        <div class="card rv" style="--d:2">
+          <table class="ntable"><thead><tr><th></th><th class="r">${t('res.total')}</th><th class="r" style="width:40%">${t('meal.norm')}</th></tr></thead><tbody>
+          ${NUTRIENT_KEYS.map(k => { const tg = target(k); const p = tg ? n[k] / tg * 100 : 0; return `<tr><td>${t('n.' + k)}</td><td class="r num"><b>${fmt(n[k], k.endsWith('_mg') || k === 'kcal' ? 0 : 1)}</b> ${nUnit(k)}</td><td class="r num">${tg ? fmt(p) + '%' : '—'}<div class="pbar"><i class="${p > 100 ? 'over' : ''}" style="width:0" data-w="${clamp(p, 0, 100)}%"></i></div></td></tr>`; }).join('')}
+          </tbody></table>
+          <p class="disc">${t('res.disclaimer')}</p>
+        </div>
+      </div>`;
+  },
+  mount(el, r) {
+    const [_, key, m] = r.parts;
+    const day = Store.peekDay(key);
+    const items = day ? day.meals[m] : [];
+    const ph = items.find(x => x.photoId);
+    if (ph) PhotoDB.get(ph.photoId).then(src => { const img = $('#mphoto', el); if (img) { if (src) img.src = src; else img.remove(); } });
+    const mi = $('#mitems', el);
+    mi && (mi.onclick = e => { const b = e.target.closest('[data-item]'); if (b) itemSheet(key, b.dataset.item, () => { Router.silent = true; Router.render(); }); });
+    const c = $('#copy', el);
+    c && (c.onclick = () => {
+      Store.addItems(todayKey(), m, items.map(it => { const o = Object.assign({}, it, { origin: 'copy' }); delete o.photoId; return o; }));
+      UI.toast(t('meal.copied'));
+      Router.go('#/');
+    });
+  },
+};
+
+/* ===== Статистика ===== */
+let statsPeriod = 7;
+Views.stats = {
+  html() {
+    const N = statsPeriod, tk = todayKey();
+    const keys = Array.from({ length: N }, (_, i) => addDays(tk, i - N + 1));
+    const tots = keys.map(k => ({ k, n: dayTotals(k), has: dayItems(Store.peekDay(k)).length > 0 }));
+    const logged = tots.filter(x => x.has);
+    const avg = k => logged.length ? logged.reduce((s, x) => s + x.n[k], 0) / logged.length : 0;
+    let streak = 0; { let k = dayItems(Store.peekDay(tk)).length ? tk : addDays(tk, -1); while (dayItems(Store.peekDay(k)).length) { streak++; k = addDays(k, -1); } }
+    const tkc = target('kcal') || 2000;
+    const W = 820, H = 260, P = 28, bw = (W - P) / N;
+    const maxK = Math.max(tkc * 1.3, ...tots.map(x => x.n.kcal));
+    const y = v => H - 24 - (v / maxK) * (H - 40);
+    const dFmt = k => parseKey(k).getDate();
+    const kcalChart = `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${t('stats.kcal')}">
+      ${[0.25, .5, .75, 1].map(f => `<line class="grid-l" x1="${P}" x2="${W}" y1="${y(maxK * f)}" y2="${y(maxK * f)}"/><text x="0" y="${y(maxK * f) + 3}">${fmt(maxK * f / 1000, 1)}k</text>`).join('')}
+      ${tots.map((x, i) => { const h = H - 24 - y(x.n.kcal); return `<rect class="b ${x.n.kcal > tkc * 1.05 ? 'over' : ''} ${x.k === tk ? 'today' : ''}" style="--i:${i}" x="${P + i * bw + bw * .18}" y="${y(x.n.kcal)}" width="${bw * .64}" height="${Math.max(0, h)}" rx="${Math.min(8, bw * .2)}"><title>${x.k}: ${fmt(x.n.kcal)} ${t('u.kcal')}</title></rect>${N <= 7 || i % 3 === 0 ? `<text x="${P + i * bw + bw / 2}" y="${H - 6}" text-anchor="middle">${dFmt(x.k)}</text>` : ''}`; }).join('')}
+      <line class="tl" x1="${P}" x2="${W}" y1="${y(tkc)}" y2="${y(tkc)}"/><text x="${W}" y="${y(tkc) - 6}" text-anchor="end">${t('d.goal')} ${fmt(tkc)}</text>
+    </svg>`;
+    const maxM = Math.max(1, ...tots.map(x => x.n.protein_g * 4 + x.n.fat_g * 9 + x.n.carbs_g * 4)) * 1.1;
+    const ym = v => (v / maxM) * (H - 40);
+    const macroChart = `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${t('stats.macros')}">
+      ${tots.map((x, i) => { let base = H - 24; return [['bp', x.n.protein_g * 4], ['bf', x.n.fat_g * 9], ['bc', x.n.carbs_g * 4]].map(([c, v]) => { const h = ym(v); base -= h; return `<rect class="b ${c}" style="--i:${i}" x="${P + i * bw + bw * .18}" y="${base}" width="${bw * .64}" height="${Math.max(0, h)}"/>`; }).join('') + (N <= 7 || i % 3 === 0 ? `<text x="${P + i * bw + bw / 2}" y="${H - 6}" text-anchor="middle">${dFmt(x.k)}</text>` : ''); }).join('')}
+    </svg>`;
+    const ws = Store.state.weights.slice(-30);
+    const spark = (() => {
+      if (ws.length < 2) return '';
+      const mn = Math.min(...ws.map(w => w.kg)) - 1, mx = Math.max(...ws.map(w => w.kg)) + 1;
+      const pts = ws.map((w, i) => [i / (ws.length - 1) * 380 + 10, 110 - (w.kg - mn) / (mx - mn) * 100]);
+      return `<svg class="spark" viewBox="0 0 400 120" style="width:100%;height:auto"><path d="M${pts.map(p => p.join(',')).join(' L')}"/>${pts.map(p => `<circle cx="${p[0]}" cy="${p[1]}" r="4"/>`).join('')}</svg>`;
+    })();
+    const rules = { kcal: 'band', protein_g: 'min', fat_g: 'band', carbs_g: 'band', fiber_g: 'min', sugar_g: 'max', sat_fat_g: 'max', sodium_mg: 'max', cholesterol_mg: 'max' };
+    return `
+      <span class="kicker">${t('stats.title')}</span>
+      <div class="datebar" style="margin-top:12px"><h1 class="h1">${UI.split(N === 7 ? (Store.state.settings.lang === 'en' ? 'Seven days' : 'Семь дней') : (Store.state.settings.lang === 'en' ? 'Thirty days' : 'Тридцать дней'), 'hoverable')}</h1>
+      <div class="seg" id="per"><button aria-pressed="${N === 7}" data-n="7">${t('stats.week')}</button><button aria-pressed="${N === 30}" data-n="30">${t('stats.month')}</button></div></div>
+      <div class="kpis section" style="margin-top:26px">
+        <div class="kpi dark rv"><span>${t('n.kcal')} · ${t('stats.avg')}</span><b class="num" data-count="${Math.round(avg('kcal'))}">0</b></div>
+        <div class="kpi rv" style="--d:1"><span>${t('n.protein_g')} · ${t('stats.avg')}, ${t('u.g')}</span><b class="num" data-count="${Math.round(avg('protein_g'))}">0</b></div>
+        <div class="kpi rv" style="--d:2"><span>${t('stats.days')}</span><b class="num">${logged.length}<span class="muted" style="font-size:.4em"> / ${N}</span></b></div>
+        <div class="kpi rv" style="--d:3;background:var(--lime)"><span>${t('stats.streak')}</span><b class="num" data-count="${streak}">0</b></div>
+      </div>
+      ${logged.length ? `
+      <div class="grid section" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));margin-top:16px">
+        <div class="card rv-card"><div class="sec-head" style="margin-bottom:10px"><h3 class="h3">${t('stats.kcal')}</h3></div>${kcalChart}</div>
+        <div class="card rv-card" style="--d:1"><div class="sec-head" style="margin-bottom:10px"><h3 class="h3">${t('stats.macros')}</h3><div class="legend"><span><i style="background:var(--ink)"></i>${t('n.protein_g')}</span><span><i style="background:var(--lime-2)"></i>${t('n.fat_g')}</span><span><i style="background:var(--blue)"></i>${t('n.carbs_g')}</span></div></div>${macroChart}</div>
+      </div>
+      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));margin-top:16px">
+        <div class="card rv"><h3 class="h3" style="margin-bottom:10px">${t('stats.micro')}</h3>
+          <table class="ntable"><thead><tr><th></th><th class="r">${t('stats.avg')}</th><th class="r">${t('d.goal')}</th><th class="r"></th></tr></thead><tbody>
+          ${NUTRIENT_KEYS.map(k => { const a = avg(k), tg = target(k), rule = rules[k]; let st = 'ok';
+            if (tg) { if (rule === 'max' && a > tg) st = 'over'; if (rule === 'min' && a < tg * .8) st = 'under'; if (rule === 'band' && (a > tg * 1.1)) st = 'over'; if (rule === 'band' && a < tg * .8) st = 'under'; }
+            return `<tr><td>${t('n.' + k)}</td><td class="r num"><b>${fmt(a, k.endsWith('_mg') || k === 'kcal' ? 0 : 1)}</b></td><td class="r num muted">${tg ? fmt(tg) : '—'} ${nUnit(k)}</td><td class="r"><span class="tag ${st === 'over' ? 'warn' : st === 'under' ? 'dark' : 'lime'}">${st === 'ok' ? '✓ ' : st === 'over' ? '↑ ' : '↓ '}${t('stats.' + st)}</span></td></tr>`; }).join('')}
+          </tbody></table></div>
+        <div class="card rv" style="--d:1;display:grid;gap:14px;align-content:start"><h3 class="h3">${t('stats.weight')}</h3>
+          ${spark}
+          <div class="row">${ws.slice(-5).reverse().map(w => `<span class="pill ghosty">${esc(relDay(w.date))} · <b>${fmt(bodyOut(w.kg), 1)}</b> ${bodyUnit()}</span>`).join('')}</div>
+          <div class="row"><input class="input" id="wv" type="number" inputmode="decimal" placeholder="${bodyUnit()}" style="max-width:160px"><button class="btn" id="wadd">${t('stats.weight.add')}<span class="arr">${ICON.plus}</span></button></div>
+        </div>
+      </div>` : `<div class="empty-state section"><span class="serif">${t('stats.nodata')}</span><a class="btn" href="#/add">${t('nav.add')}<span class="arr">${ICON.arrow}</span></a></div>`}`;
+  },
+  mount(el) {
+    $('#per', el).onclick = e => { const b = e.target.closest('[data-n]'); if (!b) return; statsPeriod = Number(b.dataset.n); Router.silent = true; Router.render(); };
+    const wa = $('#wadd', el);
+    wa && (wa.onclick = () => {
+      const v = bodyIn($('#wv', el).value); if (!(v > 25 && v < 400)) { UI.toast(t('err.range'), { err: true }); return; }
+      const ws = Store.state.weights.filter(w => w.date !== todayKey()); ws.push({ date: todayKey(), kg: round1(v) });
+      Store.state.weights = ws; if (Store.state.profile) Store.state.profile.weight = round1(v);
+      Store.save(); UI.toast(t('set.saved')); Router.silent = true; Router.render();
+    });
+  },
+};
+
+/* ===== Продукты ===== */
+let foodsTab = 'my', foodsCuisine = null;
+Views.foods = {
+  html() {
+    const s = Store.state;
+    const tab = foodsTab;
+    let body = '';
+    if (tab === 'my') body = `
+      <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr))">
+        ${s.myFoods.map((f, i) => `<div class="card rv-card" style="--d:${i % 8};display:grid;gap:10px"><span class="mono muted">/ ${String(i + 1).padStart(3, '0')}</span><h3 class="h3">${esc(f.name)}</h3>
+          <span class="mono muted">${fmt(f.per100.kcal)} ${t('u.kcal')} / 100 ${t('u.g')} · ${macroLine(f.per100)}</span>
+          <div class="row"><button class="pill on" data-log="${i}">${ICON.plus.replace('<svg', '<svg width="14" height="14"')} ${t('foods.add')} · ${fmtMass(f.portion || 100)}</button><span class="spacer"></span><button class="icon-btn sm" data-delmy="${i}" aria-label="${t('res.delete')}">${ICON.trash}</button></div></div>`).join('')}
+        <button class="card rv-card" id="newfood" style="border:2px dashed var(--line);background:transparent;display:grid;place-items:center;min-height:180px;gap:8px">${ICON.plus.replace('<svg', '<svg width="30" height="30"')}<span class="h3">${t('foods.new')}</span></button>
+      </div>
+      ${s.myFoods.length ? '' : `<p class="serif" style="font-size:26px;margin-top:20px">${t('foods.empty.my')}</p>`}`;
+    if (tab === 'recent') body = s.recent.length ? `<div class="search-res" style="max-height:none">${s.recent.map((x, i) => `<div class="row card rv" style="--d:${i % 10};padding:12px 16px"><span style="flex:1">${esc(x.name)}<br><small class="mono muted">${fmtMass(x.grams)} · ${fmt(itemNutrients(x).kcal)} ${t('u.kcal')} · ${t('src.' + (x.source || 'local'))}</small></span><button class="pill" data-tomy="${i}">${t('foods.tomy')}</button><button class="pill on" data-logr="${i}">${t('foods.add')}</button></div>`).join('')}</div>` : `<p class="serif" style="font-size:26px">${t('foods.empty.recent')}</p>`;
+    if (tab === 'db') {
+      const counts = {}; FOOD_DB.forEach(f => { if (f.cuisine) counts[f.cuisine] = (counts[f.cuisine] || 0) + 1; });
+      body = `<div class="card"><input class="input" id="dbq" placeholder="${esc(t('foods.search.ph'))}">
+        <div class="kicker" style="margin-top:18px">${t('foods.cuisines')} · ${Object.values(counts).reduce((a, b) => a + b, 0)}</div>
+        <div class="cuisines" id="cuis">${Object.keys(CUISINES).filter(c => counts[c]).map(c => `<button class="pill ${foodsCuisine === c ? 'on' : ''}" data-c="${c}">${esc(cuisineName(c))} <small>${counts[c]}</small></button>`).join('')}</div>
+        <div class="search-res" id="dbr" style="max-height:none"></div></div>`;
+    }
+    return `
+      <span class="kicker">${t('foods.title')}</span>
+      <div class="datebar" style="margin-top:12px"><h1 class="h1">${UI.split(t('foods.title'), 'hoverable')}</h1>
+        <div class="seg" id="ftab"><button aria-pressed="${tab === 'my'}" data-t="my">${t('foods.my')}</button><button aria-pressed="${tab === 'recent'}" data-t="recent">${t('foods.recent')}</button><button aria-pressed="${tab === 'db'}" data-t="db">${t('foods.search')}</button></div></div>
+      <div class="section" style="margin-top:26px">${body}</div>`;
+  },
+  mount(el) {
+    const s = Store.state;
+    $('#ftab', el).onclick = e => { const b = e.target.closest('[data-t]'); if (!b) return; foodsTab = b.dataset.t; Router.silent = true; Router.render(); };
+    el.addEventListener('click', e => {
+      const b = e.target.closest('[data-log],[data-delmy],[data-logr],[data-tomy]'); if (!b) return;
+      if (b.dataset.log !== undefined) { const f = s.myFoods[Number(b.dataset.log)]; logSheet({ name: f.name, grams: f.portion || 100, per100: f.per100, source: 'user', confidence: 1, grams_source: 'user' }); }
+      if (b.dataset.delmy !== undefined) { const i = Number(b.dataset.delmy), f = s.myFoods[i]; s.myFoods.splice(i, 1); Store.save(); Router.silent = true; Router.render(); UI.toast(t('res.deleted'), { action: t('res.undo'), onAction: () => { s.myFoods.splice(i, 0, f); Store.save(); Router.silent = true; Router.render(); } }); }
+      if (b.dataset.logr !== undefined) { const x = s.recent[Number(b.dataset.logr)]; logSheet({ name: x.name, grams: x.grams, per100: x.per100, source: x.source, foodId: x.foodId, confidence: 1, grams_source: 'user', origin: 'copy' }); }
+      if (b.dataset.tomy !== undefined) { const x = s.recent[Number(b.dataset.tomy)]; s.myFoods.unshift({ id: uid(), name: x.name, per100: Object.assign({}, x.per100), portion: Math.round(x.grams) }); Store.save(); UI.toast(t('foods.saved')); }
+    });
+    const nf = $('#newfood', el);
+    nf && (nf.onclick = () => newFoodSheet());
+    const q = $('#dbq', el);
+    if (q) {
+      const out = $('#dbr', el);
+      const run = () => {
+        const res = q.value.trim() ? searchFoods(q.value, 40)
+          : foodsCuisine ? FOOD_DB.filter(f => f.cuisine === foodsCuisine).map(f => ({ kind: 'db', food: f })) : [];
+        out.innerHTML = res.map((r, i) => { const nm = r.kind === 'db' ? foodName(r.food) : r.my.name, p = r.kind === 'db' ? r.food.per100 : r.my.per100;
+          return `<button data-i="${i}"><span>${esc(nm)}<br><small>${fmt(p.kcal)} ${t('u.kcal')} / 100 ${t('u.g')} · ${macroLine(p)} · ${t('n.fiber_g')} ${fmt(p.fiber_g, 1)} · ${t('n.sodium_mg')} ${fmt(p.sodium_mg)} ${t('u.mg')}</small></span><small>${r.kind === 'db' ? foodTag(r.food) : t('src.user')}</small></button>`; }).join('');
+        out.onclick = e => { const b = e.target.closest('[data-i]'); if (!b) return; const r = res[Number(b.dataset.i)]; logSheet(r.kind === 'db' ? itemFromFood(r.food) : { name: r.my.name, grams: r.my.portion || 100, per100: r.my.per100, source: 'user', confidence: 1, grams_source: 'user' }); };
+      };
+      q.oninput = () => { if (q.value.trim() && foodsCuisine) { foodsCuisine = null; $$('#cuis .pill', el).forEach(x => x.classList.remove('on')); } run(); };
+      $('#cuis', el).onclick = e => {
+        const b = e.target.closest('[data-c]'); if (!b) return;
+        foodsCuisine = foodsCuisine === b.dataset.c ? null : b.dataset.c; q.value = '';
+        $$('#cuis .pill', el).forEach(x => x.classList.toggle('on', x.dataset.c === foodsCuisine));
+        run();
+        const out = $('#dbr', el); out.style.animation = 'none'; void out.offsetWidth; out.style.animation = 'viewIn .6s var(--ease-out) both';
+      };
+      run();
+    }
+  },
+};
+function newFoodSheet() {
+  const sheet = UI.modal(`
+    <div class="kicker">${t('foods.my')}</div><h2 class="h2" style="margin:10px 0 18px">${t('foods.new')}</h2>
+    <div class="grid" style="gap:12px">
+      <label class="field"><span>${t('foods.name')}</span><input class="input" id="nf-name" maxlength="60"></label>
+      <label class="field"><span>${t('foods.portion')}</span><input class="input" id="nf-portion" type="number" inputmode="decimal" value="100"></label>
+      <span class="kicker">${t('foods.per100')}</span>
+      <div class="tgrid">${NUTRIENT_KEYS.map(k => `<div class="tcell"><label>${t('n.' + k)}, ${nUnit(k)}</label><input type="number" inputmode="decimal" data-k="${k}" value="0" style="font-size:26px"></div>`).join('')}</div>
+      <button class="btn big" id="nf-save">${t('foods.save')}<span class="arr">${ICON.arrow}</span></button>
+    </div>`);
+  $('#nf-save', sheet).onclick = () => {
+    const name = $('#nf-name', sheet).value.trim(); if (!name) { UI.toast(t('err.range'), { err: true }); return; }
+    const per100 = {}; $$('[data-k]', sheet).forEach(i => per100[i.dataset.k] = Math.max(0, Number(i.value) || 0));
+    Store.state.myFoods.unshift({ id: uid(), name, per100, portion: Number($('#nf-portion', sheet).value) || 100 });
+    Store.save(); UI.closeModal(); UI.toast(t('foods.saved')); Router.silent = true; Router.render();
+  };
+}
+
+/* ===== Ассистент ===== */
+let chatBusy = null;
+Views.chat = {
+  html() {
+    const h = Store.state.chat;
+    return `
+      <span class="kicker">${t('chat.title')}</span>
+      <div class="datebar" style="margin-top:12px"><h1 class="h1">${UI.split(Store.state.settings.lang === 'en' ? 'Ask me anything' : 'Спроси меня', 'hoverable')}</h1>
+        ${h.length ? `<button class="pill ghosty" id="cclear">${t('chat.clear')}</button>` : ''}</div>
+      <div class="chat">
+        <div class="msgs" id="msgs">
+          <div class="msg assistant">${esc(aiReady() ? t('chat.lead') : t('chat.nokey'))}</div>
+          ${h.map(m => `<div class="msg ${m.role}">${esc(m.text)}</div>`).join('')}
+          ${!h.length && aiReady() ? `<div class="row" id="sugg">${['chat.s1', 'chat.s2', 'chat.s3'].map(k => `<button class="pill"><span class="tick">${ICON.star}</span>${t(k)}</button>`).join('')}</div>` : ''}
+        </div>
+        <form class="chatbar" id="cform"><input id="cin" placeholder="${esc(t('chat.ph'))}" autocomplete="off" aria-label="${t('chat.ph')}" ${aiReady() ? '' : 'disabled'}><button class="btn" ${aiReady() ? '' : 'disabled'}>${t('chat.send')}<span class="arr">${ICON.arrow}</span></button></form>
+        ${aiReady() ? '' : `<a class="btn" href="#/settings" style="justify-self:start">${t('nav.settings')}<span class="arr">${ICON.arrow}</span></a>`}
+      </div>`;
+  },
+  mount(el) {
+    const msgs = $('#msgs', el), inp = $('#cin', el);
+    const send = async text => {
+      if (!text.trim() || chatBusy) return;
+      const sg = $('#sugg', el); sg && sg.remove();
+      Store.state.chat.push({ role: 'user', text }); Store.save();
+      msgs.insertAdjacentHTML('beforeend', `<div class="msg user">${esc(text)}</div><div class="msg assistant typing" id="typing"></div>`);
+      const tEl = $('#typing', el);
+      tEl.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      chatBusy = new AbortController();
+      try {
+        const out = await aiChat(Store.state.chat.slice(-20), { signal: chatBusy.signal, onText: s => { tEl.textContent = s; } });
+        Store.state.chat.push({ role: 'assistant', text: out }); Store.state.chat = Store.state.chat.slice(-40); Store.save();
+      } catch (e) {
+        tEl.textContent = t('err.' + (e.code || 'AI_UNAVAILABLE'));
+        Store.state.chat.pop(); Store.save();
+      } finally { tEl.classList.remove('typing'); tEl.removeAttribute('id'); chatBusy = null; }
+    };
+    $('#cform', el).onsubmit = e => { e.preventDefault(); const v = inp.value; inp.value = ''; send(v); };
+    const sg = $('#sugg', el); sg && (sg.onclick = e => { const b = e.target.closest('button'); if (b) send(b.textContent.trim()); });
+    const cl = $('#cclear', el); cl && (cl.onclick = () => { Store.state.chat = []; Store.save(); Router.silent = true; Router.render(); });
+  },
+};
+
+/* ===== Настройки ===== */
+Views.settings = {
+  html() {
+    const s = Store.state, p = s.profile || {}, tg = s.targets || {}, st = s.settings;
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    return `
+      <span class="kicker">${t('set.title')}</span>
+      <h1 class="h1" style="margin-top:12px">${UI.split(t('set.title'), 'hoverable')}</h1>
+      <div class="settings">
+        <form class="card rv" id="fprof"><h3 class="h3">${t('set.profile')}</h3>
+          <div class="formgrid">
+            <label class="field" style="grid-column:1/-1"><span>${t('onb.name')}</span><input class="input" name="name" value="${esc(p.name || '')}"></label>
+            <label class="field"><span>${t('onb.sex')}</span><select class="select" name="sex"><option value="f" ${p.sex === 'f' ? 'selected' : ''}>${t('onb.sex.f')}</option><option value="m" ${p.sex === 'm' ? 'selected' : ''}>${t('onb.sex.m')}</option></select></label>
+            <label class="field"><span>${t('onb.age')}</span><input class="input" name="age" type="number" value="${p.age || ''}"></label>
+            <label class="field"><span>${t('onb.height')}, ${t('u.cm')}</span><input class="input" name="height" type="number" value="${p.height || ''}"></label>
+            <label class="field"><span>${t('onb.weight')}, ${bodyUnit()}</span><input class="input" name="weight" type="number" step="0.1" value="${p.weight ? bodyOut(p.weight) : ''}"></label>
+            <label class="field"><span>${t('onb.s2')}</span><select class="select" name="activity">${Object.keys(ACTIVITY).map(k => `<option value="${k}" ${p.activity === k ? 'selected' : ''}>${t('act.' + k)}</option>`).join('')}</select></label>
+            <label class="field"><span>${t('onb.s3')}</span><select class="select" name="goal">${Object.keys(GOAL_K).map(k => `<option value="${k}" ${p.goal === k ? 'selected' : ''}>${t('goal.' + k)}</option>`).join('')}</select></label>
+            <label class="check" style="grid-column:1/-1"><input type="checkbox" name="pregnant" ${p.pregnant ? 'checked' : ''}> ${t('onb.pregnant')}</label>
+          </div>
+          <div class="row"><button class="btn">${t('set.save')}<span class="arr">${ICON.check}</span></button></div>
+        </form>
+
+        <form class="card rv" id="ftg" style="--d:1"><h3 class="h3">${t('set.targets')}</h3>
+          <div class="tgrid">${NUTRIENT_KEYS.map(k => `<div class="tcell ${k === 'kcal' ? 'hero' : ''}"><label>${t('n.' + k)}, ${nUnit(k)}</label><input type="number" name="${k}" value="${tg[k] ?? ''}" style="${k === 'kcal' ? '' : 'font-size:28px'}"></div>`).join('')}</div>
+          <div id="tgwarn"></div>
+          <div class="row"><button class="btn">${t('set.save')}<span class="arr">${ICON.check}</span></button><button type="button" class="pill ghosty" id="recalc">${t('set.recalc')}</button><span class="mono muted">${tg.source === 'manual' ? 'manual' : 'auto · ' + t('onb.formula')}</span></div>
+        </form>
+
+        <div class="card rv" style="--d:2"><h3 class="h3">${t('set.units')}</h3>
+          <div class="field"><span>${t('set.mass')}</span><div class="seg" data-set="mass"><button aria-pressed="${st.mass === 'g'}" data-v="g">${I18N[st.lang]['u.g']}</button><button aria-pressed="${st.mass === 'oz'}" data-v="oz">${I18N[st.lang]['u.oz']}</button></div></div>
+          <div class="field"><span>${t('set.body')}</span><div class="seg" data-set="body"><button aria-pressed="${st.body === 'kg'}" data-v="kg">${I18N[st.lang]['u.kg']}</button><button aria-pressed="${st.body === 'lb'}" data-v="lb">${I18N[st.lang]['u.lb']}</button></div></div>
+          <div class="field"><span>${t('set.lang')}</span><div class="seg" data-set="lang"><button aria-pressed="${st.lang === 'ru'}" data-v="ru">Русский</button><button aria-pressed="${st.lang === 'en'}" data-v="en">English</button></div></div>
+          <div class="field"><span>${t('set.theme')}</span><div class="seg" data-set="theme">${['auto', 'light', 'dark'].map(v => `<button aria-pressed="${(st.theme || 'auto') === v}" data-v="${v}">${t('theme.' + v)}</button>`).join('')}</div></div>
+          <div class="field"><span>${t('set.tz')}</span><span class="pill ghosty" style="justify-self:start">${esc(tz)}</span></div>
+        </div>
+
+        <div class="card dark rv" style="--d:3"><h3 class="h3">${t('set.ai')}</h3>
+          <p style="margin:0;color:#c8ccd6;font-size:14px">${t('set.ai.lead')}</p>
+          <label class="field"><span style="color:#9aa0ae">${t('set.key')}</span><input class="input" id="akey" type="password" autocomplete="off" spellcheck="false" placeholder="${st.apiKey ? '••••••••' + esc(st.apiKey.slice(-4)) : t('set.key.ph')}" style="background:#1c1d21;color:#fff"></label>
+          <label class="field"><span style="color:#9aa0ae">${t('set.model')}</span><select class="select" id="amodel" style="background:#1c1d21;color:#fff">${MODELS.map(m => `<option value="${m.id}" ${st.model === m.id ? 'selected' : ''}>${m.label}</option>`).join('')}</select></label>
+          <div class="row"><button class="btn lime" id="asave">${t('set.save')}<span class="arr">${ICON.check}</span></button>${st.apiKey ? `<button class="pill" id="atest" style="background:#1c1d21;color:#fff">${t('set.key.test')}</button><button class="pill" id="adel" style="background:#1c1d21;color:#fff">${t('set.key.del')}</button>` : ''}</div>
+          <div class="field"><span style="color:#9aa0ae">${t('set.photos')}</span><div class="seg" data-set="photoPolicy" style="background:#1c1d21">${['none', '30', 'forever'].map(v => `<button aria-pressed="${st.photoPolicy === v}" data-v="${v}">${t('set.photo.' + v)}</button>`).join('')}</div></div>
+        </div>
+
+        <div class="card wide rv" style="--d:4"><h3 class="h3">${t('set.data')}</h3>
+          <p class="lead" style="margin:0">${t('set.data.lead')}</p>
+          <div class="row">
+            <button class="btn" id="dcsv">${t('set.csv')}<span class="arr">${ICON.arrow}</span></button>
+            <button class="btn light" id="djson">${t('set.json')}<span class="arr">${ICON.arrow}</span></button>
+            <label class="pill ghosty" style="cursor:pointer">${t('set.import')}<input type="file" id="dimp" accept="application/json,.json" hidden></label>
+            <span class="spacer"></span>
+            <button class="pill warn" id="dwipe"><span class="tick">${ICON.trash}</span>${t('set.wipe')}</button>
+          </div>
+          <p class="disc">${t('set.disclaimer')} · prompt ${PROMPT_VERSION}</p>
+        </div>
+      </div>`;
+  },
+  mount(el) {
+    const s = Store.state;
+    const reload = () => { Router.silent = true; Router.render(); };
+    $('#fprof', el).onsubmit = e => {
+      e.preventDefault();
+      const f = new FormData(e.target);
+      const p = { name: f.get('name').trim(), sex: f.get('sex'), age: +f.get('age'), height: +f.get('height'), weight: round1(bodyIn(f.get('weight'))), activity: f.get('activity'), goal: f.get('goal'), pregnant: f.get('sex') === 'f' && !!f.get('pregnant') };
+      if (!(p.age >= 10 && p.height >= 120 && p.weight >= 30)) { UI.toast(t('err.range'), { err: true }); return; }
+      s.profile = p;
+      if (s.targets && s.targets.source !== 'manual' && autoTargetsAllowed(p)) s.targets = calcTargets(p).targets;
+      Store.save(); UI.toast(t('set.saved')); reload();
+    };
+    const tgf = $('#ftg', el);
+    const warn = () => { const k = Number(tgf.kcal.value), min = minKcal((s.profile || {}).sex); $('#tgwarn', el).innerHTML = k && k < min ? `<div class="callout warn">${t('set.low', { n: min })}</div>` : ''; };
+    tgf.oninput = warn; warn();
+    tgf.onsubmit = e => {
+      e.preventDefault();
+      const tg = { source: 'manual' }; NUTRIENT_KEYS.forEach(k => tg[k] = Math.max(0, Number(tgf[k].value) || 0));
+      if (!tg.kcal) { UI.toast(t('err.range'), { err: true }); return; }
+      s.targets = tg; Store.save(); UI.toast(t('set.saved')); reload();
+    };
+    $('#recalc', el).onclick = () => {
+      if (!autoTargetsAllowed(s.profile)) { UI.toast(t('onb.noauto'), { err: true, ms: 7000 }); return; }
+      s.targets = calcTargets(s.profile).targets; Store.save(); UI.toast(t('set.saved')); reload();
+    };
+    $$('[data-set]', el).forEach(g => g.onclick = e => {
+      const b = e.target.closest('[data-v]'); if (!b) return;
+      const st0 = s.settings[g.dataset.set];
+      s.settings[g.dataset.set] = b.dataset.v; Store.save();
+      if (g.dataset.set === 'photoPolicy') PhotoDB.cleanup(b.dataset.v);
+      if (g.dataset.set === 'theme') { s.settings.theme = st0; const r = b.getBoundingClientRect(); switchTheme(b.dataset.v, r.left + r.width / 2, r.top + r.height / 2); setTimeout(reload, 800); return; }
+      reload();
+    });
+    $('#asave', el).onclick = () => {
+      const k = $('#akey', el).value.trim();
+      if (k) s.settings.apiKey = k;
+      s.settings.model = $('#amodel', el).value; callClaude.noFallback = false;
+      Store.save(); UI.toast(k ? t('set.key.saved') : t('set.saved')); reload();
+    };
+    const at = $('#atest', el);
+    at && (at.onclick = async () => { at.disabled = true; try { await aiPing(); UI.toast(t('set.key.ok')); } catch (e) { UI.toast(t('err.' + (e.code || 'AI_UNAVAILABLE')) + (e.detail ? ` (${e.detail})` : ''), { err: true, ms: 7000 }); } at.disabled = false; });
+    const ad = $('#adel', el);
+    ad && (ad.onclick = () => { s.settings.apiKey = ''; Store.save(); reload(); });
+    $('#dcsv', el).onclick = exportCSV;
+    $('#djson', el).onclick = exportJSON;
+    $('#dimp', el).onchange = async e => {
+      const f = e.target.files[0]; if (!f) return;
+      try {
+        const data = JSON.parse(await f.text());
+        if (!data || typeof data.days !== 'object') throw new Error('bad');
+        const key = s.settings.apiKey;
+        Store.state = Object.assign(defaultState(), data);
+        Store.state.settings = Object.assign(defaultState().settings, data.settings, { apiKey: key });
+        Store.save(); UI.toast(t('set.imported')); Router.go('#/');
+      } catch (err) { UI.toast(t('err.range'), { err: true }); }
+    };
+    $('#dwipe', el).onclick = () => {
+      const sh = UI.modal(`<div class="kicker">${t('set.data')}</div><h2 class="h2" style="margin:10px 0 14px">${t('set.wipe')}</h2><p class="lead">${t('set.wipe.q')}</p>
+        <div class="row" style="margin-top:18px"><button class="btn" id="wok" style="--bg-b:var(--warn)">${t('set.wipe.ok')}<span class="arr">${ICON.trash}</span></button><button class="pill ghosty" data-close>${t('set.cancel')}</button></div>`);
+      $('#wok', sh).onclick = async () => { await Store.wipe(); onb = { step: 0, name: '', sex: 'f', age: '', height: '', weight: '', pregnant: false, activity: 'light', goal: 'maintain', targets: null }; UI.closeModal(); Router.go('#/welcome'); };
+    };
+  },
+};
+
+/* ---------- preloader & boot ---------- */
+function preloader() {
+  const pre = $('#preloader');
+  let seen = false;
+  try { seen = sessionStorage.getItem('nl.pre') === '1'; sessionStorage.setItem('nl.pre', '1'); } catch (e) {}
+  if (seen || reduced()) { pre.remove(); return Promise.resolve(); }
+  return new Promise(res => {
+    const bar = $('.bar', pre), nums = $$('.cnt', pre);
+    const t0 = performance.now(), dur = 1700;
+    const step = now => {
+      const p = Math.min(1, (now - t0) / dur);
+      const e = p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+      const v = Math.round(e * 100);
+      nums.forEach(n => n.textContent = v);
+      bar.style.width = (e * 100) + '%';
+      if (p < 1) requestAnimationFrame(step);
+      else setTimeout(() => { pre.classList.add('done'); res(); setTimeout(() => pre.remove(), 1000); }, 180);
+    };
+    requestAnimationFrame(step);
+  });
+}
+
+async function boot() {
+  Store.load();
+  document.documentElement.lang = Store.state.settings.lang;
+  applyTheme();
+  darkMQ.addEventListener && darkMQ.addEventListener('change', () => { if ((Store.state.settings.theme || 'auto') === 'auto') applyTheme(); });
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-theme-toggle]'); if (!b) return;
+    const r = b.getBoundingClientRect();
+    switchTheme(effTheme() === 'dark' ? 'light' : 'dark', r.left + r.width / 2, r.top + r.height / 2);
+  });
+  PhotoDB.cleanup(Store.state.settings.photoPolicy);
+  window.addEventListener('hashchange', () => Router.render());
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') UI.closeModal(); });
+  const p = preloader();
+  Router.render();
+  await p;
+}
+boot();
