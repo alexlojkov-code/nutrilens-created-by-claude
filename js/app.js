@@ -573,7 +573,7 @@ function mealCard(key, m, day, i) {
         return `<li><button data-item="${it.id}"><span class="nm">${esc(it.name)}</span><span class="kk num">${fmt(nn.kcal)}</span><span class="sub"><span>${fmtMass(it.grams)}</span><span>${macroLine(nn)}</span>${it.source === 'ai_estimate' ? `<span>· ${t('src.ai_estimate')}</span>` : ''}</span></button></li>`;
       }).join('')}</ul>
       <div class="mono muted">${macroLine(n)}</div>`
-      : `<div class="empty"><span class="serif">${t('d.empty')}</span>${t('d.empty.hint')}</div>`}
+      : `<div class="empty"><span class="serif">${t('d.empty')}</span><span class="hint">${t('d.empty.hint')}</span></div>`}
       <div class="foot">
         <a class="pill" href="#/add?date=${key}&meal=${m}">${ICON.plus.replace('<svg', '<svg width="14" height="14"')} ${t('foods.add')}</a>
         ${items.length ? `<a class="link" href="#/meal/${key}/${m}" style="margin-left:auto">${t('d.more')}</a>` : ''}
@@ -913,19 +913,19 @@ Views.stats = {
     const avg = k => logged.length ? logged.reduce((s, x) => s + x.n[k], 0) / logged.length : 0;
     let streak = 0; { let k = dayItems(Store.peekDay(tk)).length ? tk : addDays(tk, -1); while (dayItems(Store.peekDay(k)).length) { streak++; k = addDays(k, -1); } }
     const tkc = target('kcal') || 2000;
-    const W = 820, H = 260, P = 28, bw = (W - P) / N;
+    const narrow = innerWidth < 600, W = narrow ? 360 : 820, H = narrow ? 220 : 260, P = 28, bw = (W - P) / N, step = N <= 7 ? 1 : narrow ? 5 : 3;
     const maxK = Math.max(tkc * 1.3, ...tots.map(x => x.n.kcal));
     const y = v => H - 24 - (v / maxK) * (H - 40);
     const dFmt = k => parseKey(k).getDate();
     const kcalChart = `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${t('stats.kcal')}">
       ${[0.25, .5, .75, 1].map(f => `<line class="grid-l" x1="${P}" x2="${W}" y1="${y(maxK * f)}" y2="${y(maxK * f)}"/><text x="0" y="${y(maxK * f) + 3}">${fmt(maxK * f / 1000, 1)}k</text>`).join('')}
-      ${tots.map((x, i) => { const h = H - 24 - y(x.n.kcal); return `<rect class="b ${x.n.kcal > tkc * 1.05 ? 'over' : ''} ${x.k === tk ? 'today' : ''}" style="--i:${i}" x="${P + i * bw + bw * .18}" y="${y(x.n.kcal)}" width="${bw * .64}" height="${Math.max(0, h)}" rx="${Math.min(8, bw * .2)}"><title>${x.k}: ${fmt(x.n.kcal)} ${t('u.kcal')}</title></rect>${N <= 7 || i % 3 === 0 ? `<text x="${P + i * bw + bw / 2}" y="${H - 6}" text-anchor="middle">${dFmt(x.k)}</text>` : ''}`; }).join('')}
+      ${tots.map((x, i) => { const h = H - 24 - y(x.n.kcal); return `<rect class="b ${x.n.kcal > tkc * 1.05 ? 'over' : ''} ${x.k === tk ? 'today' : ''}" style="--i:${i}" x="${P + i * bw + bw * .18}" y="${y(x.n.kcal)}" width="${bw * .64}" height="${Math.max(0, h)}" rx="${Math.min(8, bw * .2)}"><title>${x.k}: ${fmt(x.n.kcal)} ${t('u.kcal')}</title></rect>${i % step === 0 ? `<text x="${P + i * bw + bw / 2}" y="${H - 6}" text-anchor="middle">${dFmt(x.k)}</text>` : ''}`; }).join('')}
       <line class="tl" x1="${P}" x2="${W}" y1="${y(tkc)}" y2="${y(tkc)}"/><text x="${W}" y="${y(tkc) - 6}" text-anchor="end">${t('d.goal')} ${fmt(tkc)}</text>
     </svg>`;
     const maxM = Math.max(1, ...tots.map(x => x.n.protein_g * 4 + x.n.fat_g * 9 + x.n.carbs_g * 4)) * 1.1;
     const ym = v => (v / maxM) * (H - 40);
     const macroChart = `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${t('stats.macros')}">
-      ${tots.map((x, i) => { let base = H - 24; return [['bp', x.n.protein_g * 4], ['bf', x.n.fat_g * 9], ['bc', x.n.carbs_g * 4]].map(([c, v]) => { const h = ym(v); base -= h; return `<rect class="b ${c}" style="--i:${i}" x="${P + i * bw + bw * .18}" y="${base}" width="${bw * .64}" height="${Math.max(0, h)}"/>`; }).join('') + (N <= 7 || i % 3 === 0 ? `<text x="${P + i * bw + bw / 2}" y="${H - 6}" text-anchor="middle">${dFmt(x.k)}</text>` : ''); }).join('')}
+      ${tots.map((x, i) => { let base = H - 24; return [['bp', x.n.protein_g * 4], ['bf', x.n.fat_g * 9], ['bc', x.n.carbs_g * 4]].map(([c, v]) => { const h = ym(v); base -= h; return `<rect class="b ${c}" style="--i:${i}" x="${P + i * bw + bw * .18}" y="${base}" width="${bw * .64}" height="${Math.max(0, h)}"/>`; }).join('') + (i % step === 0 ? `<text x="${P + i * bw + bw / 2}" y="${H - 6}" text-anchor="middle">${dFmt(x.k)}</text>` : ''); }).join('')}
     </svg>`;
     const ws = Store.state.weights.slice(-30);
     const spark = (() => {
@@ -1072,7 +1072,7 @@ Views.chat = {
           ${h.map(m => `<div class="msg ${m.role}">${esc(m.text)}</div>`).join('')}
           ${!h.length && aiReady() ? `<div class="row" id="sugg">${['chat.s1', 'chat.s2', 'chat.s3'].map(k => `<button class="pill"><span class="tick">${ICON.star}</span>${t(k)}</button>`).join('')}</div>` : ''}
         </div>
-        <form class="chatbar" id="cform"><input id="cin" placeholder="${esc(t('chat.ph'))}" autocomplete="off" aria-label="${t('chat.ph')}" ${aiReady() ? '' : 'disabled'}><button class="btn" ${aiReady() ? '' : 'disabled'}>${t('chat.send')}<span class="arr">${ICON.arrow}</span></button></form>
+        <form class="chatbar" id="cform"><input id="cin" placeholder="${esc(t('chat.ph'))}" autocomplete="off" aria-label="${t('chat.ph')}" ${aiReady() ? '' : 'disabled'}><button class="btn" ${aiReady() ? '' : 'disabled'} aria-label="${t('chat.send')}"><span class="lbl">${t('chat.send')}</span><span class="arr">${ICON.arrow}</span></button></form>
         ${aiReady() ? '' : `<a class="btn" href="#/settings" style="justify-self:start">${t('nav.settings')}<span class="arr">${ICON.arrow}</span></a>`}
       </div>`;
   },

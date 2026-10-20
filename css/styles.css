@@ -626,3 +626,69 @@ input[type=range]::-moz-range-thumb { width: 18px; height: 18px; border-radius: 
 @keyframes monoDraw2 { from { stroke-dashoffset: 150; } to { stroke-dashoffset: 0; } }
 @keyframes monoDot { from { transform: scale(0); } 60% { transform: scale(1.4); } to { transform: scale(1); } }
 @keyframes monoDot2 { from { transform: scale(0); } 60% { transform: scale(1.4); } to { transform: scale(1); } }
+
+/* ===================== Телефон (до 600 px) ===================== */
+@media (max-width: 600px) {
+  /* кольцо и цифры — в одну строку, а не столбиком */
+  .ringcard { grid-template-columns: auto 1fr; justify-items: stretch; text-align: left; min-height: 0; gap: 18px; padding: 20px; }
+  .ring { width: 136px; }
+  .ring .mid b { font-size: 40px; }
+  .ring .mid span { font-size: 10px; }
+  .ring-stats { gap: 8px; }
+  .ring-stats .st b { font-size: 24px; }
+  .ring-stats .serif { font-size: 18px !important; }
+  .macros { padding: 20px; gap: 14px; }
+  /* дополнительные нутриенты — лента с прокруткой вбок */
+  .chips { flex-wrap: nowrap; overflow-x: auto; margin: 12px -20px 0; padding: 0 20px 4px; scrollbar-width: none; scroll-snap-type: x proximity; }
+  .chips::-webkit-scrollbar { display: none; }
+  .chips .pill { flex: none; scroll-snap-align: start; }
+  /* компактные карточки приёмов пищи */
+  .meal { min-height: 0; }
+  .meal .head { height: 64px; padding: 12px 14px; }
+  .meal .badge { width: 44px; height: 44px; bottom: -18px; }
+  .meal .badge svg { width: 16px; height: 16px; }
+  .meal .body { padding-top: 18px; }
+  .meal .empty { display: block; text-align: left; padding: 0; flex: none; }
+  .meal .empty .serif { font-size: 20px; }
+  .meal .empty .hint { display: none; }
+  .link { display: inline-block; padding: 10px 0; border-bottom: 0; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1.5px; }
+  .meal .foot .link { padding: 12px 0; }
+  /* переключатели — в одну строку */
+  .seg { flex-wrap: nowrap; overflow-x: auto; max-width: 100%; scrollbar-width: none; }
+  .seg::-webkit-scrollbar { display: none; }
+  .seg button { flex: 1 0 auto; padding: 9px 12px; white-space: nowrap; }
+  .datebar > .seg { width: 100%; }
+  /* черновик */
+  .res .photos { grid-template-columns: 1fr; }
+  .res .photos img { aspect-ratio: 16 / 10; }
+  .res .inputq p { font-size: 22px; }
+  .ritem { padding: 14px; }
+  .ritem .r2 { grid-template-columns: 1fr 96px; gap: 10px; }
+  .totals { flex-wrap: nowrap; gap: 10px; padding: 10px 10px 10px 18px; }
+  .totals .mac, .totals .spacer { display: none; }
+  .totals .tbig { font-size: 34px; }
+  .totals .btn.big { margin-left: auto; min-height: 50px; padding-left: 16px; font-size: 14px; gap: 8px; }
+  .totals .btn.big .arr { width: 38px; height: 38px; }
+  /* статистика */
+  .kpi { min-height: 108px; padding: 14px; }
+  .kpi b { font-size: 48px; }
+  /* ассистент: кнопка отправки — только стрелка */
+  .chatbar { padding-left: 16px; }
+  .chatbar .btn { padding: 5px; min-height: 46px; }
+  .chatbar .btn .lbl { display: none; }
+  /* онбординг */
+  .onb .content { gap: 20px; padding: 18px 0; }
+  .choice { min-height: 96px; padding: 16px; }
+  .tcell.hero { grid-column: 1 / -1; }
+  .tcell.hero input { font-size: 52px; }
+}
+
+/* онбординг: колонка не шире экрана, иначе форма и кнопка «Дальше» уезжали за край */
+.onb { grid-template-columns: minmax(0, 1fr); }
+.onb > *, .onb .content > * { min-width: 0; }
+@media (max-width: 600px) {
+  .onb .input.big { font-size: 28px; }
+  .onb .formgrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .onb .formgrid .input.big { padding: 10px 12px; }
+  .onb .nav-b .btn.big { padding-left: 20px; }
+}
