@@ -154,6 +154,8 @@ function switchTheme(next, x = innerWidth / 2, y = 0) {
 
 const foodTag = f => cuisineName(f.cuisine) || (f.src === 'usda' ? 'USDA' : 'DB');
 
+const syncBadge = () => `<span class="sync" data-sync data-state="${Cloud.status}" title="${esc(Cloud.user ? Cloud.user.email : '')}"><i></i><span>${t('sync.' + Cloud.status)}</span></span>`;
+
 /* ---------- router ---------- */
 let draft = null;
 const Router = {
@@ -170,8 +172,8 @@ const Router = {
     const r = Router.parse();
     let main = $('#view');
     const onb =!Store.state.settings.onboarded;
-    if (onb && r.name !== 'welcome') { history.replaceState(null, '', '#/welcome'); return Router.render(); }
-    if (!onb && r.name === 'welcome') { history.replaceState(null, '', '#/'); return Router.render(); }
+    if (onb && !['welcome', 'auth'].includes(r.name)) { history.replaceState(null, '', '#/welcome'); return Router.render(); }
+    if ((!onb && r.name === 'welcome') || (r.name === 'auth' && Cloud.user)) { history.replaceState(null, '', '#/'); return Router.render(); }
     const view = Views[r.name] || Views.diary;
     const doWipe = !Router.first && !reduced() && !Router.silent;
     Router.silent = false;
@@ -212,6 +214,7 @@ const Shell = {
         <span><b>NutriLens</b><br><span class="serif">${esc(t('app.of'))}${ownerName() ? ' · ' + esc(ownerName()) : ''}</span></span>
       </a>
       <nav class="nav" aria-label="main">${NAV.map(([k, h]) => `<a href="${h}" class="${active === k ? 'on' : ''}">${t('nav.' + k)}</a>`).join('')}</nav>
+      ${Cloud.user ? syncBadge() : ''}
       ${themeBtn()}
       <span class="when">${new Intl.DateTimeFormat(locale(), { day: 'numeric', month: 'long' }).format(new Date())} · ${t('d.day')} ${String(dayNumber()).padStart(3, '0')}</span>`;
     dock.innerHTML = NAV.map(([k, h, ic]) => `<a href="${h}" class="${active === k ? 'on' : ''}">${ICON[ic]}<span>${t('nav.' + k)}</span></a>`).join('');
@@ -360,6 +363,7 @@ const Views = {};
 let onb = { step: 0, name: '', sex: 'f', age: '', height: '', weight: '', pregnant: false, activity: 'light', goal: 'maintain', targets: null };
 Views.welcome = {
   html() {
+    if (onb.step === 0 && Cloud.user) { onb.step = 1; onb.name = onb.name || Cloud.user.name || ''; } // уже вошёл — сразу к анкете
     const s = onb.step;
     const ghost = `<div class="ghost outline" aria-hidden="true"><div class="track"><span>NutriLens · ${t('app.diary')} · </span><span>NutriLens · ${t('app.diary')} · </span></div></div>`;
     const head = `<div class="row" style="position:relative;z-index:1"><span class="brand"><span class="logo">${ICON.mono}</span><b>NutriLens</b></span><span class="spacer"></span>${themeBtn()}
@@ -368,12 +372,16 @@ Views.welcome = {
       <div class="content">
         <span class="kicker rv">${t('onb.kicker')}</span>
         <h1 class="mega">${UI.split(t('onb.hello').replace('. ', '.<br>'), 'hoverable')}</h1>
-        <p class="lead rv" style="--d:4">${t('onb.lead')}</p>
+        <p class="lead rv" style="--d:4">${Cloud.available ? t('onb.lead.cloud') : t('onb.lead')}</p>
         <div class="row rv" style="--d:6">
           ${['onb.s1', 'onb.s2', 'onb.s3', 'onb.s4'].map(k => `<span class="pill"><span class="tick">${ICON.check}</span>${t(k)}</span>`).join('')}
         </div>
       </div>
-      <div class="nav-b"><span></span><button class="btn big" data-next>${t('onb.start')}<span class="arr">${ICON.arrow}</span></button></div>
+      <div class="nav-b">${Cloud.available
+        ? `<button class="link" data-next>${t('auth.local')}</button>
+           <div class="row"><a class="btn light big" href="#/auth?mode=login">${t('auth.submit.login')}<span class="arr">${ICON.arrow}</span></a>
+           <a class="btn big" href="#/auth?mode=register">${t('auth.submit.register')}<span class="arr">${ICON.arrow}</span></a></div>`
+        : `<span></span><button class="btn big" data-next>${t('onb.start')}<span class="arr">${ICON.arrow}</span></button>`}</div>
       ${ghost}</div>`;
     const steps = `<div class="steps"><span>${t('onb.step')} 0${s}</span>${[1, 2, 3, 4].map(i => `<i class="${i <= s ? 'on' : ''}"></i>`).join('')}<span class="muted">/ 04</span></div>`;
     let body = '';
@@ -458,6 +466,71 @@ Views.welcome = {
       }
       onb.step = s + 1; Router.render();
     };
+  },
+};
+
+const resetOnb = () => { onb = { step: 0, name: '', sex: 'f', age: '', height: '', weight: '', pregnant: false, activity: 'light', goal: 'maintain', targets: null }; };
+
+/* ===== Вход и регистрация ===== */
+Views.auth = {
+  html(r) {
+    const reg = r.q.mode === 'register';
+    return `<div class="onb auth">
+      <div class="row" style="position:relative;z-index:1"><a class="brand" href="#/"><span class="logo">${ICON.mono}</span><b>NutriLens</b></a><span class="spacer"></span>${themeBtn()}</div>
+      <div class="content">
+        <span class="kicker rv">NutriLens · ${t(reg ? 'auth.register' : 'auth.login').toLowerCase()}</span>
+        <h1 class="h1">${UI.split(t(reg ? 'auth.register' : 'auth.login'), 'hoverable')}</h1>
+        <p class="lead rv" style="--d:3">${t(reg ? 'auth.lead.register' : 'auth.lead.login')}</p>
+        <form class="card authform rv" id="authf" style="--d:5" novalidate>
+          ${reg ? `<label class="field"><span>${t('auth.name')}</span><input class="input" name="displayName" autocomplete="nickname" maxlength="60" value="${esc(onb.name || (Store.state.profile && Store.state.profile.name) || '')}"></label>` : ''}
+          <label class="field"><span>${t('auth.email')}</span><input class="input" name="email" type="email" inputmode="email" autocomplete="${reg ? 'email' : 'username'}" autocapitalize="off" spellcheck="false" required></label>
+          <label class="field"><span>${t('auth.password')}${reg ? ' · ' + t('auth.pw.hint') : ''}</span>
+            <span class="pwwrap"><input class="input" name="password" type="password" autocomplete="${reg ? 'new-password' : 'current-password'}" required><button type="button" class="pwtoggle" data-pw>${t('auth.show')}</button></span></label>
+          <div class="autherr" id="autherr" role="alert"></div>
+          <button class="btn big" type="submit">${t(reg ? 'auth.submit.register' : 'auth.submit.login')}<span class="arr">${ICON.arrow}</span></button>
+          <a class="link" href="#/auth?mode=${reg ? 'login' : 'register'}">${t(reg ? 'auth.toLogin' : 'auth.toRegister')}</a>
+        </form>
+      </div>
+      <div class="nav-b"><a class="btn light" href="${Store.state.settings.onboarded ? '#/settings' : '#/welcome'}">${t('onb.back')}<span class="arr">${ICON.left}</span></a></div>
+    </div>`;
+  },
+  mount(el, r) {
+    const reg = r.q.mode === 'register';
+    const f = $('#authf', el), err = $('#autherr', el);
+    $('[data-pw]', el).onclick = e => {
+      const show = f.password.type === 'password';
+      f.password.type = show ? 'text' : 'password';
+      e.target.textContent = t(show ? 'auth.hide' : 'auth.show');
+    };
+    f.onsubmit = async e => {
+      e.preventDefault();
+      err.textContent = '';
+      const email = f.email.value.trim(), pw = f.password.value, name = reg ? f.elements.displayName.value.trim() : '';
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { err.textContent = t('err.INVALID_EMAIL'); f.email.focus(); return; }
+      if (reg && pw.length < 10) { err.textContent = t('err.PASSWORD_TOO_SHORT'); f.password.focus(); return; }
+      if (!pw) { f.password.focus(); return; }
+      const btn = f.querySelector('[type=submit]');
+      btn.disabled = true;
+      try {
+        if (reg) {
+          await Cloud.register(email, pw, name);
+          UI.toast(t('auth.created'));
+          if (Store.state.settings.onboarded) {
+            if (name && Store.state.profile && !Store.state.profile.name) { Store.state.profile.name = name; Store.save(); }
+            Router.go('#/');
+          } else { resetOnb(); onb.name = name; onb.step = 1; Router.go('#/welcome'); }
+        } else {
+          await Cloud.login(email, pw);
+          UI.toast(t('auth.welcome'));
+          if (Store.state.settings.onboarded) Router.go('#/'); else { resetOnb(); onb.step = 1; Router.go('#/welcome'); }
+        }
+      } catch (ex) {
+        const msg = t('err.' + (ex.code || 'SERVER_ERROR'));
+        err.textContent = msg.startsWith('err.') ? t('err.SERVER_ERROR') : msg;
+        btn.disabled = false;
+      }
+    };
+    setTimeout(() => { const i = reg ? f.elements.displayName : f.elements.email; i && i.focus({ preventScroll: true }); }, 500);
   },
 };
 
@@ -1109,6 +1182,14 @@ Views.settings = {
       <span class="kicker">${t('set.title')}</span>
       <h1 class="h1" style="margin-top:12px">${UI.split(t('set.title'), 'hoverable')}</h1>
       <div class="settings">
+        ${Cloud.available ? `<div class="card wide rv account"><h3 class="h3">${t('auth.account')}</h3>${Cloud.user ? `
+          <div class="row"><span class="pill"><span class="tick">${ICON.check}</span>${t('auth.signedAs')}&nbsp;<b>${esc(Cloud.user.email)}</b></span>${syncBadge()}</div>
+          <p class="mono muted" style="margin:0">${t('auth.lastSync')}: ${Cloud.meta.syncedAt ? new Date(Cloud.meta.syncedAt).toLocaleString(locale(), { dateStyle: 'medium', timeStyle: 'short' }) : t('auth.never')} · ${t('auth.photosLocal')}</p>
+          <div class="row"><button class="btn" id="async">${t('auth.sync.now')}<span class="arr">${ICON.arrow}</span></button>
+            <button class="pill ghosty" id="achpw">${t('auth.chpw')}</button><button class="pill ghosty" id="alogout">${t('auth.logout')}</button>
+            <span class="spacer"></span><button class="pill warn" id="adel"><span class="tick">${ICON.trash}</span>${t('auth.delete')}</button></div>`
+          : `<p class="lead" style="margin:0">${t('auth.account.off')}</p>
+          <div class="row"><a class="btn" href="#/auth?mode=register">${t('auth.submit.register')}<span class="arr">${ICON.arrow}</span></a><a class="btn light" href="#/auth?mode=login">${t('auth.submit.login')}<span class="arr">${ICON.arrow}</span></a></div>`}</div>` : ''}
         <form class="card rv" id="fprof"><h3 class="h3">${t('set.profile')}</h3>
           <div class="formgrid">
             <label class="field" style="grid-column:1/-1"><span>${t('onb.name')}</span><input class="input" name="name" value="${esc(p.name || '')}"></label>
@@ -1214,10 +1295,40 @@ Views.settings = {
         Store.save(); UI.toast(t('set.imported')); Router.go('#/');
       } catch (err) { UI.toast(t('err.range'), { err: true }); }
     };
+    const pwSheet = (title, lead, fields, okLabel, onOk, danger) => {
+      const sh = UI.modal(`<div class="kicker">${t('auth.account')}</div><h2 class="h2" style="margin:10px 0 14px">${title}</h2>${lead ? `<p class="lead">${lead}</p>` : ''}
+        <form id="pwf" class="grid" style="gap:14px" novalidate>${fields.map(([n, l, ac]) => `<label class="field"><span>${l}</span><input class="input" type="password" name="${n}" autocomplete="${ac}" required></label>`).join('')}
+        <div class="autherr" id="pwerr" role="alert"></div>
+        <div class="row"><button class="btn" type="submit" ${danger ? 'style="--bg-b:var(--warn)"' : ''}>${okLabel}<span class="arr">${danger ? ICON.trash : ICON.check}</span></button><button type="button" class="pill ghosty" data-close>${t('set.cancel')}</button></div></form>`);
+      const f = $('#pwf', sh);
+      f.onsubmit = async e => {
+        e.preventDefault();
+        const b = f.querySelector('[type=submit]'); b.disabled = true;
+        try { await onOk(f); }
+        catch (ex) { const m = t('err.' + (ex.code === 'INVALID_CREDENTIALS' ? 'WRONG_PASSWORD' : ex.code || 'SERVER_ERROR')); $('#pwerr', sh).textContent = m.startsWith('err.') ? t('err.SERVER_ERROR') : m; b.disabled = false; }
+      };
+    };
+    const acc = id => $(id, el);
+    acc('#async') && (acc('#async').onclick = async () => { await Cloud.flush(); await Cloud.pull(); UI.toast(t('set.saved')); reload(); });
+    acc('#achpw') && (acc('#achpw').onclick = () => pwSheet(t('auth.chpw'), '', [['current', t('auth.pw.current'), 'current-password'], ['next', t('auth.pw.new') + ' · ' + t('auth.pw.hint'), 'new-password']], t('set.save'), async f => {
+      if (f.next.value.length < 10) throw { code: 'PASSWORD_TOO_SHORT' };
+      await Cloud.changePassword(f.current.value, f.next.value);
+      UI.closeModal(); UI.toast(t('auth.pw.changed'), { ms: 5000 });
+    }));
+    acc('#alogout') && (acc('#alogout').onclick = () => {
+      const sh = UI.modal(`<div class="kicker">${t('auth.account')}</div><h2 class="h2" style="margin:10px 0 14px">${t('auth.logout')}</h2><p class="lead">${t('auth.logout.q')}</p>
+        <div class="row" style="margin-top:18px"><button class="btn" id="lok">${t('auth.logout')}<span class="arr">${ICON.arrow}</span></button><button class="pill ghosty" data-close>${t('set.cancel')}</button></div>`);
+      $('#lok', sh).onclick = async () => { await Cloud.logout(); resetOnb(); UI.closeModal(); Router.go('#/welcome'); };
+    });
+    acc('#adel') && (acc('#adel').onclick = () => pwSheet(t('auth.delete'), t('auth.delete.q'), [['password', t('auth.password'), 'current-password']], t('auth.delete'), async f => {
+      await Cloud.deleteAccount(f.password.value);
+      resetOnb(); UI.closeModal(); UI.toast(t('auth.deleted')); Router.go('#/welcome');
+    }, true));
     $('#dwipe', el).onclick = () => {
       const sh = UI.modal(`<div class="kicker">${t('set.data')}</div><h2 class="h2" style="margin:10px 0 14px">${t('set.wipe')}</h2><p class="lead">${t('set.wipe.q')}</p>
         <div class="row" style="margin-top:18px"><button class="btn" id="wok" style="--bg-b:var(--warn)">${t('set.wipe.ok')}<span class="arr">${ICON.trash}</span></button><button class="pill ghosty" data-close>${t('set.cancel')}</button></div>`);
-      $('#wok', sh).onclick = async () => { await Store.wipe(); onb = { step: 0, name: '', sex: 'f', age: '', height: '', weight: '', pregnant: false, activity: 'light', goal: 'maintain', targets: null }; UI.closeModal(); Router.go('#/welcome'); };
+      // с аккаунтом: выходим (дневник остаётся на сервере), без аккаунта — просто стираем локальные данные
+      $('#wok', sh).onclick = async () => { if (Cloud.user) await Cloud.logout(); else await Store.wipe(); resetOnb(); UI.closeModal(); Router.go('#/welcome'); };
     };
   },
 };
@@ -1258,7 +1369,11 @@ async function boot() {
   window.addEventListener('hashchange', () => Router.render());
   document.addEventListener('keydown', e => { if (e.key === 'Escape') UI.closeModal(); });
   const p = preloader();
+  let cloudReady = false;
+  const ready = Cloud.init().then(() => { cloudReady = true; });
+  await Promise.race([ready, new Promise(r => setTimeout(r, 3000))]);
   Router.render();
+  if (!cloudReady) ready.then(() => { Router.silent = true; Router.render(); });
   await p;
 }
 boot();

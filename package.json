@@ -1,0 +1,15 @@
+{
+  "name": "nutrilens",
+  "private": true,
+  "description": "NutriLens — личный дневник питания с ИИ. Создан Claude (Anthropic).",
+  "type": "module",
+  "engines": {
+    "node": "22.x"
+  },
+  "scripts": {
+    "migrate": "node scripts/migrate.mjs"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "1.2.0"
+  }
+}

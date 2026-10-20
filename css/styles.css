@@ -573,6 +573,7 @@ input[type=range]::-moz-range-thumb { width: 18px; height: 18px; border-radius: 
   --card: #18191D;
   --ink: #000000;
   --fg: #ECEEF2;
+  --ink-2: #C9CDD6;
   --ghost: #24262B;
   --mute: #959CAB;
   --line: #2C2E34;
@@ -692,3 +693,25 @@ input[type=range]::-moz-range-thumb { width: 18px; height: 18px; border-radius: 
   .onb .formgrid .input.big { padding: 10px 12px; }
   .onb .nav-b .btn.big { padding-left: 20px; }
 }
+
+/* ===================== Аккаунт ===================== */
+.authform { display: grid; gap: 16px; max-width: 520px; }
+.pwwrap { position: relative; display: block; }
+.pwwrap .input { padding-right: 96px; }
+.pwtoggle { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); font-family: var(--mono); font-size: 12px; padding: 9px 12px; border-radius: 999px; background: var(--card); color: var(--fg); }
+.autherr { color: var(--warn); font-size: 14px; font-variation-settings: 'wght' 550; }
+.autherr:empty { display: none; }
+.authform .link { justify-self: start; }
+.onb.auth .nav-b { justify-content: flex-start; }
+.onb .nav-b .row { gap: 10px; }
+.onb .nav-b .link { align-self: center; }
+
+/* индикатор синхронизации: точка + подпись */
+.sync { display: inline-flex; align-items: center; gap: 7px; font-family: var(--mono); font-size: 11px; color: var(--mute); white-space: nowrap; }
+.sync i { width: 9px; height: 9px; border-radius: 50%; background: var(--lime); box-shadow: 0 0 0 1.5px var(--fg); flex: none; }
+.sync[data-state="saving"] i { animation: syncPulse 1s ease-in-out infinite; }
+.sync[data-state="offline"] i { background: var(--mute); }
+.sync[data-state="error"] i { background: var(--warn); }
+.sync[data-state="off"] { display: none; }
+@keyframes syncPulse { 50% { transform: scale(.55); opacity: .5; } }
+@media (max-width: 860px) { .top .sync span { display: none; } }

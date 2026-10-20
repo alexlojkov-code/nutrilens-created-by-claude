@@ -44,6 +44,7 @@ const Store = {
   save() {
     try { localStorage.setItem(STORE_KEY, JSON.stringify(this.state)); }
     catch (e) { console.warn('save failed', e); UI && UI.toast && UI.toast(t('err.storage')); }
+    if (typeof Cloud !== 'undefined') Cloud.schedule();
   },
   day(key) {
     const s = this.state;
