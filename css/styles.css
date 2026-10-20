@@ -715,3 +715,11 @@ input[type=range]::-moz-range-thumb { width: 18px; height: 18px; border-radius: 
 .sync[data-state="off"] { display: none; }
 @keyframes syncPulse { 50% { transform: scale(.55); opacity: .5; } }
 @media (max-width: 860px) { .top .sync span { display: none; } }
+
+/* На лаймовом фоне текст и значки всегда тёмные — в обеих темах */
+.pill .tick, .tag.lime, .card.lime, .kpi.lime { --fg: #0B0B0C; --mute: #3A4420; color: #0B0B0C; }
+.kpi.lime { background: var(--lime); }
+
+/* Контурная бегущая строка: обводка рисуется под заливкой цветом фона,
+   поэтому внутренние линии перекрывающихся частей букв не видны — остаётся только внешний контур */
+.ghost.outline span { color: var(--bg); -webkit-text-stroke: 3px var(--ghost); paint-order: stroke fill; }

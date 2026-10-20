@@ -1016,7 +1016,7 @@ Views.stats = {
         <div class="kpi dark rv"><span>${t('n.kcal')} · ${t('stats.avg')}</span><b class="num" data-count="${Math.round(avg('kcal'))}">0</b></div>
         <div class="kpi rv" style="--d:1"><span>${t('n.protein_g')} · ${t('stats.avg')}, ${t('u.g')}</span><b class="num" data-count="${Math.round(avg('protein_g'))}">0</b></div>
         <div class="kpi rv" style="--d:2"><span>${t('stats.days')}</span><b class="num">${logged.length}<span class="muted" style="font-size:.4em"> / ${N}</span></b></div>
-        <div class="kpi rv" style="--d:3;background:var(--lime)"><span>${t('stats.streak')}</span><b class="num" data-count="${streak}">0</b></div>
+        <div class="kpi lime rv" style="--d:3"><span>${t('stats.streak')}</span><b class="num" data-count="${streak}">0</b></div>
       </div>
       ${logged.length ? `
       <div class="grid section" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));margin-top:16px">
