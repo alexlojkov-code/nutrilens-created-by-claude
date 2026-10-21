@@ -1158,6 +1158,22 @@ function catalogRows(list) {
   }).join('');
 }
 
+/* сортировка списка кухни, напитков или продуктов; выбор запоминается в этом браузере */
+const CAT_SORTS = ['def', 'az', 'kdesc', 'kasc'];
+const catSort = {
+  get() { try { const v = localStorage.getItem('nutrilens.catSort'); return CAT_SORTS.includes(v) ? v : 'def'; } catch (e) { return 'def'; } },
+  set(v) { try { localStorage.setItem('nutrilens.catSort', v); } catch (e) {} },
+};
+const catSortHtml = (base) => `<div class="cuisines csort" id="gsort"><span class="mono muted">${t('cat.sort')}</span>${CAT_SORTS.map(v => `<button class="pill ${catSort.get() === v ? 'on' : ''}" data-s="${v}">${t(v === 'def' && base ? 'cat.sort.base' : 'cat.sort.' + v)}</button>`).join('')}</div>`;
+// name и kcal — функции, чтобы одинаково сортировать позиции каталога и продукты базы
+function sortCatalog(list, mode, name, kcal) {
+  if (mode === 'az') { const lang = Store.state.settings.lang === 'en' ? 'en' : 'ru'; return list.slice().sort((a, b) => name(a).localeCompare(name(b), lang)); }
+  if (mode === 'kdesc') return list.slice().sort((a, b) => kcal(b) - kcal(a));
+  if (mode === 'kasc') return list.slice().sort((a, b) => kcal(a) - kcal(b));
+  return list;
+}
+const catKcal = e => Catalog.estimate(e).per100.kcal;
+
 function catalogGroupHtml(r) {
   if (!Catalog.loaded) return catLoading();
   const gid = r.parts[2];
@@ -1166,8 +1182,9 @@ function catalogGroupHtml(r) {
     const base = baseFoods();
     return `${back}<span class="kicker" style="display:flex;margin-top:16px">${base.length} ${t('cat.items')}</span>
       <h1 class="h1">${UI.split(t('cat.base.title'), 'hoverable')}</h1>
-      <div class="card" style="margin-top:22px"><div class="unitfield"><input class="input" id="gq" placeholder="${esc(t('cat.inCuisine'))}" autocomplete="off"><em>${ICON.search.replace('<svg', '<svg width="18" height="18"')}</em></div>
-      <div class="clist" id="glist" style="margin-top:14px">${catalogRows(base.map(food => ({ food })))}</div></div>`;
+      <div class="card catgroup" style="margin-top:22px"><div class="unitfield"><input class="input" id="gq" placeholder="${esc(t('cat.inCuisine'))}" autocomplete="off"><em>${ICON.search.replace('<svg', '<svg width="18" height="18"')}</em></div>
+      ${catSortHtml(true)}
+      <div class="clist" id="glist"></div></div>`;
   }
   const C = Catalog.data, gi = C.groups.findIndex(g => g[0] === gid);
   if (gi < 0) return `${back}<p class="serif" style="font-size:26px">${t('cat.nothing')}</p>`;
@@ -1182,6 +1199,7 @@ function catalogGroupHtml(r) {
     ${groupSubName(g) ? `<p class="serif" style="font-size:24px;margin:8px 0 0">${esc(groupSubName(g))}</p>` : ''}
     <div class="card catgroup" style="margin-top:22px">
       <div class="unitfield"><input class="input" id="gq" placeholder="${esc(t('cat.inCuisine'))}" autocomplete="off"><em>${ICON.search.replace('<svg', '<svg width="18" height="18"')}</em></div>
+      ${catSortHtml(false)}
       ${cats.length > 1 ? `<div class="cuisines" id="gcats"><button class="pill ${sel === null ? 'on' : ''}" data-c="">${t('cat.all')} <small>${items.length}</small></button>${cats.map(c => `<button class="pill ${sel === c.c ? 'on' : ''}" data-c="${c.c}">${esc(c.name)}${c.alc ? ' <i class="b18">18+</i>' : ''} <small>${c.n}</small></button>`).join('')}</div>` : ''}
       <div id="glist"></div>
     </div>`;
@@ -1198,9 +1216,21 @@ function catalogGroupMount(el, r) {
   list.onclick = pick;
   const words = () => normalize(q.value).split(' ').filter(Boolean);
   const hit = name => { const w = words(), n = normalize(name).split(' '); return w.every(x => n.some(y => y.startsWith(x))); };
+  let mode = catSort.get();
+  const sortBar = $('#gsort', el);
+  const onSort = redraw => sortBar && (sortBar.onclick = e => {
+    const b = e.target.closest('[data-s]'); if (!b) return;
+    mode = b.dataset.s; catSort.set(mode);
+    $$('#gsort .pill', el).forEach(x => x.classList.toggle('on', x === b));
+    redraw();
+  });
   if (gid === 'base') {
     const base = baseFoods();
-    q.oninput = () => { list.innerHTML = catalogRows(base.filter(f => hit(foodName(f))).map(food => ({ food }))) || `<p class="muted">${t('cat.nothing')}</p>`; };
+    const drawBase = () => {
+      const shown = sortCatalog(base.filter(f => hit(foodName(f))), mode, foodName, f => f.per100.kcal);
+      list.innerHTML = catalogRows(shown.map(food => ({ food }))) || `<p class="muted">${t('cat.nothing')}</p>`;
+    };
+    q.oninput = drawBase; onSort(drawBase); drawBase();
     return;
   }
   const C = Catalog.data, gi = C.groups.findIndex(g => g[0] === gid);
@@ -1208,12 +1238,19 @@ function catalogGroupMount(el, r) {
   let sel = r.q.c !== undefined && r.q.c !== '' ? Number(r.q.c) : null;
   const draw = () => {
     const shown = items.filter(e => (sel === null || e.c === sel) && (!q.value.trim() || hit(e.name) || (e.en && hit(e.en))));
+    if (mode !== 'def') {
+      // отсортированный список — одним блоком, без разбивки по разделам
+      list.innerHTML = shown.length ? `<div class="clist" style="margin-top:4px">${catalogRows(sortCatalog(shown, mode, e => Catalog.name(e), catKcal))}</div>` : `<p class="muted">${t('cat.nothing')}</p>`;
+      list.style.animation = 'none'; void list.offsetWidth; list.style.animation = 'viewIn .6s var(--ease-out) both';
+      return;
+    }
     const sections = [];
     shown.forEach(e => { let s = sections.find(x => x.c === e.c); if (!s) sections.push(s = { c: e.c, name: Catalog.catName(e.c), items: [] }); s.items.push(e); });
     list.innerHTML = sections.map(s => `<section class="catsec"><h3 class="h3">${esc(s.name)} <small class="mono muted">${s.items.length}</small></h3><div class="clist">${catalogRows(s.items)}</div></section>`).join('') || `<p class="muted">${t('cat.nothing')}</p>`;
     list.style.animation = 'none'; void list.offsetWidth; list.style.animation = 'viewIn .6s var(--ease-out) both';
   };
   q.oninput = draw;
+  onSort(draw);
   const cs = $('#gcats', el);
   cs && (cs.onclick = e => {
     const b = e.target.closest('[data-c]'); if (!b) return;
