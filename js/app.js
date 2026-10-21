@@ -231,40 +231,61 @@ const Shell = {
 };
 
 /* ---------- sheets ---------- */
+/* ---------- поиск по базе и каталогу ---------- */
+const unitLbl = o => (o && o.liquid ? t('u.ml') : t('u.g'));
+const isProfile = f => /^[pda]_/.test(f.id); // служебные профили для подбора состава — в поиске не показываем
+function searchAll(q, limit = 40) {
+  const res = searchFoods(q, 30).filter(r => r.kind !== 'db' || (!isProfile(r.food) && (!r.food.opts.alc || Catalog.allowAlcohol()))).slice(0, 14);
+  const seen = new Set(res.map(r => normalize(r.kind === 'db' ? foodName(r.food) : r.my.name)));
+  for (const e of Catalog.search(q, limit)) {
+    if (seen.has(e.norm)) continue;
+    seen.add(e.norm); res.push({ kind: 'cat', e });
+  }
+  return res.slice(0, limit);
+}
+function resultRow(r, i) {
+  if (r.kind === 'cat') {
+    const est = Catalog.estimate(r.e);
+    return `<button data-i="${i}"><span>${esc(r.e.name)}${r.e.alc ? ' <i class="b18">18+</i>' : ''}<br><small>${est.source === 'estimate' ? '≈ ' : ''}${fmt(est.per100.kcal)} ${t('u.kcal')} / 100 ${unitLbl(est.opts)} · ${esc(groupShortName(r.e.group))} · ${esc(r.e.cat)}</small></span><small>${t('cat.title')}</small></button>`;
+  }
+  const name = r.kind === 'db' ? foodName(r.food) : r.my.name, p = r.kind === 'db' ? r.food.per100 : r.my.per100;
+  const unit = r.kind === 'db' ? unitLbl(r.food.opts) : t('u.g');
+  return `<button data-i="${i}"><span>${esc(name)}${r.kind === 'db' && r.food.opts.alc ? ' <i class="b18">18+</i>' : ''}<br><small>${fmt(p.kcal)} ${t('u.kcal')} / 100 ${unit} · ${macroLine(p)}</small></span><small>${r.kind === 'my' ? t('src.user') : foodTag(r.food)}</small></button>`;
+}
+function resultItem(r) {
+  if (r.kind === 'cat') return makeItem(Catalog.toItem(r.e));
+  if (r.kind === 'db') return itemFromFood(r.food, null);
+  return makeItem({ name: r.my.name, grams: r.my.portion || 100, per100: r.my.per100, source: 'user', confidence: 1, grams_source: 'user', origin: 'manual' });
+}
+
 function searchSheet({ title, query = '', onPick }) {
   const sheet = UI.modal(`
     <div class="kicker">${t('foods.search')}</div>
     <h2 class="h2" style="margin:10px 0 16px">${esc(title)}</h2>
-    <div class="unitfield"><input class="input" id="sq" placeholder="${esc(t('foods.search.ph'))}" value="${esc(query)}" autocomplete="off"><em>${ICON.search.replace('<svg', '<svg width="18" height="18"')}</em></div>
+    <div class="unitfield"><input class="input" id="sq" placeholder="${esc(t('cat.search.ph'))}" value="${esc(query)}" autocomplete="off"><em>${ICON.search.replace('<svg', '<svg width="18" height="18"')}</em></div>
     <div class="search-res" id="sr"></div>`);
   const inp = $('#sq', sheet), out = $('#sr', sheet);
+  let res = [];
   const run = () => {
-    const res = searchFoods(inp.value);
-    out.innerHTML = res.map((r, i) => {
-      const name = r.kind === 'db' ? foodName(r.food) : r.my.name;
-      const p = r.kind === 'db' ? r.food.per100 : r.my.per100;
-      return `<button data-i="${i}"><span>${esc(name)}<br><small>${fmt(p.kcal)} ${t('u.kcal')} / 100 ${t('u.g')} · ${macroLine(p)}</small></span><small>${r.kind === 'my' ? t('src.user') : foodTag(r.food)}</small></button>`;
-    }).join('') || (inp.value ? `<p class="muted" style="padding:10px">—</p>` : '');
-    out.onclick = e => {
-      const b = e.target.closest('button[data-i]'); if (!b) return;
-      const r = res[Number(b.dataset.i)];
-      onPick(r.kind === 'db'
-        ? itemFromFood(r.food, null)
-        : makeItem({ name: r.my.name, grams: r.my.portion || 100, per100: r.my.per100, source: 'user', confidence: 1, grams_source: 'user', origin: 'manual' }));
-    };
+    res = inp.value.trim() ? searchAll(inp.value, 40) : [];
+    out.innerHTML = res.map(resultRow).join('') || (inp.value ? `<p class="muted" style="padding:10px">${t('cat.nothing')}</p>` : '');
   };
+  out.onclick = e => { const b = e.target.closest('button[data-i]'); if (b) onPick(resultItem(res[Number(b.dataset.i)])); };
   inp.oninput = run; run();
+  Catalog.load().then(run).catch(() => {}); // каталог догружается — результаты обновятся
 }
 
 function logSheet(tpl, { date = todayKey(), meal = guessMeal(), onDone } = {}) {
   let grams = tpl.grams || 100, m = meal;
+  const liquid = !!(tpl.opts && tpl.opts.liquid);
   const sheet = UI.modal(`
     <div class="kicker">${t('d.add.to')} · ${esc(relDay(date))}</div>
     <h2 class="h2" style="margin:10px 0 18px">${esc(tpl.name)}</h2>
     <div class="grid" style="gap:16px">
+      ${tpl.source === 'estimate' ? `<div class="callout" id="lest" style="font-size:14px">${esc(t('cat.estNote', { basis: tpl.basis || '—' }))}${aiReady() ? ` <button class="link" id="lai">${t('cat.refine')}</button>` : ''}</div>` : ''}
       <div class="row"><b class="h1 num" id="lk" style="font-size:72px">0</b><span class="mono muted">${t('u.kcal')}</span><span class="spacer"></span><span class="mono muted" id="lm"></span></div>
       <input type="range" id="lr" min="1" max="${Math.max(500, Math.ceil(grams * 3 / 50) * 50)}" value="${grams}">
-      <label class="field"><span>${t('misc.grams')}, ${massUnit()}</span><input class="input" id="lg" type="number" inputmode="decimal" value="${massOut(grams)}"></label>
+      <label class="field"><span>${liquid ? t('misc.volume') + ', ' + t('u.ml') : t('misc.grams') + ', ' + massUnit()}</span><input class="input" id="lg" type="number" inputmode="decimal" value="${liquid ? Math.round(grams) : massOut(grams)}"></label>
       <div class="seg" id="lmeal">${MEALS.map(x => `<button aria-pressed="${x === m}" data-m="${x}">${t('meal.' + x)}</button>`).join('')}</div>
       <button class="btn big" id="lok">${t('foods.add')}<span class="arr">${ICON.arrow}</span></button>
     </div>`);
@@ -274,9 +295,25 @@ function logSheet(tpl, { date = todayKey(), meal = guessMeal(), onDone } = {}) {
     $('#lm', sheet).textContent = macroLine(n);
     const r = $('#lr', sheet); r.style.setProperty('--p', (grams / r.max * 100) + '%');
   };
-  $('#lr', sheet).oninput = e => { grams = Number(e.target.value); $('#lg', sheet).value = massOut(grams); upd(); };
-  $('#lg', sheet).oninput = e => { grams = clamp(massIn(e.target.value) || 0, 0, 5000); $('#lr', sheet).value = grams; upd(); };
+  $('#lr', sheet).oninput = e => { grams = Number(e.target.value); $('#lg', sheet).value = liquid ? grams : massOut(grams); upd(); };
+  $('#lg', sheet).oninput = e => { grams = clamp((liquid ? Number(e.target.value) : massIn(e.target.value)) || 0, 0, 5000); $('#lr', sheet).value = grams; upd(); };
   $('#lmeal', sheet).onclick = e => { const b = e.target.closest('[data-m]'); if (!b) return; m = b.dataset.m; $$('#lmeal button', sheet).forEach(x => x.setAttribute('aria-pressed', x === b)); };
+  // позиция каталога без состава: уточняем по названию через ИИ
+  const lai = $('#lai', sheet);
+  lai && (lai.onclick = async () => {
+    lai.disabled = true; lai.textContent = t('st.recognize') + '…';
+    try {
+      const r = await aiAnalyze({ text: `${tpl.name}, ${Math.round(grams)} ${liquid ? 'мл' : 'г'}` });
+      const tot = sumN(r.items), g = r.items.reduce((a, it) => a + it.grams, 0) || grams;
+      const per100 = {}; NUTRIENT_KEYS.forEach(k => per100[k] = tot[k] / g * 100);
+      Object.assign(tpl, { per100, source: 'ai_estimate', basis: null, analysisModel: r.model, confidence: r.items.reduce((a, it) => a + it.confidence, 0) / r.items.length });
+      $('#lest', sheet).innerHTML = `<span class="tag lime">${ICON.check.replace('<svg', '<svg width="12" height="12"')} ${t('cat.refined')}</span>`;
+      upd();
+    } catch (ex) {
+      lai.disabled = false; lai.textContent = t('cat.refine');
+      UI.toast(t('err.' + (ex.code || 'AI_UNAVAILABLE')), { err: true });
+    }
+  });
   $('#lok', sheet).onclick = () => {
     if (!(grams > 0)) return;
     const it = makeItem(Object.assign({}, tpl, { grams, origin: tpl.origin || 'manual', confidence: tpl.confidence ?? 1 }));
@@ -290,15 +327,16 @@ function logSheet(tpl, { date = todayKey(), meal = guessMeal(), onDone } = {}) {
 
 function sourceSheet(it) {
   const src = it.source || 'local';
+  const desc = src === 'estimate' ? t('src.estimate.d', { basis: it.basis || '—' }) : t('src.' + src + '.d');
   UI.modal(`
     <div class="kicker">${t('res.where')}</div>
     <h2 class="h2" style="margin:10px 0 14px">${esc(it.name)}</h2>
     <div class="row" style="margin-bottom:14px">
-      <span class="tag ${src === 'ai_estimate' ? 'warn' : 'dark'}">${t('src.' + src)}</span>
+      <span class="tag ${src === 'ai_estimate' || src === 'estimate' ? 'warn' : 'dark'}">${t('src.' + src)}</span>
       <span class="tag">${t('gs.' + (it.grams_source || 'standard'))}</span>
       <span class="tag">${t('res.conf')} ${Math.round((it.confidence ?? 1) * 100)}%</span>
     </div>
-    <p class="lead" style="margin:0 0 18px">${t('src.' + src + '.d')}</p>
+    <p class="lead" style="margin:0 0 18px">${esc(desc)}</p>
     <table class="ntable"><thead><tr><th></th><th class="r">${t('res.per100')}</th><th class="r">${fmtMass(it.grams)}</th></tr></thead><tbody>
       ${NUTRIENT_KEYS.map(k => `<tr><td>${t('n.' + k)}</td><td class="r num">${fmt(it.per100[k], 1)} ${nUnit(k)}</td><td class="r num"><b>${fmt(itemNutrients(it)[k], 1)}</b> ${nUnit(k)}</td></tr>`).join('')}
     </tbody></table>
@@ -643,7 +681,7 @@ function mealCard(key, m, day, i) {
       <div class="title"><h3 class="h3">${t('meal.' + m)}</h3></div>
       ${items.length ? `<ul class="items">${items.map(it => {
         const nn = itemNutrients(it);
-        return `<li><button data-item="${it.id}"><span class="nm">${esc(it.name)}</span><span class="kk num">${fmt(nn.kcal)}</span><span class="sub"><span>${fmtMass(it.grams)}</span><span>${macroLine(nn)}</span>${it.source === 'ai_estimate' ? `<span>· ${t('src.ai_estimate')}</span>` : ''}</span></button></li>`;
+        return `<li><button data-item="${it.id}"><span class="nm">${esc(it.name)}</span><span class="kk num">${fmt(nn.kcal)}</span><span class="sub"><span>${fmtMass(it.grams)}</span><span>${macroLine(nn)}</span>${it.source === 'ai_estimate' || it.source === 'estimate' ? `<span>· ${t('src.' + it.source)}</span>` : ''}</span></button></li>`;
       }).join('')}</ul>
       <div class="mono muted">${macroLine(n)}</div>`
       : `<div class="empty"><span class="serif">${t('d.empty')}</span><span class="hint">${t('d.empty.hint')}</span></div>`}
@@ -680,6 +718,7 @@ Views.add = {
           <div class="row" style="gap:18px">
             <button class="btn big" id="calc">${t('add.calc')}<span class="arr">${ICON.arrow}</span></button>
             <button class="link" id="manual">${t('add.manual')}</button>
+            <a class="link" href="#/foods">${t('add.catalog')}</a>
           </div>
           ${ai ? '' : `<div class="callout" style="font-size:14px">${t('add.noai')} <a class="link" href="#/settings">${t('nav.settings')}</a></div>`}
         </div>
@@ -866,7 +905,7 @@ Views.result = {
       }
       if (act.dataset.act === 'src') sourceSheet(it);
       if (act.dataset.act === 'replace') searchSheet({ title: t('res.replace'), query: it.name, onPick: nw => {
-        Object.assign(it, { name: nw.name, per100: nw.per100, source: nw.source, foodId: nw.foodId, confidence: 1, edited: true, assumed: false, opts: nw.opts });
+        Object.assign(it, { name: nw.name, per100: nw.per100, source: nw.source, foodId: nw.foodId, confidence: nw.confidence ?? 1, basis: nw.basis, catalogId: nw.catalogId, edited: true, assumed: false, opts: nw.opts });
         UI.closeModal(); rerender();
       } });
     };
@@ -1050,12 +1089,130 @@ Views.stats = {
 };
 
 /* ===== Продукты ===== */
-let foodsTab = 'my', foodsCuisine = null;
+let foodsTab = 'catalog';
+const catLoading = () => `<div class="card"><p class="mono muted" style="margin:0 0 14px">${t('cat.loading')}</p><div class="skel-rows"><i></i><i></i><i></i></div></div>`;
+const catTile = (href, i, kicker, title, sub, count, samples, alc) => `<a class="ctile rv-card" href="${href}" style="--d:${i % 8}">
+  <span class="mono">${esc(kicker)}${alc ? ' <i class="b18">18+</i>' : ''}</span><b>${esc(title)}</b>${sub ? `<small>${esc(sub)}</small>` : ''}
+  <span class="cn num">${count}</span><span class="cs">${samples.map(esc).join(' · ')}</span></a>`;
+const baseFoods = () => FOOD_DB.filter(f => !f.cuisine && (f.src === 'usda' || f.src === 'local')).sort((a, b) => foodName(a).localeCompare(foodName(b), 'ru'));
+
+function catalogHomeHtml() {
+  if (!Catalog.loaded) return catLoading();
+  const C = Catalog.data;
+  const groups = C.groups.map((g, gi) => ({ g, gi, items: Catalog.groupItems(gi) }));
+  const cuis = groups.filter(x => x.g[3] === 'cuisine');
+  const snacks = groups.filter(x => x.g[3] === 'snacks');
+  const drinks = groups.find(x => x.g[3] === 'drinks');
+  const dcats = [];
+  Catalog.list.filter(e => e.g === drinks.gi).forEach(e => {
+    let d = dcats.find(x => x.c === e.c);
+    if (!d) dcats.push(d = { c: e.c, name: e.cat, items: [], alc: true });
+    d.items.push(e); if (!e.alc) d.alc = false;
+  });
+  const shownDrinks = dcats.filter(d => !d.alc || Catalog.allowAlcohol());
+  const sum = a => a.reduce((n, x) => n + x.items.length, 0);
+  const base = baseFoods();
+  return `
+    <div class="card catsearch rv"><div class="unitfield"><input class="input big" id="cq" placeholder="${esc(t('cat.search.ph'))}" autocomplete="off"><em>${ICON.search.replace('<svg', '<svg width="20" height="20"')}</em></div>
+      <div class="search-res" id="cres" style="max-height:none"></div></div>
+    <div id="chome">
+      <section class="section"><div class="sec-head"><h2 class="h2">${UI.split(t('cat.cuisines'))}</h2><span class="mono muted">${cuis.length} · ${sum(cuis)} ${t('cat.items')}</span></div>
+        <div class="cgrid">${cuis.map((x, i) => catTile(`#/foods/cat/${x.g[0]}`, i, `/ ${String(i + 1).padStart(2, '0')} · ${x.g[2]}`, groupShortName(x.g), groupSubName(x.g), x.items.length, x.items.slice(0, 3).map(e => e.name))).join('')}</div></section>
+      <section class="section"><div class="sec-head"><h2 class="h2">${UI.split(t('cat.snacks'))}</h2><span class="mono muted">${sum(snacks)} ${t('cat.items')}</span></div>
+        <div class="cgrid">${snacks.map((x, i) => catTile(`#/foods/cat/${x.g[0]}`, i, `/ ${x.g[2]}`, groupShortName(x.g), '', x.items.length, x.items.slice(0, 4).map(e => e.name))).join('')}</div></section>
+      <section class="section"><div class="sec-head"><h2 class="h2">${UI.split(t('cat.drinks'))}</h2><span class="mono muted">${shownDrinks.reduce((n, d) => n + d.items.length, 0)} ${t('cat.items')}</span></div>
+        ${Catalog.allowAlcohol() ? '' : `<p class="callout" style="font-size:14px">${t('cat.hidden18')}</p>`}
+        <div class="cgrid">${shownDrinks.map((d, i) => catTile(`#/foods/cat/drinks?c=${d.c}`, i, `/ ${String(i + 1).padStart(2, '0')}`, d.name, '', d.items.length, d.items.slice(0, 3).map(e => e.name), d.alc)).join('')}</div></section>
+      <section class="section"><div class="sec-head"><h2 class="h2">${UI.split(t('cat.base'))}</h2><span class="mono muted">${base.length} ${t('cat.items')}</span></div>
+        <div class="cgrid">${catTile('#/foods/cat/base', 0, '/ USDA · ' + t('src.local').toLowerCase(), t('cat.base.title'), t('cat.base.sub'), base.length, base.slice(0, 4).map(foodName))}</div></section>
+    </div>`;
+}
+
+function catalogRows(list) {
+  return list.map(x => {
+    if (x.food) {
+      const f = x.food;
+      return `<button class="crow" data-food="${f.id}"><span class="cn">${esc(foodName(f))}<small>${fmt(f.per100.kcal)} ${t('u.kcal')} / 100 ${unitLbl(f.opts)} · ${macroLine(f.per100)}</small></span><span class="cplus">${ICON.plus}</span></button>`;
+    }
+    const e = x, est = Catalog.estimate(e);
+    return `<button class="crow" data-id="${e.id}"><span class="cn">${esc(e.name)}${e.alc ? '<i class="b18">18+</i>' : ''}<small>${est.source === 'estimate' ? '≈ ' : ''}${fmt(est.per100.kcal)} ${t('u.kcal')} / 100 ${unitLbl(est.opts)}${e.tags.length ? ' · ' + esc(e.tags.join(', ')) : ''}</small></span><span class="cplus">${ICON.plus}</span></button>`;
+  }).join('');
+}
+
+function catalogGroupHtml(r) {
+  if (!Catalog.loaded) return catLoading();
+  const gid = r.parts[2];
+  const back = `<a class="link" href="#/foods">← ${t('cat.title')}</a>`;
+  if (gid === 'base') {
+    const base = baseFoods();
+    return `${back}<span class="kicker" style="display:flex;margin-top:16px">${base.length} ${t('cat.items')}</span>
+      <h1 class="h1">${UI.split(t('cat.base.title'), 'hoverable')}</h1>
+      <div class="card" style="margin-top:22px"><div class="unitfield"><input class="input" id="gq" placeholder="${esc(t('cat.inCuisine'))}" autocomplete="off"><em>${ICON.search.replace('<svg', '<svg width="18" height="18"')}</em></div>
+      <div class="clist" id="glist" style="margin-top:14px">${catalogRows(base.map(food => ({ food })))}</div></div>`;
+  }
+  const C = Catalog.data, gi = C.groups.findIndex(g => g[0] === gid);
+  if (gi < 0) return `${back}<p class="serif" style="font-size:26px">${t('cat.nothing')}</p>`;
+  const g = C.groups[gi], items = Catalog.groupItems(gi);
+  const cats = [];
+  items.forEach(e => { let c = cats.find(x => x.c === e.c); if (!c) cats.push(c = { c: e.c, name: e.cat, n: 0, alc: true }); c.n++; if (!e.alc) c.alc = false; });
+  const sel = r.q.c !== undefined && r.q.c !== '' ? Number(r.q.c) : null;
+  const title = gid === 'drinks' && sel !== null ? C.cats[sel] : groupShortName(g);
+  return `${back}
+    <span class="kicker" style="display:flex;margin-top:16px">${esc(g[2])} · ${items.length} ${t('cat.items')}</span>
+    <h1 class="h1">${UI.split(title, 'hoverable')}</h1>
+    ${groupSubName(g) ? `<p class="serif" style="font-size:24px;margin:8px 0 0">${esc(groupSubName(g))}</p>` : ''}
+    <div class="card catgroup" style="margin-top:22px">
+      <div class="unitfield"><input class="input" id="gq" placeholder="${esc(t('cat.inCuisine'))}" autocomplete="off"><em>${ICON.search.replace('<svg', '<svg width="18" height="18"')}</em></div>
+      ${cats.length > 1 ? `<div class="cuisines" id="gcats"><button class="pill ${sel === null ? 'on' : ''}" data-c="">${t('cat.all')} <small>${items.length}</small></button>${cats.map(c => `<button class="pill ${sel === c.c ? 'on' : ''}" data-c="${c.c}">${esc(c.name)}${c.alc ? ' <i class="b18">18+</i>' : ''} <small>${c.n}</small></button>`).join('')}</div>` : ''}
+      <div id="glist"></div>
+    </div>`;
+}
+
+function catalogGroupMount(el, r) {
+  if (!Catalog.loaded) return;
+  const gid = r.parts[2], list = $('#glist', el), q = $('#gq', el);
+  const pick = e => {
+    const b = e.target.closest('[data-id],[data-food]'); if (!b) return;
+    if (b.dataset.id) logSheet(Catalog.toItem(Catalog.byId.get(b.dataset.id)));
+    else logSheet(itemFromFood(FOOD_DB.find(f => f.id === b.dataset.food)));
+  };
+  list.onclick = pick;
+  const words = () => normalize(q.value).split(' ').filter(Boolean);
+  const hit = name => { const w = words(), n = normalize(name).split(' '); return w.every(x => n.some(y => y.startsWith(x))); };
+  if (gid === 'base') {
+    const base = baseFoods();
+    q.oninput = () => { list.innerHTML = catalogRows(base.filter(f => hit(foodName(f))).map(food => ({ food }))) || `<p class="muted">${t('cat.nothing')}</p>`; };
+    return;
+  }
+  const C = Catalog.data, gi = C.groups.findIndex(g => g[0] === gid);
+  const items = Catalog.groupItems(gi);
+  let sel = r.q.c !== undefined && r.q.c !== '' ? Number(r.q.c) : null;
+  const draw = () => {
+    const shown = items.filter(e => (sel === null || e.c === sel) && (!q.value.trim() || hit(e.name)));
+    const sections = [];
+    shown.forEach(e => { let s = sections.find(x => x.c === e.c); if (!s) sections.push(s = { c: e.c, name: e.cat, items: [] }); s.items.push(e); });
+    list.innerHTML = sections.map(s => `<section class="catsec"><h3 class="h3">${esc(s.name)} <small class="mono muted">${s.items.length}</small></h3><div class="clist">${catalogRows(s.items)}</div></section>`).join('') || `<p class="muted">${t('cat.nothing')}</p>`;
+    list.style.animation = 'none'; void list.offsetWidth; list.style.animation = 'viewIn .6s var(--ease-out) both';
+  };
+  q.oninput = draw;
+  const cs = $('#gcats', el);
+  cs && (cs.onclick = e => {
+    const b = e.target.closest('[data-c]'); if (!b) return;
+    sel = b.dataset.c === '' ? null : Number(b.dataset.c);
+    $$('#gcats .pill', el).forEach(x => x.classList.toggle('on', x === b));
+    history.replaceState(null, '', `#/foods/cat/${gid}${sel === null ? '' : '?c=' + sel}`);
+    draw();
+  });
+  draw();
+}
+
 Views.foods = {
-  html() {
+  html(r) {
+    if (r.parts[1] === 'cat') return catalogGroupHtml(r);
     const s = Store.state;
     const tab = foodsTab;
     let body = '';
+    if (tab === 'catalog') body = catalogHomeHtml();
     if (tab === 'my') body = `
       <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr))">
         ${s.myFoods.map((f, i) => `<div class="card rv-card" style="--d:${i % 8};display:grid;gap:10px"><span class="mono muted">/ ${String(i + 1).padStart(3, '0')}</span><h3 class="h3">${esc(f.name)}</h3>
@@ -1065,53 +1222,45 @@ Views.foods = {
       </div>
       ${s.myFoods.length ? '' : `<p class="serif" style="font-size:26px;margin-top:20px">${t('foods.empty.my')}</p>`}`;
     if (tab === 'recent') body = s.recent.length ? `<div class="search-res" style="max-height:none">${s.recent.map((x, i) => `<div class="row card rv" style="--d:${i % 10};padding:12px 16px"><span style="flex:1">${esc(x.name)}<br><small class="mono muted">${fmtMass(x.grams)} · ${fmt(itemNutrients(x).kcal)} ${t('u.kcal')} · ${t('src.' + (x.source || 'local'))}</small></span><button class="pill" data-tomy="${i}">${t('foods.tomy')}</button><button class="pill on" data-logr="${i}">${t('foods.add')}</button></div>`).join('')}</div>` : `<p class="serif" style="font-size:26px">${t('foods.empty.recent')}</p>`;
-    if (tab === 'db') {
-      const counts = {}; FOOD_DB.forEach(f => { if (f.cuisine) counts[f.cuisine] = (counts[f.cuisine] || 0) + 1; });
-      body = `<div class="card"><input class="input" id="dbq" placeholder="${esc(t('foods.search.ph'))}">
-        <div class="kicker" style="margin-top:18px">${t('foods.cuisines')} · ${Object.values(counts).reduce((a, b) => a + b, 0)}</div>
-        <div class="cuisines" id="cuis">${Object.keys(CUISINES).filter(c => counts[c]).map(c => `<button class="pill ${foodsCuisine === c ? 'on' : ''}" data-c="${c}">${esc(cuisineName(c))} <small>${counts[c]}</small></button>`).join('')}</div>
-        <div class="search-res" id="dbr" style="max-height:none"></div></div>`;
-    }
     return `
       <span class="kicker">${t('foods.title')}</span>
-      <div class="datebar" style="margin-top:12px"><h1 class="h1">${UI.split(t('foods.title'), 'hoverable')}</h1>
-        <div class="seg" id="ftab"><button aria-pressed="${tab === 'my'}" data-t="my">${t('foods.my')}</button><button aria-pressed="${tab === 'recent'}" data-t="recent">${t('foods.recent')}</button><button aria-pressed="${tab === 'db'}" data-t="db">${t('foods.search')}</button></div></div>
+      <div class="datebar" style="margin-top:12px"><h1 class="h1">${UI.split(tab === 'catalog' ? t('cat.title') : t('foods.title'), 'hoverable')}</h1>
+        <div class="seg" id="ftab"><button aria-pressed="${tab === 'catalog'}" data-t="catalog">${t('cat.title')}</button><button aria-pressed="${tab === 'my'}" data-t="my">${t('foods.my')}</button><button aria-pressed="${tab === 'recent'}" data-t="recent">${t('foods.recent')}</button></div></div>
       <div class="section" style="margin-top:26px">${body}</div>`;
   },
-  mount(el) {
+  mount(el, r) {
+    const needCatalog = r.parts[1] === 'cat' || foodsTab === 'catalog';
+    if (needCatalog && !Catalog.loaded) {
+      Catalog.load().then(() => { Router.silent = true; Router.render(); }).catch(() => UI.toast(t('err.OFFLINE'), { err: true }));
+      return;
+    }
+    if (r.parts[1] === 'cat') return catalogGroupMount(el, r);
     const s = Store.state;
     $('#ftab', el).onclick = e => { const b = e.target.closest('[data-t]'); if (!b) return; foodsTab = b.dataset.t; Router.silent = true; Router.render(); };
     el.addEventListener('click', e => {
       const b = e.target.closest('[data-log],[data-delmy],[data-logr],[data-tomy]'); if (!b) return;
       if (b.dataset.log !== undefined) { const f = s.myFoods[Number(b.dataset.log)]; logSheet({ name: f.name, grams: f.portion || 100, per100: f.per100, source: 'user', confidence: 1, grams_source: 'user' }); }
       if (b.dataset.delmy !== undefined) { const i = Number(b.dataset.delmy), f = s.myFoods[i]; s.myFoods.splice(i, 1); Store.save(); Router.silent = true; Router.render(); UI.toast(t('res.deleted'), { action: t('res.undo'), onAction: () => { s.myFoods.splice(i, 0, f); Store.save(); Router.silent = true; Router.render(); } }); }
-      if (b.dataset.logr !== undefined) { const x = s.recent[Number(b.dataset.logr)]; logSheet({ name: x.name, grams: x.grams, per100: x.per100, source: x.source, foodId: x.foodId, confidence: 1, grams_source: 'user', origin: 'copy' }); }
+      if (b.dataset.logr !== undefined) { const x = s.recent[Number(b.dataset.logr)]; logSheet({ name: x.name, grams: x.grams, per100: x.per100, source: x.source, foodId: x.foodId, confidence: 1, grams_source: 'user', origin: 'copy', opts: x.opts }); }
       if (b.dataset.tomy !== undefined) { const x = s.recent[Number(b.dataset.tomy)]; s.myFoods.unshift({ id: uid(), name: x.name, per100: Object.assign({}, x.per100), portion: Math.round(x.grams) }); Store.save(); UI.toast(t('foods.saved')); }
     });
     const nf = $('#newfood', el);
     nf && (nf.onclick = () => newFoodSheet());
-    const q = $('#dbq', el);
+    const q = $('#cq', el);
     if (q) {
-      const out = $('#dbr', el);
-      const run = () => {
-        const res = q.value.trim() ? searchFoods(q.value, 40)
-          : foodsCuisine ? FOOD_DB.filter(f => f.cuisine === foodsCuisine).map(f => ({ kind: 'db', food: f })) : [];
-        out.innerHTML = res.map((r, i) => { const nm = r.kind === 'db' ? foodName(r.food) : r.my.name, p = r.kind === 'db' ? r.food.per100 : r.my.per100;
-          return `<button data-i="${i}"><span>${esc(nm)}<br><small>${fmt(p.kcal)} ${t('u.kcal')} / 100 ${t('u.g')} · ${macroLine(p)} · ${t('n.fiber_g')} ${fmt(p.fiber_g, 1)} · ${t('n.sodium_mg')} ${fmt(p.sodium_mg)} ${t('u.mg')}</small></span><small>${r.kind === 'db' ? foodTag(r.food) : t('src.user')}</small></button>`; }).join('');
-        out.onclick = e => { const b = e.target.closest('[data-i]'); if (!b) return; const r = res[Number(b.dataset.i)]; logSheet(r.kind === 'db' ? itemFromFood(r.food) : { name: r.my.name, grams: r.my.portion || 100, per100: r.my.per100, source: 'user', confidence: 1, grams_source: 'user' }); };
+      const out = $('#cres', el), home = $('#chome', el);
+      let res = [];
+      q.oninput = () => {
+        const v = q.value.trim();
+        home.hidden = !!v;
+        res = v ? searchAll(v, 60) : [];
+        out.innerHTML = v ? (res.map(resultRow).join('') || `<p class="muted" style="padding:10px">${t('cat.nothing')}</p>`) : '';
       };
-      q.oninput = () => { if (q.value.trim() && foodsCuisine) { foodsCuisine = null; $$('#cuis .pill', el).forEach(x => x.classList.remove('on')); } run(); };
-      $('#cuis', el).onclick = e => {
-        const b = e.target.closest('[data-c]'); if (!b) return;
-        foodsCuisine = foodsCuisine === b.dataset.c ? null : b.dataset.c; q.value = '';
-        $$('#cuis .pill', el).forEach(x => x.classList.toggle('on', x.dataset.c === foodsCuisine));
-        run();
-        const out = $('#dbr', el); out.style.animation = 'none'; void out.offsetWidth; out.style.animation = 'viewIn .6s var(--ease-out) both';
-      };
-      run();
+      out.onclick = e => { const b = e.target.closest('[data-i]'); if (b) logSheet(resultItem(res[Number(b.dataset.i)])); };
     }
   },
 };
+
 function newFoodSheet() {
   const sheet = UI.modal(`
     <div class="kicker">${t('foods.my')}</div><h2 class="h2" style="margin:10px 0 18px">${t('foods.new')}</h2>
