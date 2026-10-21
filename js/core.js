@@ -28,13 +28,34 @@ const defaultState = () => ({
   chat: [],
 });
 
+/* Приводит состояние (из localStorage, резервной копии или облака) к ожидаемой форме:
+   испорченные дни, записи без массы, не-массивы и т. п. отбрасываются, а не ломают экраны. */
+function sanitizeState(st) {
+  const arr = v => (Array.isArray(v) ? v : []);
+  const obj = v => (v && typeof v === 'object' && !Array.isArray(v) ? v : {});
+  const days = {};
+  for (const [k, d] of Object.entries(obj(st.days))) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(k) || !d || typeof d !== 'object') continue;
+    const meals = {};
+    for (const m of MEALS) meals[m] = arr(d.meals && d.meals[m]).filter(it => it && typeof it === 'object' && Number(it.grams) > 0 && isFinite(Number(it.grams)))
+      .map(it => Object.assign(it, { name: String(it.name ?? ''), grams: Number(it.grams), per100: obj(it.per100) }));
+    days[k] = { meals, note: typeof d.note === 'string' ? d.note : '' };
+  }
+  st.days = days;
+  st.myFoods = arr(st.myFoods).filter(f => f && f.name).map(f => Object.assign(f, { per100: obj(f.per100) }));
+  st.recent = arr(st.recent).filter(x => x && x.name && Number(x.grams) > 0);
+  st.weights = arr(st.weights).filter(w => w && Number(w.kg) > 0 && isFinite(Number(w.kg)));
+  st.chat = arr(st.chat).filter(x => x && typeof x.text === 'string');
+  st.settings = Object.assign(defaultState().settings, obj(st.settings));
+  return st;
+}
+
 const Store = {
   state: null,
   load() {
     try {
       const raw = localStorage.getItem(STORE_KEY);
-      this.state = raw ? Object.assign(defaultState(), JSON.parse(raw)) : defaultState();
-      this.state.settings = Object.assign(defaultState().settings, this.state.settings);
+      this.state = sanitizeState(raw ? Object.assign(defaultState(), JSON.parse(raw)) : defaultState());
     } catch (e) {
       console.warn('storage unavailable', e);
       this.state = defaultState();

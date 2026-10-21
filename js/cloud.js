@@ -63,7 +63,7 @@ const Cloud = {
   apply(data) {
     const keep = { apiKey: Store.state.settings.apiKey, theme: Store.state.settings.theme };
     this._quiet = true;
-    Store.state = Object.assign(defaultState(), data);
+    Store.state = sanitizeState(Object.assign(defaultState(), data));
     Store.state.settings = Object.assign(defaultState().settings, data.settings || {}, { apiKey: keep.apiKey });
     if (!data.settings || !data.settings.theme) Store.state.settings.theme = keep.theme;
     Store.save();
