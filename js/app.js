@@ -233,6 +233,21 @@ const Shell = {
 /* ---------- sheets ---------- */
 /* ---------- поиск по базе и каталогу ---------- */
 const unitLbl = o => (o && o.liquid ? t('u.ml') : t('u.g'));
+const isApprox = src => src === 'estimate' || src === 'catalog_ai' || src === 'ai_estimate';
+// пометки позиции каталога: вег / веган / без свинины и алкоголя, аллергены
+const dietTags = (d, short) => {
+  if (!d) return [];
+  const out = [];
+  if (d.vegan) out.push(t('diet.vegan')); else if (d.vegetarian) out.push(t('diet.veg'));
+  if (!short && !d.pork && !d.alcohol) out.push(t('diet.noPorkAlc'));
+  return out;
+};
+const dietHtml = d => {
+  if (!d) return '';
+  const tags = dietTags(d).map(x => `<span class="tag lime">${esc(x)}</span>`).join('');
+  const al = d.allergens.length ? d.allergens.map(a => t('al.' + a)).join(', ') : t('diet.noAllergens');
+  return `<div class="diet"><div class="row" style="gap:6px;flex-wrap:wrap">${tags}</div><p class="mono muted"><b>${t('diet.allergens')}:</b> ${esc(al)}<br>${t('diet.note')}</p></div>`;
+};
 const isProfile = f => /^[pda]_/.test(f.id); // служебные профили для подбора состава — в поиске не показываем
 function searchAll(q, limit = 40) {
   const res = searchFoods(q, 30).filter(r => r.kind !== 'db' || (!isProfile(r.food) && (!r.food.opts.alc || Catalog.allowAlcohol()))).slice(0, 14);
@@ -246,7 +261,8 @@ function searchAll(q, limit = 40) {
 function resultRow(r, i) {
   if (r.kind === 'cat') {
     const est = Catalog.estimate(r.e);
-    return `<button data-i="${i}"><span>${esc(r.e.name)}${r.e.alc ? ' <i class="b18">18+</i>' : ''}<br><small>${est.source === 'estimate' ? '≈ ' : ''}${fmt(est.per100.kcal)} ${t('u.kcal')} / 100 ${unitLbl(est.opts)} · ${esc(groupShortName(r.e.group))} · ${esc(r.e.cat)}</small></span><small>${t('cat.title')}</small></button>`;
+    const dt = r.e.type === 'drinks' ? [] : dietTags(Catalog.diet(r.e), true);
+    return `<button data-i="${i}"><span>${esc(Catalog.name(r.e))}${r.e.alc ? ' <i class="b18">18+</i>' : ''}<br><small>${isApprox(est.source) ? '≈ ' : ''}${fmt(est.per100.kcal)} ${t('u.kcal')} / 100 ${unitLbl(est.opts)} · ${esc(groupShortName(r.e.group))} · ${esc(r.e.cat)}${dt.length ? ' · ' + esc(dt.join(', ')) : ''}</small></span><small>${t('cat.title')}</small></button>`;
   }
   const name = r.kind === 'db' ? foodName(r.food) : r.my.name, p = r.kind === 'db' ? r.food.per100 : r.my.per100;
   const unit = r.kind === 'db' ? unitLbl(r.food.opts) : t('u.g');
@@ -282,7 +298,8 @@ function logSheet(tpl, { date = todayKey(), meal = guessMeal(), onDone } = {}) {
     <div class="kicker">${t('d.add.to')} · ${esc(relDay(date))}</div>
     <h2 class="h2" style="margin:10px 0 18px">${esc(tpl.name)}</h2>
     <div class="grid" style="gap:16px">
-      ${tpl.source === 'estimate' ? `<div class="callout" id="lest" style="font-size:14px">${esc(t('cat.estNote', { basis: tpl.basis || '—' }))}${aiReady() ? ` <button class="link" id="lai">${t('cat.refine')}</button>` : ''}</div>` : ''}
+      ${tpl.source === 'estimate' || tpl.source === 'catalog_ai' ? `<div class="callout" id="lest" style="font-size:14px">${esc(tpl.source === 'estimate' ? t('cat.estNote', { basis: tpl.basis || '—' }) : t('cat.recipeNote'))}${aiReady() ? ` <button class="link" id="lai">${t('cat.refine')}</button>` : ''}</div>` : ''}
+      ${dietHtml(tpl.diet)}
       <div class="row"><b class="h1 num" id="lk" style="font-size:72px">0</b><span class="mono muted">${t('u.kcal')}</span><span class="spacer"></span><span class="mono muted" id="lm"></span></div>
       <input type="range" id="lr" min="1" max="${Math.max(500, Math.ceil(grams * 3 / 50) * 50)}" value="${grams}">
       <label class="field"><span>${liquid ? t('misc.volume') + ', ' + t('u.ml') : t('misc.grams') + ', ' + massUnit()}</span><input class="input" id="lg" type="number" inputmode="decimal" value="${liquid ? Math.round(grams) : massOut(grams)}"></label>
@@ -332,11 +349,12 @@ function sourceSheet(it) {
     <div class="kicker">${t('res.where')}</div>
     <h2 class="h2" style="margin:10px 0 14px">${esc(it.name)}</h2>
     <div class="row" style="margin-bottom:14px">
-      <span class="tag ${src === 'ai_estimate' || src === 'estimate' ? 'warn' : 'dark'}">${t('src.' + src)}</span>
+      <span class="tag ${isApprox(src) ? 'warn' : 'dark'}">${t('src.' + src)}</span>
       <span class="tag">${t('gs.' + (it.grams_source || 'standard'))}</span>
       <span class="tag">${t('res.conf')} ${Math.round((it.confidence ?? 1) * 100)}%</span>
     </div>
     <p class="lead" style="margin:0 0 18px">${esc(desc)}</p>
+    ${it.diet ? `<div style="margin:0 0 18px">${dietHtml(it.diet)}</div>` : ''}
     <table class="ntable"><thead><tr><th></th><th class="r">${t('res.per100')}</th><th class="r">${fmtMass(it.grams)}</th></tr></thead><tbody>
       ${NUTRIENT_KEYS.map(k => `<tr><td>${t('n.' + k)}</td><td class="r num">${fmt(it.per100[k], 1)} ${nUnit(k)}</td><td class="r num"><b>${fmt(itemNutrients(it)[k], 1)}</b> ${nUnit(k)}</td></tr>`).join('')}
     </tbody></table>
@@ -681,7 +699,7 @@ function mealCard(key, m, day, i) {
       <div class="title"><h3 class="h3">${t('meal.' + m)}</h3></div>
       ${items.length ? `<ul class="items">${items.map(it => {
         const nn = itemNutrients(it);
-        return `<li><button data-item="${it.id}"><span class="nm">${esc(it.name)}</span><span class="kk num">${fmt(nn.kcal)}</span><span class="sub"><span>${fmtMass(it.grams)}</span><span>${macroLine(nn)}</span>${it.source === 'ai_estimate' || it.source === 'estimate' ? `<span>· ${t('src.' + it.source)}</span>` : ''}</span></button></li>`;
+        return `<li><button data-item="${it.id}"><span class="nm">${esc(it.name)}</span><span class="kk num">${fmt(nn.kcal)}</span><span class="sub"><span>${fmtMass(it.grams)}</span><span>${macroLine(nn)}</span>${isApprox(it.source) ? `<span>· ${t('src.' + it.source)}</span>` : ''}</span></button></li>`;
       }).join('')}</ul>
       <div class="mono muted">${macroLine(n)}</div>`
       : `<div class="empty"><span class="serif">${t('d.empty')}</span><span class="hint">${t('d.empty.hint')}</span></div>`}
@@ -1117,12 +1135,12 @@ function catalogHomeHtml() {
       <div class="search-res" id="cres" style="max-height:none"></div></div>
     <div id="chome">
       <section class="section"><div class="sec-head"><h2 class="h2">${UI.split(t('cat.cuisines'))}</h2><span class="mono muted">${cuis.length} · ${sum(cuis)} ${t('cat.items')}</span></div>
-        <div class="cgrid">${cuis.map((x, i) => catTile(`#/foods/cat/${x.g[0]}`, i, `/ ${String(i + 1).padStart(2, '0')} · ${x.g[2]}`, groupShortName(x.g), groupSubName(x.g), x.items.length, x.items.slice(0, 3).map(e => e.name))).join('')}</div></section>
+        <div class="cgrid">${cuis.map((x, i) => catTile(`#/foods/cat/${x.g[0]}`, i, `/ ${String(i + 1).padStart(2, '0')} · ${x.g[2]}`, groupShortName(x.g), groupSubName(x.g), x.items.length, x.items.slice(0, 3).map(e => Catalog.name(e)))).join('')}</div></section>
       <section class="section"><div class="sec-head"><h2 class="h2">${UI.split(t('cat.snacks'))}</h2><span class="mono muted">${sum(snacks)} ${t('cat.items')}</span></div>
-        <div class="cgrid">${snacks.map((x, i) => catTile(`#/foods/cat/${x.g[0]}`, i, `/ ${x.g[2]}`, groupShortName(x.g), '', x.items.length, x.items.slice(0, 4).map(e => e.name))).join('')}</div></section>
+        <div class="cgrid">${snacks.map((x, i) => catTile(`#/foods/cat/${x.g[0]}`, i, `/ ${x.g[2]}`, groupShortName(x.g), '', x.items.length, x.items.slice(0, 4).map(e => Catalog.name(e)))).join('')}</div></section>
       <section class="section"><div class="sec-head"><h2 class="h2">${UI.split(t('cat.drinks'))}</h2><span class="mono muted">${shownDrinks.reduce((n, d) => n + d.items.length, 0)} ${t('cat.items')}</span></div>
         ${Catalog.allowAlcohol() ? '' : `<p class="callout" style="font-size:14px">${t('cat.hidden18')}</p>`}
-        <div class="cgrid">${shownDrinks.map((d, i) => catTile(`#/foods/cat/drinks?c=${d.c}`, i, `/ ${String(i + 1).padStart(2, '0')}`, d.name, '', d.items.length, d.items.slice(0, 3).map(e => e.name), d.alc)).join('')}</div></section>
+        <div class="cgrid">${shownDrinks.map((d, i) => catTile(`#/foods/cat/drinks?c=${d.c}`, i, `/ ${String(i + 1).padStart(2, '0')}`, d.name, '', d.items.length, d.items.slice(0, 3).map(e => Catalog.name(e)), d.alc)).join('')}</div></section>
       <section class="section"><div class="sec-head"><h2 class="h2">${UI.split(t('cat.base'))}</h2><span class="mono muted">${base.length} ${t('cat.items')}</span></div>
         <div class="cgrid">${catTile('#/foods/cat/base', 0, '/ USDA · ' + t('src.local').toLowerCase(), t('cat.base.title'), t('cat.base.sub'), base.length, base.slice(0, 4).map(foodName))}</div></section>
     </div>`;
@@ -1135,7 +1153,8 @@ function catalogRows(list) {
       return `<button class="crow" data-food="${f.id}"><span class="cn">${esc(foodName(f))}<small>${fmt(f.per100.kcal)} ${t('u.kcal')} / 100 ${unitLbl(f.opts)} · ${macroLine(f.per100)}</small></span><span class="cplus">${ICON.plus}</span></button>`;
     }
     const e = x, est = Catalog.estimate(e);
-    return `<button class="crow" data-id="${e.id}"><span class="cn">${esc(e.name)}${e.alc ? '<i class="b18">18+</i>' : ''}<small>${est.source === 'estimate' ? '≈ ' : ''}${fmt(est.per100.kcal)} ${t('u.kcal')} / 100 ${unitLbl(est.opts)}${e.tags.length ? ' · ' + esc(e.tags.join(', ')) : ''}</small></span><span class="cplus">${ICON.plus}</span></button>`;
+    const extra = [...(e.type === 'drinks' ? [] : dietTags(Catalog.diet(e), true)), ...e.tags];
+    return `<button class="crow" data-id="${e.id}"><span class="cn">${esc(Catalog.name(e))}${e.alc ? '<i class="b18">18+</i>' : ''}<small>${isApprox(est.source) ? '≈ ' : ''}${fmt(est.per100.kcal)} ${t('u.kcal')} / 100 ${unitLbl(est.opts)}${extra.length ? ' · ' + esc(extra.join(', ')) : ''}</small></span><span class="cplus">${ICON.plus}</span></button>`;
   }).join('');
 }
 
@@ -1188,7 +1207,7 @@ function catalogGroupMount(el, r) {
   const items = Catalog.groupItems(gi);
   let sel = r.q.c !== undefined && r.q.c !== '' ? Number(r.q.c) : null;
   const draw = () => {
-    const shown = items.filter(e => (sel === null || e.c === sel) && (!q.value.trim() || hit(e.name)));
+    const shown = items.filter(e => (sel === null || e.c === sel) && (!q.value.trim() || hit(e.name) || (e.en && hit(e.en))));
     const sections = [];
     shown.forEach(e => { let s = sections.find(x => x.c === e.c); if (!s) sections.push(s = { c: e.c, name: e.cat, items: [] }); s.items.push(e); });
     list.innerHTML = sections.map(s => `<section class="catsec"><h3 class="h3">${esc(s.name)} <small class="mono muted">${s.items.length}</small></h3><div class="clist">${catalogRows(s.items)}</div></section>`).join('') || `<p class="muted">${t('cat.nothing')}</p>`;

@@ -1,0 +1,202 @@
+# Русская кухня — индексы 171–371
+171|Syrniki (cottage cheese pancakes)|150g|220|14|10|19|0.5|9|5|200|90|0|GME|v|8
+172|Blini with butter|150g|250|6|12|29|0.8|5|6.5|300|65|0|GME|v|8
+173|Blini with sour cream|200g|240|6|12.5|26|0.7|5|7|260|60|0|GME|v|8
+174|Blini with cottage cheese|200g|220|10|9|25|0.6|7|5|260|60|0|GME|v|8
+175|Blini with meat|200g|230|11|11|22|0.8|3|4|340|55|0|GME|-|7
+176|Blini with ham and cheese|200g|260|12|14|22|0.7|3.5|6.5|500|60|0|GME|-|7
+177|Blini with red caviar|150g|250|11|11|26|0.6|4|5|600|170|0|GMEF|-|7
+178|Blini with salmon|200g|230|11|11|22|0.6|3.5|4.5|500|60|0|GMEF|-|7
+179|Blini with condensed milk|200g|280|6.5|10|42|0.6|20|5.5|200|50|0|GME|v|8
+180|Blini with jam|200g|260|5.5|8|42|0.8|20|3.5|220|50|0|GME|v|8
+181|Oladyi (thick kefir pancakes)|150g|260|6.5|11|34|1|7|2.5|330|50|0|GME|v|8
+182|Oatmeal porridge with milk|250g|105|3.6|3.5|15|1.5|4.5|1.8|60|8|0|GM|v|8
+183|Buckwheat porridge with milk|250g|115|4.2|3.5|17|1.6|3|1.9|60|8|0|M|v|8
+184|Semolina porridge (manna)|250g|100|3|3|15.5|0.3|5|1.9|60|9|0|GM|v|8
+185|Millet porridge with pumpkin|250g|105|2.8|3|17|1.5|5|1.7|50|7|0|M|v|8
+186|Rice porridge with milk|250g|100|2.8|3|15.5|0.3|5|1.8|55|8|0|M|v|8
+187|Omelette|150g|155|9.5|12|2|0|1.5|4.5|300|330|0|EM|v|8
+188|Fried eggs (sunny side up)|120g|190|13|15|0.7|0|0.4|4|350|390|0|E|v|9
+189|Fried eggs with bacon|150g|270|15|23|0.5|0|0.3|7.5|700|330|0|E|P|8
+190|Cottage cheese with sour cream|200g|170|13|10|4|0|3.5|6.5|50|35|0|M|v|8
+191|Baked cottage cheese casserole (zapekanka)|150g|200|13|8|19|0.3|12|4.5|200|80|0|GME|v|8
+192|Lazy vareniki (cottage cheese dumplings)|200g|210|12|6|26|0.4|8|3.5|200|70|0|GME|v|7
+193|Draniki (potato pancakes) with sour cream|200g|200|3.8|12|20|2|1.5|3.2|300|25|0|EM|v|8
+194|Borscht with beef|400g|65|3.8|3|5.8|1.3|3|1.1|290|10|0|M|-|8
+195|Moscow borscht (with smoked meats and sausage)|400g|80|4.2|4.5|5.8|1.3|3|1.6|370|14|0|M|P|7
+196|Shchi (fresh cabbage soup)|400g|50|2.8|2.5|4.2|1.1|2|0.9|280|8|0|M|-|8
+197|Sour shchi (sauerkraut soup)|400g|48|2.7|2.5|3.8|1.4|1.5|0.9|380|8|0|M|-|7
+198|Sutochnye shchi (slow-cooked sauerkraut soup)|400g|55|3|3|4|1.4|1.5|1.1|390|9|0|M|-|6
+199|Mixed meat solyanka|400g|85|5|5.5|3.5|0.8|1.5|1.8|560|18|0|M|P|7
+200|Fish solyanka|400g|65|6|3|3.5|0.8|1.5|0.8|540|20|0|FM|-|7
+201|Ukha (fish soup)|400g|45|4.5|1.5|3.5|0.5|0.8|0.3|300|15|0|F|-|8
+202|Royal ukha (fish soup with several kinds of fish)|400g|55|6|2|3.5|0.5|0.8|0.4|320|20|0|F|-|7
+203|Rassolnik (pickle and barley soup)|400g|50|2.5|2.3|5.5|1|1|0.8|380|8|0|GM|-|7
+204|Okroshka with kvass|400g|65|3.5|3|6|0.8|4|0.9|280|50|0|EUG|-|7
+205|Okroshka with kefir|400g|60|4|3|4.5|0.7|3|1.2|280|50|0|EM|-|7
+206|Svekolnik (cold beet soup)|400g|50|2.2|2.2|5.5|1.3|4|0.8|260|45|0|EM|v|7
+207|Mushroom soup|400g|40|1.5|1.8|4.8|1|1|0.7|280|3|0|M|v|7
+208|Chicken noodle soup|400g|50|3.5|1.8|5|0.4|0.6|0.5|330|15|0|GE|-|8
+209|Chicken broth with egg|350g|30|3|1.6|0.6|0|0.2|0.5|330|45|0|E|-|8
+210|Pea soup with smoked meats|400g|75|4.5|2.5|9|2.5|1|0.9|380|8|0|Y|P|7
+211|Kharcho soup (home style)|400g|70|4|3|6.5|0.6|1|1.2|330|12|0|T|-|6
+212|Botvinya (cold kvass soup with fish and greens)|400g|50|3.5|1|6.5|1|4|0.2|260|15|0|FG|-|5
+213|Kalya (fish soup with pickles)|400g|50|4.5|2|3.5|0.6|1|0.5|420|18|0|F|-|5
+214|Meatball soup|400g|55|3.5|2.5|4.8|0.6|0.8|1|320|12|0|E|-|8
+215|Buckwheat soup|400g|50|2.5|2|5.8|0.8|0.8|0.6|300|6|0||-|7
+216|Tyurya (bread in kvass with onion)|300g|80|2|1.5|15|1.5|4|0.2|300|0|0|G|V|5
+217|Olivier salad|200g|190|5.5|16|6|1.3|2|2.8|450|50|0|EU|-|8
+218|Olivier salad with sausage|200g|200|5.5|17|6|1.3|2|3.2|500|50|0|EU|P|8
+219|Olivier salad with chicken|200g|180|7|14.5|5.5|1.3|2|2.3|420|50|0|EU|-|8
+220|Olivier salad with tongue|200g|195|7|16|5.5|1.3|2|3|450|60|0|EU|-|7
+221|Herring under a fur coat (layered beet salad)|200g|190|5|16|7|1.5|4|2.8|500|50|0|FEU|-|8
+222|Vinegret (beet salad)|200g|90|1.5|5.5|8.5|2.4|4|0.5|380|0|0||V|8
+223|Mimosa salad (canned fish, egg, cheese)|200g|210|8|18|4|0.6|1.5|3.5|380|130|0|FEMU|-|7
+224|Stolichny salad (chicken, potato, mayonnaise)|200g|190|7|15.5|5.5|1.2|2|2.5|420|55|0|EU|-|7
+225|Muzhskoy kapriz salad (meat, cheese, pickled onion)|200g|260|11|22|4|0.5|2|5|420|70|0|EMU|-|6
+226|Crab stick salad|200g|180|5|13|11|0.7|3|1.7|500|50|0|EFU|-|8
+227|Garnet bracelet salad (beet, chicken, pomegranate)|200g|190|7|14|9|1.5|5.5|2.2|340|50|0|EUT|-|6
+228|Obzhorka salad (meat, pickles, mayonnaise)|200g|230|10|19.5|4|0.8|1.5|3.6|500|45|0|EU|-|5
+229|Podsolnukh salad (chicken, mushrooms, chips)|200g|240|9|19|8|0.8|1.5|3.5|450|80|0|EMU|-|5
+230|Fresh vegetable salad with sour cream|200g|55|1.2|4|4|1.2|2.8|2.2|120|10|0|M|v|8
+231|Vitamin cabbage salad|200g|50|1.2|2.8|5.5|2.2|3.5|0.3|180|0|0||V|8
+232|Nezhnost salad (chicken, prunes, egg, nuts)|200g|220|9|17|8|1.2|5|3.5|320|90|0|EUTM|-|5
+233|Cod liver salad|150g|260|6|24|4|0.5|1|4|400|130|0|FEU|-|6
+234|Squid salad|200g|160|10|11|5|0.5|1.5|1.8|380|120|0|LEU|-|6
+235|Ministersky salad|200g|210|9|17|5|0.8|2|4|380|90|0|EMU|-|4
+236|Kupechesky salad (meat, prunes, pickled onion)|200g|215|10|16|8|1.2|4|2.6|380|50|0|EU|-|5
+237|Kholodets (meat jelly)|150g|150|14|10|0.5|0|0.2|3.5|400|50|0||-|7
+238|Tongue in aspic|150g|130|13|8.5|1|0|0.4|3.5|380|70|0||-|7
+239|Fish in aspic|150g|80|11|3.5|1.5|0.2|0.6|0.6|350|35|0|F|-|7
+240|Herring with potatoes and onion|250g|150|7|8|12|1.5|1.5|1.6|800|25|0|F|-|8
+241|Salo (cured pork fat) with garlic|30g|770|2.5|84|0|0|0|31|1200|85|0||P|8
+242|Smoked salo|30g|760|3|83|0|0|0|31|1300|85|0||P|7
+243|Pickles (cucumbers, tomatoes, cabbage)|150g|18|0.9|0.1|3|1.3|1.6|0|1100|0|0||V|8
+244|Sauerkraut|150g|25|1.1|0.2|4|2.4|1.8|0|650|0|0||V|9
+245|Pickled mushrooms|100g|35|2|1|4.5|2|1.5|0.1|700|0|0||V|7
+246|Salted milk mushrooms (gruzdi)|100g|30|1.8|0.8|3.5|2|1|0.1|1000|0|0||V|6
+247|Red caviar|30g|250|30|14|1|0|0|3|1500|500|0|F|-|8
+248|Black caviar|30g|265|25|18|3|0|0|4|1500|590|0|F|-|7
+249|Squash caviar (zucchini spread)|100g|90|1.3|7|6|1.3|4|0.6|500|0|0||V|8
+250|Eggplant caviar|100g|100|1.5|8|6|2.5|4|1|450|0|0||V|8
+251|Assorted cold meats|150g|290|18|24|1|0|0.5|9|1300|75|0||P|6
+252|Assorted fish platter|150g|210|20|14|0.5|0|0|3|1300|60|0|F|-|6
+253|Buzhenina (baked pork)|100g|240|20|17|0.5|0|0|6.5|800|70|0||P|7
+254|Boiled tongue with horseradish|100g|200|15|15|2|0.3|1|6|450|110|0|U|-|7
+255|Stuffed eggs|100g|210|10|18|1.5|0.2|0.8|3.5|300|360|0|EU|v|7
+256|Tartlets with caviar|60g|330|14|19|26|1|1|8|900|200|0|GMEF|-|6
+257|Canapés|100g|250|10|15|19|1|2|6|800|40|0|GM|-|4
+258|Caviar sandwiches|80g|290|13|16|25|1|2|8|1000|180|0|GMF|-|7
+259|Sprat sandwiches|80g|270|10|15|25|1.5|2|3.5|650|40|0|GFEU|-|7
+260|Ham and cheese rolls|100g|260|17|21|1.5|0|1|8|1000|70|0|MEU|P|6
+261|Chicken liver pâté|50g|220|12|17|4|0.2|1|8|450|300|0|M|-|7
+262|Forshmak (herring spread)|50g|260|10|23|4|0.5|2.5|7|900|60|0|FMEG|-|6
+263|Siberian pelmeni (pork and beef dumplings)|250g|255|11|13|23|1|0.8|5|420|35|0|GE|P|8
+264|Homemade pelmeni|250g|250|11|12.5|23|1|0.8|5|400|35|0|GE|P|7
+265|Chicken pelmeni|250g|215|11|8.5|23|1|0.8|2.5|400|35|0|GE|-|7
+266|Fried pelmeni|250g|300|11|17|25|1|0.8|5|460|38|0|GE|P|7
+267|Vareniki with potato|250g|170|4.5|4.5|28|1.6|1|1.5|330|10|0|G|v|8
+268|Vareniki with cherries|250g|185|4.5|2|37|1.5|14|0.7|80|20|0|GE|v|8
+269|Vareniki with cottage cheese|250g|200|10|5|28|0.7|5|2.8|200|40|0|GEM|v|8
+270|Homemade cutlets (kotlety)|150g|230|15|15|9|0.4|1|5.5|450|60|0|GEM|P|8
+271|Pozharsky cutlets (minced chicken)|150g|250|17|15|11|0.4|1|7|430|80|0|GME|-|7
+272|Chicken Kiev|200g|270|16|18|11|0.5|0.6|8.5|420|100|0|GEM|-|8
+273|Meatballs in tomato sauce|250g|150|9|9|8|0.8|3|3.5|420|35|0|GE|-|8
+274|Bitochki (pan-fried meat patties)|150g|230|15|15|9|0.4|1|5.5|440|60|0|GE|P|6
+275|Zrazy (stuffed meat patties)|150g|230|14|15|9|0.5|1|5|420|110|0|GE|-|6
+276|Golubtsy (cabbage rolls with meat and rice)|300g|105|6|5|8.5|1.4|2.5|2|350|20|0|M|-|8
+277|Lazy golubtsy (stewed cabbage and meat patties)|300g|125|7|7|8.5|1.3|2.5|2.6|380|25|0|EM|-|7
+278|Beef stroganoff|200g|180|15|12|3.5|0.4|1.5|5.5|380|60|0|MG|-|8
+279|Pot roast with potatoes (zharkoe)|350g|135|8|7.5|9|1.3|1|2.7|340|25|0||-|7
+280|French-style meat (baked with potato, cheese and mayonnaise)|250g|250|14|18|8|0.8|1.5|6|420|55|0|MEU|P|7
+281|Goulash with mashed potatoes|350g|125|7|6|10.5|1|1.2|2.8|370|25|0|MG|-|7
+282|Liver stroganoff|200g|165|16|9|5|0.4|2|4|360|270|0|MG|-|7
+283|Chicken schnitzel with mashed potatoes|350g|190|11|9.5|16|1.2|1.2|2.8|400|45|0|GEM|-|7
+284|Roast chicken|250g|215|21|14.5|0|0|0|4|400|90|0||-|8
+285|Tabaka chicken (pressed fried chicken)|300g|240|22|17|0.5|0|0|4.5|500|95|0||-|8
+286|Duck with apples|300g|240|14|17|8|1|6.5|5.5|300|70|0||-|6
+287|Goose with apples|300g|280|15|22|7|1|5.5|6.5|300|80|0||-|6
+288|Pork knuckle (rulka)|400g|280|21|22|0|0|0|8|650|95|0||P|7
+289|Pork ribs|300g|300|19|25|1.5|0|1|9|550|85|0||P|7
+290|Pork shashlik|200g|275|19|21.5|1.5|0.2|0.8|7.5|450|70|0||P|8
+291|Cutlet with pasta|350g|185|9|7.5|21|1.2|1.2|2.8|330|25|0|GEM|P|7
+292|Navy-style pasta (with minced meat)|350g|185|9|8|20|1.1|1.2|3|330|25|0|G|-|8
+293|Merchant-style buckwheat (with meat)|350g|150|8|6|16|1.8|1|2|330|22|0||-|7
+294|Homemade plov|350g|190|7|9|21|1|1.8|2.6|400|22|0||-|7
+295|Polish-style fish (with egg sauce)|250g|140|15|8|2|0.2|0.8|4|320|120|0|FEM|-|6
+296|Fish in batter|200g|220|13|12|15|0.6|0.8|1.8|380|55|0|FGE|-|7
+297|Baked zander (pike-perch)|200g|115|19|4|1.5|0.2|0.5|1|300|65|0|F|-|7
+298|Fish cutlets|150g|180|13|9|12|0.6|1|1.7|400|50|0|FGE|-|7
+299|Telnoye (stuffed fish cutlets)|150g|190|14|10|11|0.6|1|2|400|80|0|FGE|-|5
+300|Fried pollock|200g|160|17|8|5|0.2|0.2|1.2|330|65|0|FG|-|7
+301|Grilled salmon|200g|210|21|14|0|0|0|2.5|350|60|0|F|-|8
+302|Fried potatoes with mushrooms|250g|150|3|9|15|2|0.8|1.4|330|3|0||V|8
+303|Potatoes with meat|350g|140|7|6.5|13.5|1.5|0.8|2.2|340|20|0||-|7
+304|Potato casserole with minced meat|300g|160|8|9|12|1.2|1.5|4|360|40|0|EM|-|7
+305|Stewed cabbage with sausages|300g|105|4.5|7|6.5|2|3.5|2.4|550|18|0||P|7
+306|Sausages with mashed potatoes|300g|160|5|10|12|1.1|1.5|4.5|560|25|0|M|P|8
+307|Mashed potatoes with a cutlet|300g|160|8|9|12|1|1.2|4|380|35|0|GEM|P|7
+308|Vegetable stew (ragout)|300g|70|1.6|3.5|8|2|3.5|0.5|300|0|0||V|8
+309|Kulebyaka (layered pie with meat or fish)|150g|290|11|14|30|1.2|2|5|430|60|0|GE|-|5
+310|Kurnik (chicken and rice pie)|150g|280|10|14|28|1|1.5|6|420|60|0|GEM|-|5
+311|Rasstegai (open-top pies)|100g|280|10|13|30|1.2|2|4.5|420|45|0|GEM|-|5
+312|Porridge with meat|300g|150|8|6|16|1.5|0.8|2|340|22|0||-|6
+313|Mashed potatoes|200g|100|2|4|14.5|1.3|1.5|2.5|280|10|0|M|v|9
+314|Boiled potatoes with dill|200g|90|2|2|16.5|1.6|1|1.2|250|5|0|M|v|9
+315|Country-style potato wedges|200g|165|2.5|8|21|2.2|0.5|1|350|0|0||V|8
+316|Fried potatoes|200g|180|2.8|9.5|22|2|0.5|1.3|330|0|0||V|8
+317|Buckwheat|200g|110|4|2|20|2.7|0.5|0.9|200|5|0|M|v|9
+318|Boiled rice|200g|120|2.4|0.9|26|0.4|0.1|0.3|180|0|0||V|9
+319|Pasta|200g|155|5.3|2.5|28|1.6|0.5|1.3|180|5|0|GM|v|8
+320|Pearl barley|200g|110|3|2.2|20|3|0.3|1|200|4|0|GM|v|8
+321|Millet porridge|200g|115|3.4|2.5|20|1.2|0.3|1.3|200|5|0|M|v|8
+322|Braised cabbage|200g|65|1.5|3.5|7|2.5|4|0.4|350|0|0||V|8
+323|Steamed vegetables|200g|35|1.8|0.3|6|2.5|3|0|80|0|0||V|8
+324|Grilled vegetables|200g|70|1.5|4.5|6|2.2|4|0.6|200|0|0||V|8
+325|Bulgur|200g|110|3.3|1.5|21|4|0.2|0.3|180|0|0|G|V|8
+326|Cabbage pirozhki|80g|230|5.5|8|34|2|4|1.5|360|5|0|GE|v|7
+327|Potato pirozhki|80g|245|5.5|8.5|37|1.8|3|1.5|370|5|0|GE|v|7
+328|Meat pirozhki|80g|270|10|11|32|1.3|3.5|3.5|400|30|0|GE|-|7
+329|Egg and green onion pirozhki|80g|260|8|10|34|1.5|3.5|3|360|110|0|GE|v|7
+330|Fruit jam pirozhki|80g|290|5.5|8|49|1.5|20|1.5|260|10|0|GE|V|7
+331|Belyashi (fried meat pies)|120g|320|11|18|28|1.3|1.5|5|430|35|0|GE|-|8
+332|Chebureki (fried meat turnovers)|150g|300|10|17|27|1.2|1|4.5|450|30|0|G|-|8
+333|Fish rasstegai (open pies with fish)|100g|270|11|12|29|1.2|2|3|420|45|0|GEFM|-|6
+334|Vatrushki (cottage cheese buns)|100g|300|10|10|42|1.2|15|4.5|300|60|0|GEM|v|7
+335|Plyushki (sugar buns)|80g|350|7|11|56|1.5|18|5|300|40|0|GEM|v|7
+336|Kalach (white bread)|100g|260|8|2|52|2|2.5|0.5|500|0|0|G|V|6
+337|Kulebyaka (layered pie)|150g|290|11|14|30|1.2|2|5|430|60|0|GE|-|5
+338|Shangi (potato-topped open pies)|100g|260|6|9|38|1.8|3|4|380|25|0|GEM|v|6
+339|Kalitki (Karelian rye pies)|80g|230|6|7|35|3|2|3.5|380|25|0|GM|v|6
+340|Cabbage pie|120g|230|5.5|9|31|2|4|2|360|25|0|GEM|v|6
+341|Fish pie|150g|250|11|11|26|1.2|2|3|420|45|0|GEFM|-|6
+342|Apple charlotte (sponge apple pie)|120g|200|4.5|3.5|38|1.2|25|1|100|80|0|GE|v|8
+343|Cherry pie|120g|280|4.5|11|41|1.5|20|5|180|40|0|GEM|v|7
+344|Rye bread|50g|200|6|1.2|40|6|3|0.2|500|0|0|G|V|9
+345|Borodinsky bread (rye with coriander)|50g|210|6.5|1.3|41|5.5|6|0.2|480|0|0|G|V|9
+346|Sushki (small dry bread rings)|50g|340|11|1.5|71|2.5|8|0.3|250|0|0|G|V|8
+347|Bubliki (bread rings)|100g|300|9.5|3|58|2|8|0.6|420|10|0|GEM|v|7
+348|Tula pryanik (gingerbread with jam filling)|80g|350|5|3|76|1.5|40|1|180|10|0|GEM|v|7
+349|Kulich (Easter sweet bread)|100g|370|8|13|56|1.5|25|7|250|90|0|GEM|v|7
+350|Medovik (honey layer cake)|120g|420|6|21|52|1|33|11|300|70|0|GEM|v|8
+351|Napoleon (puff pastry cream cake)|120g|400|5.5|23|43|0.8|24|13|250|80|0|GEM|v|7
+352|Ptichye moloko (soufflé cake)|100g|370|4.5|20|43|0.5|36|12|80|70|0|GEM|v|7
+353|Prague chocolate cake|120g|400|6|22|45|2|32|12|200|80|0|GEM|v|7
+354|Kiev cake (meringue and nut cake)|120g|450|6|24|53|1.5|45|11|100|60|0|GEMT|v|6
+355|Kartoshka (chocolate rum cake ball)|60g|400|6|20|50|2|32|11|150|50|0|GEM|v|6
+356|Eclairs|80g|330|5|20|32|0.5|20|11.5|150|120|0|GEM|v|8
+357|Shortbread tartlets with cream|80g|440|4.5|25|50|0.5|32|13|150|70|0|GEM|v|6
+358|Pastry tubes with condensed milk|80g|430|7|22|51|0.8|30|12|200|50|0|GEM|v|6
+359|Oreshki (nut-shaped cookies with condensed milk)|50g|450|7|22|57|1|30|12|200|60|0|GEM|v|7
+360|Zefir (fruit marshmallow)|40g|325|0.8|0.1|80|1|65|0|30|0|0|E|v|8
+361|Pastila (fruit paste)|40g|320|0.5|0|80|1|65|0|20|0|0|E|v|7
+362|Fruit jelly candy (marmalade)|40g|320|0.1|0|79|0.5|65|0|20|0|0||v|7
+363|Jam (varenye)|30g|270|0.4|0.2|67|1|60|0|5|0|0||V|8
+364|Kissel (fruit starch drink)|250ml|55|0.1|0|13.5|0.2|9|0|5|0|0||V|8
+365|Kompot (stewed fruit drink)|250ml|45|0.2|0|11|0.3|10|0|5|0|0||V|8
+366|Mors (berry drink)|250ml|42|0.1|0|10.5|0.2|10|0|5|0|0||V|8
+367|Glazed curd snack (syrok)|45g|410|8|27|32|0.5|27|17|60|50|0|MS|v|8
+368|Ponchiki (sugar-dusted doughnuts)|80g|380|6|20|44|1.2|14|4|300|40|0|GEM|v|7
+369|Crepe cake|120g|300|6.5|17|31|0.5|17|10|200|80|0|GEM|v|6
+370|Tvorozhnaya paskha (Easter cottage cheese dessert)|100g|330|11|23|21|0.3|18|14|80|90|0|ME|v|6
+371|Plombir ice cream|80g|230|3.5|15|21|0|20|9.5|70|50|0|M|v|8

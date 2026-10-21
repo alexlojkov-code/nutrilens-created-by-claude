@@ -1,0 +1,176 @@
+# Африканская, боулы и ПП, завтраки, перекусы (шаурма, хот-доги, сэндвичи, выпечка, курица) — индексы 1487–1661
+1487|Lamb tagine with prunes|350g|190|12|10|13|2.5|9|4|380|45|0|T|-|7
+1488|Chicken tagine with preserved lemon and olives|350g|150|14|8.5|4.5|1.5|1.5|2|550|60|0||-|7
+1489|Moroccan couscous with vegetables and meat|400g|150|7|5|19|2.5|3|1.5|380|20|0|G|-|7
+1490|Harira (tomato, lentil and chickpea soup)|400g|70|4|2|9|2.5|2|0.5|400|8|0|GY|-|7
+1491|Pastilla (sweet and savoury chicken pie)|200g|300|14|16|25|1.5|10|6|400|90|0|GEMT|-|6
+1492|Merguez (spicy lamb sausage)|120g|300|15|26|2|0|0.5|10|900|70|0||-|7
+1493|Tunisian shakshuka|300g|100|6|7|5|1.5|3.5|1.8|420|165|0|E|v|7
+1494|Brik (fried pastry with egg and tuna)|150g|290|11|19|20|0.8|1|3.5|450|160|0|GEF|-|7
+1495|Koshari (rice, lentils, pasta with tomato sauce)|400g|160|5.5|4|26|3.5|3|0.6|400|0|0|G|V|7
+1496|Ta'ameya (Egyptian fava bean falafel)|100g|320|12|18|29|6|2|2.4|500|0|0|Z|V|7
+1497|Molokhia (jute leaf stew)|350g|70|5|3.5|5|2|1|1|400|15|0||-|5
+1498|Injera with wat (Ethiopian flatbread with stew)|400g|150|7|5|19|3.5|2|1.5|420|20|0|M|-|6
+1499|Doro wat (spicy chicken stew)|350g|150|13|9|5|1.5|2.5|3.5|450|160|0|EM|-|6
+1500|Tibs (sautéed meat)|250g|200|21|12|3|0.8|1.5|4|450|70|0|M|-|6
+1501|Jollof rice|400g|150|3.5|5|23|1.2|2.5|0.9|420|5|0||V|7
+1502|Suya (spicy peanut-crusted beef skewers)|200g|240|26|13|5|1.5|1.5|3.5|500|70|0|N|-|7
+1503|Fufu (cassava and plantain dough)|300g|160|1.2|0.3|38|1.6|1.5|0.1|10|0|0||V|6
+1504|Egusi soup (melon seed soup with meat)|400g|170|11|12|5|2|1.5|3|450|35|0|FC|-|5
+1505|Bobotie (spiced minced meat bake)|300g|200|13|12|10|1|5|4.5|400|90|0|EMT|-|6
+1506|Biltong (dried cured beef)|50g|300|55|7|3|0|2|3|1800|130|0||-|7
+1507|Boerewors (South African sausage)|150g|290|15|24|3|0|0.5|9|800|70|0||P|6
+1508|Somali sambusa|100g|280|10|16|25|2|1.5|4|450|30|0|G|-|6
+1509|Mandazi (East African fried dough)|80g|370|6|17|49|1.5|12|8|200|20|0|GEM|v|6
+1510|Salmon poke|400g|155|8|6|17|1.5|2.5|1.1|450|15|0|FSZ|-|8
+1511|Tuna poke|400g|140|9.5|4|17|1.5|2.5|0.6|450|12|0|FSZ|-|8
+1512|Shrimp poke|400g|135|7.5|4|17|1.5|2.5|0.6|480|50|0|CSZ|-|8
+1513|Chicken poke|400g|145|9|4.5|17|1.5|2.5|0.8|450|20|0|SZ|-|8
+1514|Tofu poke|400g|135|5.5|5|17|2|2.5|0.8|450|0|0|SZ|V|8
+1515|Quinoa and avocado bowl|350g|150|4.5|8|15|4|2|1.2|250|0|0|Z|V|7
+1516|Buddha bowl|400g|140|5|6.5|16|4|3|1|300|0|0|Z|V|7
+1517|Teriyaki chicken bowl|400g|150|9|3.5|20|1.5|5|0.8|500|25|0|SZG|-|8
+1518|Beef bowl|400g|160|9|5.5|18|1.5|3|1.8|450|25|0|SZG|-|7
+1519|Smoothie bowl|350g|110|2.5|3|19|3|13|0.8|30|2|0|MT|v|7
+1520|Açaí bowl with granola|350g|140|2.5|5|22|3.5|13|1.5|30|0|0|GT|V|7
+1521|Quinoa salad|250g|130|4|6|15|2.8|2|0.8|280|0|0||V|8
+1522|Avocado and shrimp salad|250g|130|7|9|5|3|1.5|1.4|350|60|0|C|-|8
+1523|Tuna salad|250g|120|10|7|4|1.5|2|1.1|380|25|0|FE|-|8
+1524|Grilled chicken salad|250g|110|12|5.5|3.5|1.5|2|1|320|35|0||-|8
+1525|Cobb salad (chicken, bacon, egg, avocado, blue cheese)|350g|160|11|11.5|4|2|2|3.5|450|90|0|EMU|P|8
+1526|Bulgur salad|250g|120|3|6|14|3.5|2|0.8|300|0|0|G|V|7
+1527|Roast beef salad|250g|120|11|6.5|4|1.5|2|1.8|380|30|0|U|-|7
+1528|Roasted pumpkin salad|250g|110|3|7|9|2|4|1.8|250|5|0|MT|v|7
+1529|Beet and goat cheese salad|250g|120|4|8|8|2.2|6|3|280|10|0|MT|v|8
+1530|Warm beef salad|250g|140|12|8|5|1.5|3|2|420|30|0|SZ|-|7
+1531|Steamed chicken breast with vegetables|350g|80|12|1.8|4|1.8|2|0.5|200|35|0||-|8
+1532|Turkey with bulgur|350g|120|11|2.5|14|3|0.6|0.6|250|30|0|G|-|7
+1533|Steamed fish with broccoli|350g|70|11|2|2.5|1.5|1|0.4|200|35|0|F|-|8
+1534|Grilled vegetables|250g|70|1.5|4.5|6|2.2|4|0.6|200|0|0||V|8
+1535|Egg white omelette|150g|65|10|2.5|1.2|0.2|0.8|0.5|250|0|0|E|v|8
+1536|Oatmeal with water and berries|250g|70|2.2|1.3|12.5|2|2.5|0.2|5|0|0|G|V|8
+1537|Protein pancakes|200g|170|14|5|17|2|4|1.5|250|90|0|GEM|v|7
+1538|Cottage cheese with berries|200g|110|13|3.5|7|1.2|6|2|40|10|0|M|v|8
+1539|Light shakshuka|300g|80|6|4.5|4.5|1.5|3.5|1.2|380|165|0|E|v|7
+1540|Zucchini lasagne|300g|110|9|6|5|1.3|3.5|3|350|25|0|ME|-|7
+1541|Whole wheat pasta|300g|130|5.5|3|21|3.5|2.5|0.5|300|0|0|G|V|7
+1542|Keto pizza (low-carb crust)|250g|260|17|19|5|1.5|2|9|600|80|0|MET|P|6
+1543|Gluten-free baked goods|80g|360|4|14|56|2|20|5|250|40|0|EM|v|4
+1544|Vegan burger|280g|220|10|9|25|4|5|1.6|550|0|0|GSZ|V|7
+1545|Vegan bowl|400g|130|5|5|17|4|3|0.8|320|0|0|SZ|V|7
+1546|Tofu scramble|200g|130|10|8.5|3.5|1.5|1.5|1.2|350|0|0|S|V|7
+1547|Seitan steak|200g|170|22|5|8|1|1|0.8|550|0|0|GS|V|6
+1548|Green smoothie|350ml|45|1|0.5|9.5|1.5|7|0.1|20|0|0||V|7
+1549|Full-day meal plan (set)|1500g|105|7|3.5|11|2|3|1|250|25|0|GME|-|3
+1550|Avocado toast|180g|220|5|13|21|5|2|2|350|0|0|G|V|8
+1551|Avocado toast with poached egg|230g|210|7|13|17|4|1.5|2.3|350|160|0|GE|v|8
+1552|Avocado toast with salmon|230g|220|9|13|17|4|1.5|2.2|600|20|0|GF|-|8
+1553|Poached eggs on toast|200g|190|10|9|16|1.5|1.5|2.8|380|260|0|GE|v|8
+1554|Scrambled eggs with toast|250g|210|11|13|13|1|1.5|5|380|280|0|GEM|v|8
+1555|Eggs Benedict with salmon|300g|220|12|15|12|0.6|1.5|7.5|650|240|0|GEMF|-|8
+1556|Eggs Florentine (with spinach)|300g|200|9|14|12|1.5|1.5|7|550|230|0|GEM|v|8
+1557|Ham and cheese omelette|200g|210|15|16|1.5|0|1|6.5|650|330|0|EM|P|8
+1558|Vegetable omelette|220g|130|8|9.5|3|1|2|3|330|260|0|EM|v|8
+1559|Frittata|200g|170|11|12|4|1|1.5|4.5|400|250|0|EM|v|7
+1560|Shakshuka|300g|100|6|7|5|1.5|3.5|1.8|400|165|0|E|v|8
+1561|Egg breakfast sandwich|180g|260|12|13|23|1.2|3|5|600|160|0|GEM|P|8
+1562|Breakfast burrito|300g|220|10|11|20|1.8|1.5|4.5|550|130|0|GEM|P|8
+1563|Croissant with egg and bacon|180g|330|13|21|22|1.2|4|10|650|170|0|GEM|P|8
+1564|Granola with yogurt|250g|170|6|6|24|2|14|2.5|60|8|0|GMT|v|8
+1565|Oatmeal bowl|300g|110|3.5|3.5|17|2.2|6|1.2|50|5|0|GMT|v|7
+1566|Oat pancake (ovsyanoblin)|200g|150|10|7|11|1.5|2.5|2.2|250|200|0|GEM|v|7
+1567|Syrniki with sour cream|200g|230|13|12|18|0.4|8|6.5|180|80|0|GME|v|8
+1568|Syrniki with berry sauce|200g|210|12|8|22|0.8|12|4.5|180|75|0|GME|v|8
+1569|Crêpes with banana and Nutella|200g|280|6|12|37|1.6|20|4|150|50|0|GEMT|v|8
+1570|Waffles with ice cream|200g|300|5.5|14|38|0.8|20|8|300|60|0|GEM|v|8
+1571|Peanut butter toast|100g|360|13|20|34|4|6|4|400|0|0|GN|V|8
+1572|Chia pudding|200g|140|4.5|7|14|5|8|2.8|40|5|0|M|v|7
+1573|Overnight oats|250g|130|5|4|19|2.5|7|1.5|50|5|0|GM|v|7
+1574|Coconut milk porridge|250g|140|2.5|7|17|1.5|5|5.5|30|0|0||V|6
+1575|Breakfast combo (coffee + pastry)|330g|150|3.5|7|18|0.6|8|4|150|20|0|GEM|v|4
+1576|Business breakfast (set)|450g|170|8|9|14|1.3|4|3.5|400|100|0|GEM|-|4
+1577|Kids' breakfast (set)|350g|150|6|6|18|1|8|3|200|60|0|GEM|v|4
+1578|Classic chicken shawarma|300g|220|12|10.5|20|1.6|2|2.6|540|35|0|GEZ|-|8
+1579|Beef shawarma|300g|235|12|11.5|20|1.6|2|3.6|540|35|0|GEZ|-|7
+1580|Lamb shawarma|300g|245|12|13|20|1.6|2|4.5|540|40|0|GEZ|-|7
+1581|Cheese shawarma|330g|240|13|12|20|1.4|2|4.5|620|40|0|GEMZ|-|7
+1582|Shawarma with French fries|350g|240|11|12|23|1.8|1.5|2.6|560|30|0|GEZ|-|7
+1583|Spicy shawarma|300g|220|12|10.5|20|1.6|2|2.6|580|35|0|GEZ|-|7
+1584|Shawarma in pita|250g|230|12|10|22|1.6|2|2.5|550|35|0|GEZ|-|7
+1585|Vegetarian shawarma|300g|180|5|8|22|3|3|1.4|500|5|0|GEZ|v|6
+1586|Shawarma XXL|500g|225|12|11|20|1.6|2|2.8|550|35|0|GEZ|-|7
+1587|Shawarma plate|450g|180|11|8.5|15|1.6|2|2|450|35|0|ZE|-|6
+1588|Chicken döner|300g|220|12|10|21|1.6|2|2.5|560|35|0|GEMZ|-|7
+1589|Döner in a bun|300g|240|12|11|23|1.6|2|3.5|560|35|0|GEMZ|-|7
+1590|Kebab in lavash|300g|240|12|12|21|1.5|2|4|550|40|0|GEM|-|7
+1591|Chicken tortilla wrap|250g|220|11|10|21|1.5|2|2.3|550|30|0|GEMU|-|7
+1592|Caesar wrap|250g|230|11|11|21|1.5|2|2.6|560|35|0|GEMF|-|7
+1593|Twister (crispy chicken wrap)|200g|250|10|12|25|1.4|2|2.3|600|25|0|GEMU|-|8
+1594|Salmon wrap|250g|210|10|10|20|1.5|2|3|600|25|0|GFM|-|7
+1595|Falafel wrap|250g|230|7|10|28|4|3|1.5|550|0|0|GZ|V|7
+1596|Lavash with cheese and herbs|200g|270|11|11|31|1.5|1|6.5|600|30|0|GM|v|7
+1597|Gyros wrap|300g|245|12|12|22|1.5|2|3.8|550|35|0|GM|P|7
+1598|French hot dog (in a baguette)|150g|280|9|15|27|1.2|4|5|750|30|0|GEU|P|8
+1599|Danish hot dog (with fried onions and pickles)|200g|250|8|13|25|1.4|5|4.5|750|25|0|GEU|P|8
+1600|Hot dog with bacon|200g|290|10|17|24|1.2|4|6|850|35|0|GU|P|7
+1601|Hot dog with sauerkraut|200g|220|8|11|23|2|3.5|4|850|25|0|GU|P|7
+1602|Sausage in pastry|100g|320|9|20|27|1.2|3|7|650|35|0|GEM|P|8
+1603|Sausage in lavash|200g|270|9|15|25|1.3|2|5|750|30|0|GEU|P|7
+1604|Grilled sausage|150g|290|12|26|2|0|0.5|9|850|65|0||P|8
+1605|Grilled sausages|200g|300|13|27|2|0|0.5|9.5|850|70|0||P|7
+1606|Mini sausages in pastry|100g|330|9|21|27|1.2|3|7.5|650|35|0|GEM|P|7
+1607|Corn dog with cheese|150g|300|10|17|27|1|6|5.5|700|40|0|GEM|P|7
+1608|Cheese dog|200g|280|11|16|23|1.2|4|6|850|35|0|GMU|P|7
+1609|Ciabatta with chicken|250g|230|13|8|26|1.8|2|1.6|550|30|0|GEMU|-|8
+1610|Ciabatta with ham|250g|240|12|9|27|1.8|2|3|800|30|0|GMU|P|8
+1611|Ciabatta with mozzarella and tomatoes|250g|240|10|9.5|28|2|3|4.5|550|25|0|GM|v|8
+1612|Tuna sandwich|220g|240|12|11|23|1.5|3|2|550|25|0|GFE|-|8
+1613|Egg sandwich|200g|240|10|12|22|1.3|3|2.5|450|180|0|GEU|v|8
+1614|Ham and cheese triangle sandwich|180g|250|12|11|25|1.5|3|4.5|800|30|0|GEMU|P|8
+1615|Chicken and bacon sandwich|220g|260|14|12|23|1.4|3|3.5|750|40|0|GEU|P|8
+1616|Club sandwich|300g|240|13|12|19|1.5|3|3.5|700|45|0|GEU|P|8
+1617|Ham and cheese toastie|150g|290|15|13|27|1.5|3|6.5|900|40|0|GM|P|8
+1618|Grilled cheese toast|130g|330|13|17|30|1.5|3|9.5|750|40|0|GM|v|8
+1619|Sausage sandwich|80g|300|10|17|26|1.5|2|6|900|35|0|G|P|8
+1620|Cheese sandwich|70g|300|12|14|30|1.5|2.5|8|600|35|0|GM|v|8
+1621|Red fish sandwich|80g|260|11|12|26|1.5|2.5|4.5|900|30|0|GMF|-|8
+1622|Baguette with ham|200g|250|12|8|31|1.8|2.5|3|900|30|0|GM|P|8
+1623|Bagel with chicken|220g|240|13|7|30|1.8|4|1.6|550|30|0|GEZU|-|7
+1624|Brioche sandwich|200g|290|12|15|27|1.2|5|6|600|70|0|GEM|-|6
+1625|Panini|220g|260|12|11|28|1.6|2.5|4.5|700|30|0|GM|P|7
+1626|Roast beef sandwich|220g|230|14|8.5|24|1.5|3|2.5|650|35|0|GEU|-|7
+1627|Pastrami sandwich|250g|240|15|10|22|1.4|3|3.5|1100|50|0|GU|-|7
+1628|Vegan sandwich|220g|200|6|8|26|3.5|3|1.2|500|0|0|GZ|V|7
+1629|Samsa|150g|300|10|17|27|1.2|1|7|430|35|0|GZ|-|8
+1630|Baked meat pirozhok|80g|270|10|11|32|1.3|3.5|3.5|400|30|0|GE|-|7
+1631|Fried potato pirozhok|100g|260|5|10|37|1.8|2|1.6|400|5|0|G|V|8
+1632|Meat cheburek|150g|300|10|17|27|1.2|1|4.5|450|30|0|G|-|8
+1633|Cheese cheburek|150g|310|10|17|29|1|1|6|500|25|0|GM|v|7
+1634|Belyash|120g|320|11|18|28|1.3|1.5|5|430|35|0|GE|-|8
+1635|Ham and cheese puff pastry|100g|360|11|22|29|1.2|2|10|700|35|0|GEM|P|8
+1636|Chicken puff pastry|100g|330|10|20|28|1.2|2|8.5|550|30|0|GEM|-|7
+1637|Apple puff pastry|100g|330|4|18|38|1.5|15|8.5|250|10|0|GEM|v|8
+1638|Cherry puff pastry|100g|330|4|18|38|1.3|15|8.5|250|10|0|GEM|v|8
+1639|Cottage cheese puff pastry|100g|340|9|19|33|1|12|9|300|35|0|GEM|v|8
+1640|Raisin swirl bun|100g|340|7|12|52|2|20|5|300|40|0|GEM|v|8
+1641|Cinnabon (cinnamon roll with frosting)|150g|390|5.5|16|56|2|28|7|380|30|0|GEM|v|8
+1642|Croissant|60g|410|8|21|45|2.5|11|12|400|60|0|GME|v|8
+1643|Filled doughnut|80g|340|6|15|46|1.5|18|5|280|30|0|GEM|v|8
+1644|Glazed doughnut|70g|420|5|23|49|1.2|23|10|300|20|0|GEMS|v|8
+1645|Vatrushka (cottage cheese bun)|100g|300|10|10|42|1.2|15|4.5|300|60|0|GEM|v|8
+1646|Mini khachapuri boat|150g|310|12|15|31|1.2|1.5|8.5|560|80|0|GME|v|7
+1647|Pizza slice|150g|260|11|10|31|1.8|3|4.5|620|22|0|GM|P|7
+1648|Mini pizza|120g|270|10|11|32|1.6|3|4.5|600|20|0|GM|P|7
+1649|Qutab|150g|245|9|11|27|1.5|1|4|420|25|0|GM|-|6
+1650|Cheese flatbread|150g|290|11|11|36|1.5|2|6.5|600|30|0|GM|v|7
+1651|Bublik (bread ring)|100g|300|9.5|3|58|2|8|0.6|420|10|0|GEM|v|8
+1652|Cupcake (kex)|80g|400|5.5|19|52|1|30|5|300|70|0|GEM|v|8
+1653|Chocolate muffin|100g|400|6|20|50|2.5|30|5|350|55|0|GEM|v|8
+1654|Chicken nuggets|150g|280|15|17|16|1|0.5|3|550|45|0|G|-|8
+1655|Chicken strips|150g|260|18|13|17|0.8|0.5|2.5|600|55|0|GE|-|8
+1656|Spicy chicken wings|200g|280|20|19|7|0.4|0.5|5|800|110|0|G|-|8
+1657|BBQ chicken wings|200g|270|20|16|12|0.3|10|4.5|750|110|0||-|8
+1658|Breaded chicken drumsticks|200g|260|19|15|12|0.5|0.3|4|600|90|0|G|-|8
+1659|Popcorn chicken|150g|290|16|17|19|1|0.5|3|650|45|0|G|-|8
+1660|Breaded chicken thighs|200g|270|18|17|11|0.5|0.3|4.5|600|90|0|G|-|8
+1661|Chicken basket (assorted)|500g|280|18|17|14|0.7|0.5|4|650|80|0|G|-|7

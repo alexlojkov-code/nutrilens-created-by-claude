@@ -1,0 +1,189 @@
+# Украинская и белорусская, грузинская, армянская, азербайджанская, Северный Кавказ, татарская и башкирская — индексы 372–559
+372|Ukrainian borscht with pampushki (garlic buns)|500g|90|3.8|3.5|11|1.5|3|1.2|340|10|0|GM|P|7
+373|Green borscht (sorrel soup with egg)|400g|45|2.5|2.2|3.8|1|0.8|0.8|300|45|0|EM|-|7
+374|Halushky (dough dumplings)|250g|190|5.5|6|28|1|1|3|300|40|0|GEM|v|6
+375|Vareniki with potato and cracklings|250g|200|5|8|27|1.5|1|3|350|12|0|G|P|7
+376|Vareniki with cabbage|250g|160|4|4.5|26|2|2|1.2|360|5|0|G|v|7
+377|Deruny (potato pancakes)|200g|190|3.5|11|19|2|1|2|300|30|0|E|v|7
+378|Homemade blood sausage|80g|330|14|28|6|0|0|10|700|100|0||P|5
+379|Kruchenyky (meat rolls with filling)|200g|220|17|15|4|0.4|1|6|420|70|0|GE|P|5
+380|Salo with garlic|30g|770|2.5|84|0|0|0|31|1200|85|0||P|8
+381|Banosh (cornmeal porridge with brynza)|250g|190|6|10|19|1.2|1.5|6|350|30|0|M|-|5
+382|Knyshi (small open buns)|80g|280|7|11|38|1.5|5|4|330|35|0|GEM|v|4
+383|Pampushki with garlic|60g|300|7|8.5|48|2|5|1.5|450|5|0|G|V|7
+384|Ukrainian golubtsy (cabbage rolls)|300g|110|6|5.5|8.5|1.4|2.5|2.1|350|20|0|M|P|7
+385|Kulish (millet and lard soup)|400g|85|3.5|4|9|0.8|1|1.5|330|8|0||P|5
+386|Kapustnyak (sauerkraut and millet soup)|400g|55|2.8|2.5|5.5|1.5|1.5|0.9|420|8|0|M|P|6
+387|Belarusian draniki (potato pancakes)|200g|190|3.5|11|19|2|1|2|300|30|0|E|v|8
+388|Machanka with blini (pork gravy with pancakes)|350g|210|10|13|14|0.6|2|5|450|60|0|GME|P|5
+389|Kolduny (stuffed potato dumplings)|250g|180|7|9|18|1.8|1|3|380|35|0|E|P|6
+390|Potato babka (baked grated potato with bacon)|250g|170|4.5|9|18|1.8|1.2|3.5|380|30|0|EM|P|6
+391|Klyotski (potato dumplings)|250g|130|3|3.5|21|1.5|0.8|1.2|300|20|0|GE|v|5
+392|Vereshchaka (pork in sauce with pancakes)|350g|200|10|13|11|0.5|2|5|450|60|0|GME|P|5
+393|Potato zrazy (with meat filling)|200g|160|6|7|18|1.6|1|2.5|330|35|0|GE|-|6
+394|Potato kishka (sausage with grated potato)|200g|190|5|11|17|1.5|1|4|450|30|0||P|5
+395|Belarusian kholodnik (cold beet soup)|400g|50|2.5|2.2|5|1.2|3.8|0.9|260|45|0|EM|v|6
+396|Polendvitsa (dry-cured pork tenderloin)|50g|200|28|9|1|0|0.5|3|1800|70|0||P|6
+397|Kiev cake|120g|450|6|24|53|1.5|45|11|100|60|0|GEMT|v|6
+398|Syrniki with raisins|150g|230|14|9.5|22|0.6|11|5|190|90|0|GME|v|8
+399|Uzvar (dried fruit drink)|250ml|40|0.2|0|10|0.4|9|0|3|0|0||V|7
+400|Adjarian khachapuri (cheese boat with egg)|350g|300|12|14|31|1.2|1.5|8|560|90|0|GME|v|8
+401|Imeretian khachapuri (round cheese bread)|250g|280|11.5|12.5|30|1.2|1.5|7.5|560|35|0|GME|v|8
+402|Megrelian khachapuri (cheese bread topped with cheese)|300g|300|13|15|29|1.1|1.5|9|620|45|0|GME|v|8
+403|Khachapuri on a skewer|200g|290|12|13|31|1.2|1.5|7.5|560|40|0|GME|v|5
+404|Penovani khachapuri (puff pastry with cheese)|200g|330|11|19|29|1|1.5|10|580|45|0|GME|v|7
+405|Achma (layered cheese pie)|200g|320|12|18|27|0.9|1.5|10.5|560|70|0|GME|v|7
+406|Kubdari (Svan meat pie)|300g|270|11|12|29|1.2|1.5|5|450|35|0|GME|P|7
+407|Lobiani (bean-filled bread)|250g|250|8|8|36|4|1.5|3|450|15|0|GME|v|7
+408|Khychin (Balkar flatbread with cheese and potato)|150g|240|8|8.5|32|1.6|1.5|5|450|25|0|GM|v|6
+409|Penovani with ham|200g|320|11|18|29|1|1.5|9|650|40|0|GME|P|6
+410|Mchadi (cornbread)|100g|230|5|4|43|3.5|1|0.6|300|0|0||V|7
+411|Shoti (Georgian bread)|150g|250|8.5|1.5|50|2.2|2|0.3|500|0|0|G|V|8
+412|Gvezeli (fried pies with egg or cheese)|100g|300|9|15|32|1.2|2|5|450|80|0|GEM|v|5
+413|Khinkali with beef and pork|300g|220|10|10|22|1|0.8|4|420|35|0|G|P|8
+414|Khinkali with lamb|300g|225|10|10.5|22|1|0.8|4.5|420|35|0|G|-|7
+415|Khinkali with cheese|300g|240|10|10|27|0.9|1.2|5.5|450|30|0|GM|v|7
+416|Khinkali with mushrooms|300g|175|5|5|27|1.8|1|1.5|380|5|0|G|v|7
+417|Khinkali with potato|300g|180|4.5|4.5|30|1.6|1|1.5|380|5|0|G|v|7
+418|Fried khinkali|300g|260|10|13|25|1|0.8|4|440|35|0|G|P|7
+419|Chakhokhbili (chicken stewed in tomatoes)|300g|140|13|8|4|1|2.8|2.2|380|55|0||-|8
+420|Chashushuli (spicy beef stewed in tomato)|300g|155|14|9|4.5|1.2|2.8|3.5|400|45|0||-|7
+421|Ojakhuri (pork with fried potatoes)|300g|210|11|13|12|1.3|1|4|420|40|0||P|7
+422|Chkmeruli (chicken in garlic cream sauce)|300g|230|16|18|2|0.3|1|8|420|95|0|M|-|8
+423|Tabaka chicken|300g|240|22|17|0.5|0|0|4.5|500|95|0||-|8
+424|Chanakhi (lamb and vegetable stew)|400g|120|7|7|8|2|3.5|3|330|25|0||-|7
+425|Kuchmachi (chicken offal with walnuts and pomegranate)|200g|240|17|17|5|1.5|2.5|3.5|380|250|0|T|-|6
+426|Kupaty (Georgian sausages)|150g|300|14|26|2|0|0.5|10|750|70|0||P|7
+427|Mtsvadi (Georgian pork shashlik)|200g|270|19|21|1.5|0.2|0.8|7.5|450|70|0||P|8
+428|Shkmeruli (chicken in garlic sauce)|300g|230|16|18|2|0.3|1|8|420|95|0|M|-|7
+429|Satsivi (chicken in walnut sauce)|200g|250|15|19|5|1.5|1.5|3|380|50|0|T|-|7
+430|Ajapsandali (vegetable stew)|250g|85|1.5|6|7|2.6|4.5|0.8|300|0|0||V|8
+431|Lobio (stewed red beans)|250g|130|7|4.5|16|5.5|1.5|0.6|380|0|0|T|V|7
+432|Chakapuli (lamb stewed with tarragon and wine)|350g|150|13|10|2.5|0.8|1|4.5|350|50|0|X|-|7
+433|Georgian kebab (minced meat)|200g|270|17|21|3|0.4|1.2|8.5|480|68|0||-|6
+434|Mtevani (trout with pomegranate)|250g|160|19|8|2.5|0.4|2|1.8|300|60|0|F|-|6
+435|Kharcho (beef soup with rice and walnuts)|400g|75|4.5|3.5|6.5|0.7|1|1.2|330|12|0|T|-|8
+436|Chikhirtma (chicken soup thickened with egg)|400g|60|4.5|3.2|3.5|0.3|0.6|1|320|60|0|EG|-|7
+437|Khashi (tripe and trotter soup)|450g|65|7|4|0.5|0|0|1.6|300|35|0||-|6
+438|Georgian bozbashi (lamb and chickpea soup)|450g|80|5|4|6|1.5|1.5|1.8|320|15|0||-|5
+439|Shechamandi (sour dogwood soup)|400g|40|0.8|1.5|6|1|4|0.2|250|0|0|G|V|4
+440|Assorted pkhali (vegetable and walnut pâtés)|150g|165|4.5|13|8|3.5|3|1.3|350|0|0|T|V|7
+441|Spinach pkhali|100g|160|5|13|6|3.5|1.5|1.3|380|0|0|T|V|7
+442|Beet pkhali|100g|165|3.8|12|11|3.5|7|1.2|350|0|0|T|V|7
+443|Eggplant rolls with walnuts|150g|190|4|16|8|3.5|4|1.6|330|0|0|T|V|7
+444|Fried suluguni|100g|320|19|25|3|0.2|0.5|15|900|75|0|MG|v|7
+445|Smoked suluguni|50g|300|21|23|0.5|0|0.5|14|1100|70|0|M|v|7
+446|Imeretian cheese|50g|240|18|18|1|0|1|11|900|60|0|M|v|7
+447|Gebzhalia (cheese rolls in mint yogurt)|200g|240|13|18|4|0.2|3.5|11|700|60|0|M|v|6
+448|Elarji (cornmeal with cheese)|250g|220|7|11|23|1.5|0.5|6|450|30|0|M|v|6
+449|Jonjoli (pickled bladdernut shoots)|50g|30|2|0.5|4|2|1|0.1|1000|0|0||V|5
+450|Mzhaveuli (Georgian pickles)|150g|20|0.9|0.1|3.5|1.3|1.6|0|1100|0|0||V|7
+451|Cold lobio (bean salad with walnuts)|200g|140|7|6|15|5|1.5|0.7|380|0|0|T|V|6
+452|Georgian salad with walnuts|200g|120|2.5|10|6|2|3.5|1|200|0|0|T|V|7
+453|Tomato and cucumber salad with walnuts|200g|110|2.2|9|5.5|1.8|3.5|0.9|200|0|0|T|V|8
+454|Tkemali (sour plum sauce)|30g|40|0.3|0.1|9.5|1|6|0|600|0|0||V|8
+455|Adjika (spicy pepper paste)|20g|60|1.5|3|8|3|3|0.4|1600|0|0||V|7
+456|Satsebeli (tomato and herb sauce)|30g|50|1.2|0.3|10|1.5|6|0|550|0|0||V|6
+457|Churchkhela (walnuts in grape jelly)|60g|410|7|18|58|3|45|1.6|10|0|0|T|V|7
+458|Pelamushi (grape juice pudding)|150g|110|0.3|0.2|27|0.4|20|0|5|0|0|G|V|6
+459|Gozinaki (walnuts in honey)|40g|530|11|35|45|3.5|40|3.3|10|0|0|T|v|7
+460|Georgian pakhlava|80g|440|6.5|25|48|2|30|9|150|35|0|GMT|v|5
+461|Nazuki (sweet spiced bread)|100g|330|7|8|56|1.5|20|4.5|250|30|0|GEM|v|5
+462|Khorovats (pork barbecue)|250g|275|19|21.5|1.5|0.2|0.8|7.5|450|70|0||P|8
+463|Khorovats (lamb barbecue)|250g|260|20|19.5|1|0.2|0.6|8.5|450|80|0||-|8
+464|Vegetable khorovats (grilled eggplant, pepper, tomato)|250g|60|1.2|3.5|6|2.5|4|0.5|250|0|0||V|7
+465|Kyufta (pounded meat balls)|200g|230|16|17|3|0.2|0.5|6|430|70|0|E|-|6
+466|Tolma in grape leaves|250g|175|8|11|11|1.5|1|4|350|28|0|M|-|8
+467|Cabbage tolma|300g|120|6|6.5|9|1.5|2.5|2.5|350|20|0|M|-|7
+468|Khashlama (boiled lamb with vegetables)|400g|135|10|8.5|4|1|2|3.5|300|35|0||-|7
+469|Bozbash (lamb soup with chickpeas and fruit)|450g|85|5|4.2|6.5|1.6|2|1.8|320|15|0||-|6
+470|Spas (yogurt and wheat soup)|350g|60|3|2.5|6|0.5|2.5|1.5|300|15|0|GME|v|7
+471|Khash (beef trotter soup)|450g|65|7|4|0.5|0|0|1.6|300|35|0||-|6
+472|Harisa (wheat and chicken porridge)|350g|130|8|4.5|14.5|1.5|0.3|1.6|300|25|0|G|-|6
+473|Ishkhan (Sevan trout)|250g|160|20|8.5|0.5|0|0.2|1.8|300|60|0|F|-|7
+474|Lahmajun (thin flatbread with minced meat)|200g|230|10|8|29|2|2|2.5|500|20|0|G|-|7
+475|Zhingyalov hats (flatbread with herbs)|200g|180|5|4|30|3|1|0.5|400|0|0|G|V|7
+476|Aghants (roasted wheat with nuts)|50g|420|10|16|58|7|8|1.5|5|0|0|GT|V|4
+477|Basturma (cured spiced beef)|50g|250|30|13|2|0.5|0|5|2500|80|0|Y|-|7
+478|Sujukh (dry spiced beef sausage)|50g|420|25|35|1|0.5|0|14|1800|80|0||-|6
+479|Chechil (string cheese)|50g|310|26|22|1.5|0|1|14|1500|75|0|M|v|8
+480|Matsun (fermented milk)|200ml|58|3|3.2|4|0|4|2|45|11|0|M|v|8
+481|Lavash (thin flatbread)|50g|275|9|1.2|56|2.2|1.5|0.2|500|0|0|G|V|8
+482|Gata (sweet layered pastry)|100g|410|6.5|20|51|1|25|12|250|70|0|GEM|v|6
+483|Nazuk (sweet layered pastry)|100g|410|6.5|20|51|1|25|12|250|70|0|GEM|v|5
+484|Ani cookies|50g|450|6|20|62|1.5|28|10|200|60|0|GEM|v|4
+485|Dried bean pâté|100g|180|8|9|17|5.5|1.5|1.2|380|0|0|T|V|5
+486|Ishli kyufta (bulgur shells stuffed with meat)|200g|250|12|13|22|3|1|4|420|30|0|GT|-|6
+487|Kchuch (vegetable and meat stew in a clay pot)|350g|130|7|8|8|1.8|3|3|330|25|0||-|5
+488|Akhtapur (assorted greens and vegetables)|200g|35|1.5|1|5|2|2.5|0.1|200|0|0||V|4
+489|Armenian salad with herbs|200g|70|1.5|5|5|1.8|3|0.7|200|0|0||V|6
+490|Epsh (green walnut preserve)|30g|270|1.2|1|65|1.5|60|0.1|5|0|0|T|V|6
+491|Shah plov (pilaf baked in lavash crust)|350g|250|7|12|29|1|5|6|380|35|0|GMT|-|7
+492|Plov with chestnuts|350g|210|6|9|26|1.8|3|4|330|25|0|M|-|5
+493|Shirin plov (pilaf with dried fruit)|350g|210|3.5|7|34|1.5|10|4|200|18|0|M|v|6
+494|Dovga (yogurt soup with herbs)|350g|55|3|2|6|0.6|3|1.2|280|10|0|ME|v|7
+495|Piti (lamb and chickpea soup baked in a pot)|450g|110|7|6.5|6.5|1.8|1.5|3|340|25|0||-|7
+496|Kyufta bozbash (meatball and chickpea soup)|450g|90|6|5|6|1.5|1.5|2|330|20|0||-|7
+497|Dushbara (tiny lamb dumplings in broth)|400g|95|5|3.5|11|0.5|0.5|1.5|340|14|0|GE|-|7
+498|Qutab with greens|150g|230|6|8|34|2.5|1.5|3.5|420|15|0|GM|v|7
+499|Qutab with meat|150g|260|11|11|29|1.5|1|5|430|35|0|GM|-|7
+500|Qutab with pumpkin|150g|220|4.5|7|35|2.2|5|3.5|380|15|0|GM|v|6
+501|Lamb lula kebab|200g|275|17|22|3|0.4|1.2|9.5|480|70|0||-|8
+502|Tikka kebab (lamb chunks on skewer)|200g|250|21|18|1|0.2|0.5|7.5|430|80|0||-|7
+503|Jiz-biz (fried lamb offal with potatoes)|250g|220|15|14|8|1|1|5|400|230|0||-|6
+504|Assorted saj (meat and vegetables on a griddle)|400g|170|12|11|5|1.3|2|4|420|45|0||-|5
+505|Chicken saj|400g|150|14|8|5|1.3|2|2|420|50|0||-|5
+506|Lavangi (chicken stuffed with walnuts)|300g|240|18|16|6|1.5|3|3|360|70|0|T|-|6
+507|Chygyrtma (chicken with eggs and onion)|300g|180|15|12|3|0.6|1.8|3.5|380|200|0|E|-|6
+508|Bozartma (lamb stewed with onion)|350g|200|15|14|4|0.8|2|6|380|55|0||-|6
+509|Badimjan dolma (stuffed eggplant, pepper and tomato)|300g|120|6|7.5|8|2.2|4|2.6|340|20|0||-|7
+510|Sheki khingal (pasta with meat and qurut)|350g|210|10|9|22|1|1|4|400|35|0|GME|-|5
+511|Gyurza (crescent lamb dumplings)|250g|230|10|10.5|23|1|0.8|4.5|420|35|0|GE|-|6
+512|Badimjan burani (eggplant with yogurt)|200g|120|3|9|7|2.5|4|2.5|300|8|0|M|v|6
+513|Shekerbura (almond-filled pastry)|60g|440|8|23|50|2.5|25|8|80|50|0|GMET|v|7
+514|Baku pakhlava|80g|450|7|25|50|2|30|8|100|40|0|GMET|v|7
+515|Sheki halva (rice-net pastry with nuts in syrup)|80g|430|6|20|57|2|45|3|20|0|0|T|V|6
+516|Gogal (spiced puff buns)|80g|420|7|22|47|1.5|8|11|350|50|0|GME|v|5
+517|Mutaki (rolled cookies with nuts)|50g|440|7|22|55|2|25|9|100|50|0|GMET|v|5
+518|Badambura (almond pastry)|60g|440|8|23|50|2.5|25|8|80|50|0|GMET|v|6
+519|Ossetian cheese pie (ualibakh)|250g|260|10.5|11|30|1.2|2|6.5|520|30|0|GM|v|8
+520|Ossetian meat pie (fyddzhyn)|250g|270|11|12|29|1.2|2|5|480|30|0|GM|-|7
+521|Ossetian potato and cheese pie (kartofjin)|250g|240|8|9|31|1.6|2|5|480|25|0|GM|v|7
+522|Ossetian cabbage pie|250g|220|7|8.5|29|2|3|5|450|25|0|GM|v|6
+523|Ossetian beet-greens pie (tsakharajin)|250g|240|9|10|28|1.8|2|6|500|30|0|GM|v|6
+524|Chudu with meat (thin Dagestani pie)|150g|280|11|12|32|1.3|1.5|5|430|35|0|GM|-|7
+525|Chudu with greens|150g|240|6|9|34|2.5|1.5|5|400|20|0|GM|v|6
+526|Chudu with cottage cheese|150g|270|11|11|31|1|2|6.5|380|35|0|GME|v|6
+527|Chudu with potato|150g|250|6|9|36|2|1.5|5|400|20|0|GM|v|6
+528|Kurze with meat (Dagestani dumplings)|250g|230|10|10.5|23|1|0.8|4.5|420|35|0|G|-|7
+529|Dagestani khinkal (dough dumplings with meat and broth)|450g|190|12|8|17|0.8|0.8|3|380|40|0|G|-|6
+530|Zhizhig-galnash (boiled meat with dumplings and garlic sauce)|400g|190|13|8|16|0.6|0.8|3.5|380|40|0|G|-|6
+531|Chepalgash (cottage cheese flatbreads with butter)|150g|270|10|12|30|1|2|7.5|380|40|0|GM|v|6
+532|Khychin with cheese and potato|150g|240|8|8.5|32|1.6|1.5|5|450|25|0|GM|v|7
+533|Khychin with meat|150g|270|11|12|29|1.2|1|5|450|35|0|GM|-|6
+534|Lakumy (fried dough)|80g|370|7.5|18|45|1.5|6|3|380|20|0|GME|v|6
+535|Gedlibzhe (chicken in sour cream sauce)|300g|180|15|12|3|0.3|1.5|5|380|70|0|MG|-|6
+536|Libzhe (meat in spicy sauce)|300g|170|14|11|4|0.6|1.5|4|380|50|0|MG|-|5
+537|Chechen chapilg (cheese-filled flatbreads)|150g|270|10|12|30|1|2|7.5|380|40|0|GM|v|6
+538|Balkar ayran|250ml|30|1.4|1.5|2|0|2|1|250|5|0|M|v|8
+539|Fried Adyghe cheese|100g|300|19|23|3|0.2|1|13|600|65|0|MG|v|7
+540|Kabardian shashlik|200g|240|21|17|1|0.2|0.6|7|450|80|0||-|5
+541|Urbech (ground seed and nut paste)|20g|600|20|50|20|9|3|5|10|0|0|TZ|V|6
+542|Kurze with pumpkin|250g|170|4|5.5|26|2|4|2.5|360|10|0|G|v|6
+543|Echpochmak (triangle pie with meat and potato)|150g|270|10|12|30|1.5|1.5|4.5|420|30|0|GEM|-|8
+544|Vak belyash (small round meat pies)|100g|300|10|15|31|1.4|1.5|5|430|35|0|GEM|-|7
+545|Elesh (pie with chicken and potato)|150g|265|11|12|28|1.4|1.5|4.5|420|35|0|GEM|-|6
+546|Gubadiya (layered pie with rice, egg, raisins and kort)|150g|320|8|14|40|1.5|12|7|350|90|0|GEM|v|7
+547|Peremyachi (fried meat buns)|100g|310|11|16|30|1.3|1.5|4.5|430|35|0|GE|-|7
+548|Kystybyi with potato|150g|250|6|9|36|1.8|2|5|420|20|0|GM|v|7
+549|Kystybyi with millet porridge|150g|260|6.5|9|38|1.5|2|5|380|20|0|GM|v|6
+550|Tatar azu (beef with pickles and potatoes)|350g|150|9|8|10|1.3|1.5|2.8|480|30|0||-|7
+551|Bashkir bishbarmak|400g|200|13|9.5|16|0.6|0.8|4|380|45|0|GE|-|6
+552|Tatar noodle soup (tokmach)|400g|60|3.5|2|7|0.4|0.6|0.6|330|25|0|GE|-|7
+553|Tatar shurpa|450g|75|5|4|5|0.9|1.5|1.7|300|15|0||-|6
+554|Kazylyk (horse meat sausage)|50g|360|16|32|0.5|0|0|13|900|80|0||-|6
+555|Chak-chak|80g|430|7|18|60|1.2|35|4|30|90|0|GE|v|8
+556|Talkysh kaleve (honey candy)|40g|420|1|10|83|0|75|6|10|25|0|GM|v|5
+557|Baursak|100g|360|7.5|17|44|1.5|5|3|380|20|0|GME|v|7
+558|Kosh tele (fried dough twists)|80g|440|7|22|55|1.3|15|4|100|60|0|GEM|v|6
+559|Bavyrsak (fried dough balls)|100g|360|7.5|17|44|1.5|5|3|380|20|0|GME|v|6

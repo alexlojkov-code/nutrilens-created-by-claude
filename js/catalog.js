@@ -1,11 +1,15 @@
 /* NutriLens — каталог блюд и напитков (data/food_catalog, 2244 позиции).
-   В каталоге только названия, поэтому состав каждой позиции подбирается так:
-   1) самое похожее блюдо из базы (foods.js, dishes.js, profiles.js) — по ключевым словам названия;
-   2) если похожего нет — типовой состав категории («Супы», «Десерты», «Коктейли»…).
-   Результат честно помечается «оценка по похожему блюду», с ИИ его можно уточнить. */
+   Состав позиции берётся так:
+   1) собственный состав по типовому рецепту из CATALOG.nut (scripts/enrich_catalog.mjs, оценка ИИ) —
+      вместе с порцией, английским названием, аллергенами и пометками;
+   2) если его нет — самое похожее блюдо из базы (foods.js, dishes.js, profiles.js) по ключевым словам;
+   3) если похожего нет — типовой состав категории («Супы», «Десерты», «Коктейли»…).
+   Оценки честно помечаются в интерфейсе, с ИИ их можно уточнить. */
 
-const CAT_SCRIPT = 'js/catalog-data.js?v=1';
+const CAT_SCRIPT = 'js/catalog-data.js?v=2';
 const CAT_ALC = 1;
+// флаги CATALOG.nut[i][10]
+const NUT_ML = 1, NUT_VEG = 2, NUT_VEGAN = 4, NUT_PORK = 8, NUT_ALC = 16;
 
 // Типовой состав категории, если похожего блюда не нашлось: [регулярка, подпись, значения на 100 г/мл, порция, опции]
 const CAT_DEFAULTS = [
@@ -79,7 +83,10 @@ const Catalog = {
       const e = {
         i, id: `cat:${grp[0]}__${sid}`, name, g, c, group: grp, type: grp[3], cat: C.cats[c],
         alc: !!(flags & CAT_ALC), tags: C.tags.filter((_, k) => mask & (1 << k)), norm: normalize(name),
+        n: (C.nut && C.nut[i]) || null,
       };
+      e.en = e.n ? e.n[13] : '';
+      e.normEn = normalize(e.en);
       this.byId.set(e.id, e);
       return e;
     });
@@ -135,10 +142,32 @@ const Catalog = {
     return (e.alc && run(true)) || run(false);
   },
 
+  // название на языке интерфейса
+  name(e) { return Store.state.settings.lang === 'en' && e.en ? e.en : e.name; },
+
+  // аллергены и пометки; халяль не утверждаем — только «без свинины и алкоголя»
+  diet(e) {
+    if (!e.n) return null;
+    const fl = e.n[10], am = e.n[11];
+    return {
+      allergens: this.data.allergens.filter((_, k) => am & (1 << k)),
+      vegetarian: !!(fl & NUT_VEG), vegan: !!(fl & NUT_VEGAN), pork: !!(fl & NUT_PORK), alcohol: !!(fl & NUT_ALC),
+    };
+  },
+
   estimate(e) {
     if (this._est.has(e.id)) return this._est.get(e.id);
-    const m = this.match(e);
     let r;
+    if (e.n) {
+      const per100 = {}, liquid = !!(e.n[10] & NUT_ML), portion = e.n[9];
+      NUTRIENT_KEYS.forEach((k, i) => per100[k] = e.n[i]);
+      const opts = liquid ? { liquid: 1, cup: portion } : { portion };
+      if (e.alc) opts.alc = 1;
+      r = { per100, basis: null, foodId: null, opts, source: 'catalog_ai', confidence: e.n[12] / 100, grams: portion };
+      this._est.set(e.id, r);
+      return r;
+    }
+    const m = this.match(e);
     if (m) {
       const f = m.food, o = f.opts || {};
       const exact = m.coverage >= 0.99 && m.first;
@@ -172,7 +201,7 @@ const Catalog = {
   toItem(e) {
     const est = this.estimate(e);
     return {
-      name: e.name, grams: est.grams, per100: Object.assign({}, est.per100), source: est.source, basis: est.basis,
+      name: this.name(e), grams: est.grams, diet: this.diet(e) || undefined, per100: Object.assign({}, est.per100), source: est.source, basis: est.basis,
       confidence: est.confidence, grams_source: 'standard', origin: 'catalog', foodId: est.foodId, catalogId: e.id, opts: est.opts,
     };
   },
@@ -185,14 +214,19 @@ const Catalog = {
     const out = [];
     for (const e of this.list) {
       if (!this.visible(e)) continue;
-      const ew = e.norm.split(' ');
-      if (!words.every(w => ew.some(x => x.startsWith(w)))) continue;
-      let s = 0;
-      if (e.norm === nq) s += 30;
-      if (e.norm.startsWith(nq)) s += 12;
-      if (ew[0].startsWith(words[0])) s += 6;
-      s -= ew.length * 0.3;
-      out.push({ e, s });
+      // ищем и по русскому, и по английскому названию
+      let best = null;
+      for (const norm of e.normEn ? [e.norm, e.normEn] : [e.norm]) {
+        const ew = norm.split(' ');
+        if (!words.every(w => ew.some(x => x.startsWith(w)))) continue;
+        let s = 0;
+        if (norm === nq) s += 30;
+        if (norm.startsWith(nq)) s += 12;
+        if (ew[0].startsWith(words[0])) s += 6;
+        s -= ew.length * 0.3;
+        if (best === null || s > best) best = s;
+      }
+      if (best !== null) out.push({ e, s: best });
     }
     out.sort((a, b) => b.s - a.s);
     // одинаковые названия из разных групп — оставляем одно

@@ -775,3 +775,9 @@ input[type=range]::-moz-range-thumb { width: 18px; height: 18px; border-radius: 
   .catgroup .cuisines::-webkit-scrollbar { display: none; }
   .catgroup .cuisines .pill { flex: none; }
 }
+
+/* пометки позиции каталога: вег / без свинины, аллергены */
+.diet { display: grid; gap: 8px; }
+.diet .row:empty { display: none; }
+.diet p { margin: 0; font-size: 11px; line-height: 1.6; }
+.diet p b { color: var(--fg); font-weight: 600; }

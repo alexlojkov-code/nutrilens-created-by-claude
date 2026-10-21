@@ -1,0 +1,154 @@
+# Индийская (окончание), ближневосточная, турецкая, иранская и афганская — индексы 880–1032
+880|Roti (whole wheat flatbread)|40g|270|9|4|49|7|1.5|0.8|400|0|0|G|V|8
+881|Chapati|40g|280|9|5|50|6.5|1.5|1.5|400|3|0|GM|v|8
+882|Paratha (layered fried flatbread)|80g|320|7|14|43|5|1.5|5|450|15|0|GM|v|7
+883|Aloo paratha (potato-stuffed flatbread)|150g|260|5.5|11|36|3.5|1.5|4|450|10|0|GM|v|7
+884|Puri (deep-fried bread)|50g|380|7|20|45|3.5|1.5|3|450|0|0|G|V|7
+885|Potato samosa|100g|260|5|14|30|3|2|2.5|450|0|0|G|V|8
+886|Meat samosa|100g|280|10|16|25|2|1.5|4|450|30|0|G|-|7
+887|Pakora (vegetable fritters)|100g|270|7|17|23|3.5|2|1.8|450|0|0||V|7
+888|Onion bhaji|100g|280|6|18|24|3.5|4|1.8|450|0|0||V|8
+889|Papad (poppadom)|15g|370|25|3|60|19|1|0.5|1800|0|0||V|7
+890|Masala dosa|250g|190|4|7|28|2.2|1.5|1.5|400|5|0|M|v|8
+891|Idli (steamed rice cakes)|150g|130|4|0.5|28|1.5|0.3|0.1|300|0|0||V|8
+892|Vada (lentil fritters)|100g|280|8|16|26|4.5|1|1.5|400|0|0||V|7
+893|Uttapam (thick rice pancake with vegetables)|200g|160|4|5|25|2|2|0.8|380|0|0||V|7
+894|Pani puri|150g|190|4|8|27|3|3.5|1.2|500|0|0|G|V|7
+895|Bhel puri (puffed rice snack)|150g|200|5|7|30|3|5|1|500|0|0|NG|V|6
+896|Pav bhaji (vegetable mash with buns)|300g|190|4.5|8.5|25|3|4|4|500|15|0|GM|v|7
+897|Vada pav (potato fritter bun)|150g|290|6|13|38|3|3|1.8|550|0|0|G|V|7
+898|Mango chutney|20g|220|0.5|0.2|55|1.5|50|0|500|0|0||V|8
+899|Mint chutney|20g|60|2.5|1.5|9|3|4|0.5|500|3|0|M|v|6
+900|Raita (yogurt with cucumber)|100g|60|3|3|4.5|0.3|4|1.9|250|10|0|M|v|8
+901|Gulab jamun|60g|330|4.5|13|50|0.3|40|6|80|20|0|GM|v|8
+902|Rasmalai|100g|220|7|10|26|0|24|6|80|30|0|MT|v|7
+903|Kulfi|80g|240|6|13|25|0.3|23|8|70|40|0|MT|v|7
+904|Jalebi|60g|380|3|13|63|0.5|45|3|20|5|0|GM|v|8
+905|Kheer (rice pudding)|150g|150|4|5|23|0.3|15|3|60|15|0|MT|v|8
+906|Barfi (milk fudge)|40g|410|9|18|55|0.5|50|11|80|40|0|MT|v|7
+907|Sweet lassi|300ml|85|3|2.8|12|0|11.5|1.8|45|10|0|M|v|8
+908|Mango lassi|300ml|95|2.8|2.4|16|0.4|15|1.5|45|9|0|M|v|8
+909|Masala chai (spiced milk tea)|200ml|60|1.8|1.8|9|0|8.5|1.1|25|6|0|M|v|8
+910|Classic hummus|150g|230|7.5|15|16|5.5|0.5|2|450|0|0|Z|V|8
+911|Hummus with meat|250g|240|11|16|13|4|0.8|3.5|480|25|0|Z|-|7
+912|Hummus with mushrooms|250g|210|7|14|14|4.5|0.8|1.8|450|0|0|Z|V|7
+913|Hummus with avocado|200g|220|6|16|13|6|0.5|2.2|420|0|0|Z|V|6
+914|Baba ganoush (smoked eggplant dip)|150g|130|2.5|10|8|3.5|3.5|1.4|380|0|0|Z|V|8
+915|Mutabal (eggplant and tahini dip)|150g|140|3|11|8|3.5|3.5|1.8|380|3|0|ZM|v|7
+916|Tabbouleh (parsley and bulgur salad)|200g|110|2.5|7.5|9|2.8|2|1|300|0|0|G|V|8
+917|Fattoush (salad with toasted pita)|200g|120|2.2|8|11|2.5|3|1.1|350|0|0|G|V|8
+918|Labneh (strained yogurt)|100g|170|6|14|5|0|4|8.5|400|40|0|M|v|8
+919|Falafel|100g|330|13|18|32|5|2|2.4|560|0|0|Z|V|8
+920|Muhammara (red pepper and walnut dip)|100g|230|4|18|14|3|7|2|450|0|0|TG|V|7
+921|Fried kibbeh (bulgur and meat croquettes)|150g|280|12|16|22|3.5|1|4|450|35|0|GT|-|7
+922|Sfiha (open meat pies)|120g|280|11|13|29|1.5|2|4|450|25|0|G|-|7
+923|Manakish with za'atar|150g|330|7|14|44|3|2|2|500|0|0|GZ|V|8
+924|Manakish with cheese|150g|320|12|14|36|1.5|2|7|650|35|0|GM|v|7
+925|Stuffed grape leaves (warak enab)|150g|160|2.8|8|20|3|2|1.1|420|0|0||V|8
+926|Shanklish (aged spiced cheese)|50g|260|16|20|4|0.5|2|12|900|50|0|M|v|6
+927|Ful medames (stewed fava beans)|250g|130|7|5|15|5.5|1.5|0.7|400|0|0||V|8
+928|Matbucha (cooked tomato and pepper salad)|100g|90|1.5|6|8|2|5.5|0.8|400|0|0||V|7
+929|Israeli salad (diced vegetables)|200g|50|1|3|5|1.5|3|0.4|200|0|0||V|8
+930|Sabich (pita with fried eggplant and egg)|300g|230|7|12|24|3|3|2|500|70|0|GEZ|v|7
+931|Chicken shawarma|300g|220|12|10.5|20|1.6|2|2.6|540|35|0|GEZ|-|8
+932|Beef shawarma|300g|235|12|11.5|20|1.6|2|3.6|540|35|0|GEZ|-|7
+933|Lamb shawarma|300g|245|12|13|20|1.6|2|4.5|540|40|0|GEZ|-|7
+934|Shawarma plate (meat, rice, salad, sauce)|450g|180|11|8.5|15|1.6|2|2|450|35|0|ZE|-|6
+935|Shish taouk (chicken skewers)|200g|190|25|9|2|0.3|1|1.8|450|85|0|M|-|8
+936|Kofta kebab|200g|260|18|19.5|3|0.4|1|8|480|70|0||-|8
+937|Assorted kebab platter|400g|240|20|16|3|0.4|1|6|460|75|0|M|-|6
+938|Mansaf (lamb with rice and yogurt sauce)|500g|190|10|9.5|16|0.5|1.5|4.5|450|40|0|MT|-|7
+939|Musakhan (sumac chicken on flatbread)|350g|240|13|13|19|1.5|2.5|2.2|450|45|0|GT|-|7
+940|Maqluba (upside-down rice with meat and vegetables)|400g|170|8|8|18|1.5|2|2|420|25|0|T|-|7
+941|Kabsa (spiced rice with chicken)|450g|170|9|6|20|0.8|1.5|1.5|430|35|0|T|-|7
+942|Mandi with chicken|450g|175|10|6.5|19|0.6|1|1.7|430|40|0|T|-|7
+943|Shakshuka|300g|100|6|7|5|1.5|3.5|1.8|400|165|0|E|v|8
+944|Shakshuka with feta|300g|120|7|8.5|5|1.5|3.5|3|500|175|0|EM|v|7
+945|Pita with falafel|250g|250|9|11|30|4|3|1.6|550|0|0|GZ|V|7
+946|Pita with shawarma|250g|230|12|10|22|1.6|2|2.5|550|35|0|GEZ|-|7
+947|Israeli schnitzel (breaded chicken)|200g|250|20|13|13|0.6|0.5|2|400|80|0|GE|-|7
+948|Kugel (noodle or potato bake)|150g|200|5|9|25|1.2|8|3.5|300|80|0|GEM|v|5
+949|Malawach (Yemeni flaky flatbread)|150g|360|6|20|39|1.5|1.5|9|500|30|0|GM|v|6
+950|Jachnun (slow-baked rolled pastry)|150g|380|6|20|44|1.5|3|9|500|35|0|GM|v|6
+951|Bourekas (puff pastry with filling)|120g|340|8|21|29|1.2|1.5|10|500|35|0|GME|v|7
+952|Challah (braided egg bread)|60g|290|8|6|50|2|5|1.5|450|60|0|GE|v|8
+953|Couscous with vegetables|300g|125|3.5|3.5|20|2.5|3|0.5|330|0|0|G|V|7
+954|Baklava|60g|430|6|25|47|2.5|28|7|180|20|0|GMT|v|8
+955|Knafeh (cheese pastry in syrup)|120g|360|7|17|45|0.8|30|9|250|40|0|GM|v|7
+956|Muhallebi (milk pudding)|150g|130|3.5|3.5|21|0|16|2.2|50|12|0|MT|v|7
+957|Tahini halva|50g|520|12|30|52|4.5|45|5|200|0|0|Z|V|8
+958|Maamoul (date or nut-filled cookies)|40g|440|6|20|60|3|30|10|80|35|0|GMT|v|7
+959|Basbousa (semolina cake in syrup)|80g|360|5|14|54|1|38|7|150|30|0|GME|v|7
+960|Umm Ali (bread pudding with nuts)|200g|260|6|14|28|1|18|7|200|40|0|GMT|v|6
+961|Turkish delight (rahat lokum)|40g|350|0.3|0.5|86|0.2|70|0|20|0|0||V|7
+962|Döner kebab in lavash|350g|220|11|10.5|21|1.5|2|3.2|560|30|0|GEMZ|-|8
+963|Dürüm (wrap with grilled meat)|300g|230|12|11|21|1.5|2|3.5|560|35|0|GEM|-|8
+964|Iskender kebab (döner over bread with yogurt and tomato butter)|400g|190|11|11|12|0.8|2.5|5|480|40|0|GM|-|7
+965|Adana kebab|250g|260|17|20|4|0.6|1.5|8|500|70|0||-|8
+966|Urfa kebab|250g|255|17|19.5|4|0.6|1.5|8|480|70|0||-|7
+967|Shish kebab|200g|230|24|14|1|0.2|0.5|6|450|80|0||-|8
+968|Beyti kebab (wrapped in lavash with yogurt)|350g|240|13|14|15|1|2.5|6|500|50|0|GM|-|7
+969|Tavuk shish (chicken skewers)|200g|180|25|8|2|0.3|1|1.8|450|85|0|M|-|8
+970|Köfte (Turkish meatballs)|200g|260|18|19|5|0.4|1|7.5|500|70|0|GE|-|8
+971|Inegöl köfte|200g|270|18|20.5|4|0.3|0.8|8.5|520|75|0|G|-|7
+972|Içli köfte (stuffed bulgur balls)|150g|280|12|16|22|3.5|1|4|450|35|0|GT|-|7
+973|Lahmacun|200g|230|10|8|29|2|2|2.5|500|20|0|G|-|8
+974|Pide with cheese|300g|280|12|12|31|1.4|2|6.5|560|30|0|GME|v|7
+975|Pide with minced meat|300g|260|12|11|29|1.6|2|4|540|30|0|G|-|7
+976|Pide with egg|300g|260|11|11|30|1.4|2|4.5|500|130|0|GEM|v|6
+977|Gözleme with cheese|250g|270|11|11|31|1.5|1.5|6|560|30|0|GM|v|7
+978|Gözleme with spinach|250g|230|7.5|9|30|2.5|1.5|3.5|500|15|0|GM|v|7
+979|Gözleme with potato|250g|240|5.5|8.5|35|2|1.5|3|480|10|0|GM|v|7
+980|Börek (filo pie)|150g|300|10|17|27|1.2|1.5|8|550|60|0|GME|v|7
+981|Su böreği (boiled-layer cheese pie)|150g|280|11|15|25|1|1.5|8.5|550|80|0|GME|v|7
+982|Simit (sesame bread ring)|100g|300|9.5|6|51|3|5|1|500|0|0|GZ|V|8
+983|Menemen (eggs with tomatoes and peppers)|250g|110|6|8|4.5|1.3|3|2|350|175|0|E|v|8
+984|Turkish breakfast spread (kahvaltı)|500g|210|9|13|15|2|5|5|650|100|0|GMEZ|v|4
+985|Red lentil soup (mercimek çorbası)|350g|65|3.5|2|8.5|2|1.5|0.6|380|3|0|M|v|8
+986|Ezogelin soup (lentil and bulgur)|350g|70|3.5|2|9.5|2.2|1.5|0.6|380|3|0|GM|v|7
+987|Imam bayildi (stuffed eggplant in olive oil)|250g|120|1.5|9|9|3|5|1.3|330|0|0||V|7
+988|Karnıyarık (eggplant stuffed with minced meat)|300g|140|6|10|7|2.5|4|3|380|20|0||-|7
+989|Turkish moussaka|300g|130|6|9|7|2.3|4|3|380|20|0||-|6
+990|Sarma (stuffed vine leaves)|150g|160|2.8|8|20|3|2|1.1|420|0|0||V|7
+991|Turkish manti with yogurt|300g|200|9|8|23|1|2|4|450|35|0|GME|-|7
+992|Kumpir (loaded baked potato)|500g|180|5|10|18|2|1.5|4.5|500|25|0|MEU|P|6
+993|Midye dolma (stuffed mussels with rice)|150g|180|7|5.5|26|0.8|2|0.8|450|25|0|L|-|7
+994|Balık ekmek (fish sandwich)|300g|210|11|8.5|22|1.6|2|1.5|420|35|0|GF|-|7
+995|Kokoreç (grilled lamb intestines)|200g|250|17|19|4|0.4|0.5|8|550|200|0|G|-|6
+996|Tantuni (wrap with sautéed beef)|250g|230|13|10|22|1.5|2|3|550|35|0|G|-|7
+997|Çiğ köfte (spicy bulgur balls)|150g|160|4|4|28|5|3|0.5|500|0|0|G|V|7
+998|Acılı ezme (spicy tomato and pepper relish)|100g|60|1.5|3.5|6|2|4|0.5|400|0|0||V|7
+999|Cacık (yogurt with cucumber)|150g|50|3|2.2|4.5|0.3|4|1.5|250|8|0|M|v|8
+1000|Haydari (thick yogurt dip with herbs)|100g|140|6|11|5|0.3|4|6|400|30|0|M|v|7
+1001|Çoban salad (shepherd's salad)|200g|60|1|4|5|1.5|3|0.6|250|0|0||V|8
+1002|Pistachio baklava|60g|440|7|26|47|2.5|28|8|150|20|0|GMT|v|8
+1003|Künefe (cheese pastry in syrup)|150g|360|7|17|45|0.8|30|9|250|40|0|GM|v|7
+1004|Turkish delight (lokum)|40g|350|0.3|0.5|86|0.2|70|0|20|0|0||V|7
+1005|Kadayıf (shredded pastry in syrup)|80g|410|5|19|55|1.5|35|8|150|30|0|GMT|v|7
+1006|Sütlaç (baked rice pudding)|200g|130|3.5|3|22|0.2|15|1.9|50|12|0|M|v|8
+1007|Tulumba (fried dough in syrup)|60g|380|3|15|59|0.6|40|3|100|40|0|GE|v|7
+1008|Revani (semolina cake in syrup)|80g|330|5|10|56|0.8|38|4|150|60|0|GEM|v|7
+1009|Keşkül (almond milk pudding)|150g|150|4|5.5|21|0.5|17|2.5|50|12|0|MT|v|6
+1010|Maraş dondurma (stretchy Turkish ice cream)|100g|230|4|11|29|0.2|27|7|70|35|0|M|v|6
+1011|Pişmaniye (cotton candy halva)|40g|500|6|20|74|1|55|7|20|0|0|G|V|6
+1012|Chelow kebab (rice with kebab)|450g|200|12|8|20|0.5|0.5|3.2|400|40|0|M|-|7
+1013|Koobideh kebab (minced lamb kebab)|200g|270|17|21|3|0.4|1.2|9|480|70|0||-|8
+1014|Joojeh kebab (saffron chicken kebab)|250g|180|24|8.5|2|0.3|1|2.5|450|85|0|M|-|8
+1015|Barg kebab (fillet kebab)|200g|210|25|12|1|0.2|0.5|5|430|75|0|M|-|7
+1016|Ghormeh sabzi (herb stew with lamb and beans)|350g|130|9|7|8|3|1.5|2.3|420|30|0||-|7
+1017|Fesenjan (chicken in walnut and pomegranate sauce)|350g|230|13|15|12|1.5|9|2|330|45|0|T|-|7
+1018|Kashk-e bademjan (eggplant with whey)|150g|150|4|11|9|3|4|3|450|8|0|MT|v|7
+1019|Mirza ghasemi (smoked eggplant with egg and garlic)|150g|120|4|9|7|3|4|1.5|380|90|0|E|v|7
+1020|Tahdig (crispy saffron rice)|150g|230|3|9|35|0.4|0.2|4|300|15|0|M|v|7
+1021|Zereshk polo (barberry rice with chicken)|400g|180|9.5|6|22|0.6|3|1.8|400|40|0|MT|-|7
+1022|Ash reshteh (noodle and bean soup with kashk)|400g|100|4.5|3.5|13|3|1.5|1|450|5|0|GM|v|7
+1023|Dizi (abgoosht, lamb and chickpea stew)|500g|120|8|6|8.5|2.5|1.5|2.3|400|25|0||-|6
+1024|Kabuli palaw (Afghan rice with lamb, carrots, raisins)|400g|210|7.5|8.5|26|1.5|6|2.7|400|25|0|T|-|7
+1025|Bolani (stuffed flatbread)|150g|250|5.5|10|35|2.5|1.5|1.5|450|0|0|G|V|7
+1026|Aushak (leek dumplings with yogurt and meat sauce)|300g|190|8|8|21|1.5|2|3.5|420|25|0|GM|-|6
+1027|Afghan mantu|300g|210|10|9|22|1.5|2|3.5|420|30|0|GM|-|7
+1028|Barbari bread|100g|280|9|4|52|2.5|2|0.6|500|0|0|GZ|V|7
+1029|Shirini (Persian pastries)|40g|440|6|22|55|1.5|30|10|80|50|0|GMET|v|5
+1030|Sholeh zard (saffron rice pudding)|150g|150|2|3|29|0.4|18|0.5|10|0|0|T|V|7
+1031|Faloodeh (rosewater noodle sorbet)|200g|110|0.5|0.1|27|0.1|24|0|5|0|0||V|6
+1032|Bastani (saffron ice cream with pistachios)|100g|230|4|12|26|0.4|24|7|60|40|0|MTE|v|7

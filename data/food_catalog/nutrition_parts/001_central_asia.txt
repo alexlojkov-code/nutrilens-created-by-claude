@@ -1,0 +1,172 @@
+# Узбекская, казахская, киргизская и таджикская, уйгурская и дунганская — индексы 0–170
+0|Tashkent plov (rice pilaf with lamb, carrots, chickpeas)|350g|210|6.5|11|21|1.2|1.8|3.6|420|25|0||-|8
+1|Samarkand plov (layered rice pilaf with lamb)|350g|205|6.5|10.5|21|1.1|2|3.5|410|24|0||-|8
+2|Fergana plov (rice pilaf with lamb and quince)|350g|215|6.5|11.5|21|1.1|2|3.8|420|26|0||-|7
+3|Bukhara plov (Osh sofi, pilaf with raisins)|350g|200|6|10|22|1.2|3.5|3.3|400|22|0||-|7
+4|Wedding plov (Tuy oshi, pilaf with raisins and chickpeas)|350g|210|6.5|10.5|22.5|1.5|3.5|3.4|410|23|0||-|7
+5|Plov with chickpeas and raisins|350g|205|6.5|9.5|23.5|2|4|3|400|20|0||-|7
+6|Plov with kazy (horse sausage)|350g|235|7.5|13|21|1|1.8|4.5|520|32|0||-|7
+7|Plov with quail eggs|350g|210|7|11|20.5|1.1|1.8|3.5|410|70|0|E|-|7
+8|Chicken plov|350g|180|8|7.5|20.5|1.1|1.8|1.8|400|30|0||-|8
+9|Vegetarian plov|350g|160|3.2|6|23.5|2|2.5|0.9|380|0|0||V|7
+10|Kavurma plov (pilaf with fried meat)|350g|225|7|12.5|21|1|1.8|4|420|28|0||-|7
+11|Manti with lamb (steamed dumplings)|300g|230|10|11|22|1.2|1|4.5|420|35|0|G|-|8
+12|Manti with beef (steamed dumplings)|300g|220|11|9.5|22|1.2|1|3.8|420|35|0|G|-|8
+13|Manti with pumpkin|300g|165|3.8|5.5|25|2|4|2|380|10|0|G|v|8
+14|Manti with potato|300g|175|4.2|5.5|27|1.8|1|1.8|390|5|0|G|v|8
+15|Khonim (steamed rolled dough with meat)|300g|215|9|9.5|23|1.3|1.5|3.6|430|30|0|G|-|7
+16|Uyghur lagman (hand-pulled noodles with beef and vegetables)|450g|130|6|4.5|16|1.3|2|1.4|380|15|0|G|-|7
+17|Fried lagman (kovurma lagman)|350g|175|7|7.5|20|1.3|2|2|460|18|0|G|-|7
+18|Guiru lagman (lagman with fried noodles and sauce)|400g|150|6.5|6|17.5|1.4|2.3|1.8|430|16|0|G|-|7
+19|Kazan kabob (lamb and potatoes fried in a cauldron)|350g|205|10|13|12|1.3|0.8|4.8|420|38|0||-|7
+20|Dimlama (braised meat with vegetables)|400g|105|6|5.5|8|1.8|3|2|300|18|0||-|7
+21|Dolma in grape leaves|200g|175|8|11|11|1.5|1|4|350|28|0||-|7
+22|Stuffed peppers (dolma)|300g|120|6|6|10|1.4|3|2.4|330|20|0||-|7
+23|Naryn (cold noodles with horse meat)|300g|200|11|8|21|0.9|0.8|3|450|35|0|G|-|6
+24|Jiz (fried lamb with onion)|200g|270|18|21|2.5|0.4|1.5|9|420|70|0||-|7
+25|Tandoor gusht (tandoor-baked lamb)|250g|250|22|18|0.5|0|0.2|8|420|80|0||-|7
+26|Khasip (lamb sausage with rice and offal)|200g|240|13|17|9|0.4|0.5|7|500|90|0||-|5
+27|Fried chuchvara (small dumplings)|250g|290|10|15|29|1.2|1|5|480|30|0|G|-|7
+28|Moshkichiri (mung bean and rice porridge with meat)|350g|135|6|5|16|2.5|0.8|1.8|330|12|0||-|6
+29|Shivit oshi (green dill noodles with vegetable sauce)|400g|150|6|5.5|19|1.5|2.5|1.6|390|25|0|GE|-|6
+30|Norin (thin noodles with horse meat)|300g|210|11|9|21|0.8|0.6|3.4|460|35|0|G|-|6
+31|Beshbarmak Uzbek style (noodles with meat)|400g|190|12|8.5|16.5|0.7|0.8|3.3|380|40|0|GE|-|6
+32|Tukhum barak (dumplings with egg filling)|250g|200|7|9|23|0.8|0.8|3.5|330|150|0|GEM|v|6
+33|Kiyma (minced lamb with onion)|200g|260|16|20|4|0.6|2|8.5|430|65|0||-|6
+34|Tashkent-style meat (beef with vegetables and radish)|250g|165|14|9|7|1.4|3|2.5|480|40|0|G|-|5
+35|Lamb shashlik|200g|260|20|19.5|1|0.2|0.6|8.5|450|80|0||-|8
+36|Beef shashlik|200g|210|24|12.5|1|0.2|0.6|5|430|70|0||-|8
+37|Chicken shashlik|200g|180|23|9.5|1|0.2|0.6|2.7|430|80|0||-|8
+38|Liver shashlik with lamb tail fat|200g|260|17|20|3.5|0|0|8.5|200|260|0||-|7
+39|Lula kebab (minced lamb on skewer)|200g|275|17|22|3|0.4|1.2|9.5|480|70|0||-|8
+40|Minced meat shashlik|200g|265|17|20.5|3|0.4|1.2|8.5|480|65|0||-|7
+41|Lamb rib shashlik|250g|320|17|28|0.5|0.1|0.3|12.5|420|80|0||-|7
+42|Quail shashlik|200g|200|20|13|1|0.1|0.5|3.8|380|80|0||-|6
+43|Kiyma kabob (minced meat kebab)|200g|270|17|21|3|0.4|1.2|9|480|68|0||-|6
+44|Assorted shashlik platter|400g|240|21|17|1|0.2|0.6|7|440|78|0||-|6
+45|Lamb shurpa (meat and vegetable soup)|450g|80|5|4.5|5|0.9|1.5|2|300|15|0||-|8
+46|Beef shurpa|450g|70|5.5|3|5|0.9|1.5|1.2|300|14|0||-|8
+47|Shurpa chairama (fried meat shurpa)|450g|85|5|5|5|0.9|1.5|2.2|310|16|0||-|6
+48|Mastava (rice and meat soup)|450g|75|3.8|3|8|0.8|1.3|1.2|300|10|0|M|-|8
+49|Moshkhurda (mung bean soup with meat)|450g|80|4.5|2.8|9|2.2|1|1|290|9|0|M|-|7
+50|Chuchvara in broth|450g|85|4|3.2|9.5|0.5|0.5|1.3|330|12|0|GE|-|7
+51|Ugra osh (hand-cut noodle soup)|450g|80|4|2.8|9.5|0.7|0.9|1.1|320|10|0|G|-|6
+52|Kassa shurpa (thick lamb shurpa)|450g|95|6|5|6|0.9|1.5|2.2|320|18|0||-|5
+53|Halim (wheat and meat porridge)|400g|120|7|4|14|1.8|0.5|1.5|300|18|0|G|-|6
+54|Kuk shurpa (green herb soup)|400g|60|3|2.8|5.5|1.2|1.2|1|280|8|0||-|5
+55|Shurpa with chickpeas|450g|85|5|3.5|8.5|2|1.5|1.4|300|12|0||-|7
+56|Tandoor samsa with meat|150g|300|10|17|27|1.2|1|7|430|35|0|GZ|-|8
+57|Puff pastry samsa with meat|150g|330|10|21|26|1|1|9.5|440|40|0|GEZ|-|8
+58|Chicken samsa|150g|285|11|15|26|1|1|5|430|40|0|GZ|-|7
+59|Pumpkin samsa|150g|240|4.5|11|30|2|5|4.5|360|15|0|GZ|v|7
+60|Green herb samsa|150g|240|5|12|28|2|1.5|5|380|15|0|GZ|v|6
+61|Potato samsa|150g|255|5|11.5|33|1.8|1|4.5|400|12|0|GZ|v|7
+62|Samsa triangle (puff pastry)|120g|320|10|19|27|1|1|8.5|430|35|0|GEZ|-|7
+63|Sambusa (fried pastry with meat)|100g|310|10|17|29|1.4|1.2|5|420|30|0|G|-|6
+64|Uzbek flatbread (non)|150g|270|8.5|3|52|2.2|2.5|0.8|480|5|0|GMZ|v|8
+65|Patyr (rich flatbread with fat)|150g|330|8|10|52|2|2.5|4.5|480|15|0|GMZ|-|7
+66|Obinon (thin tandoor flatbread)|150g|265|8.5|2.5|52|2.2|2|0.6|480|2|0|GZ|V|7
+67|Samarkand flatbread|150g|285|8.5|4.5|52|2.2|3|1.8|480|10|0|GMZ|v|7
+68|Katlama (layered fried flatbread)|120g|360|7|17|45|1.8|2|5|420|12|0|GM|v|6
+69|Gumma (fried pie with offal)|120g|300|10|16|29|1.3|1|4|420|90|0|G|-|5
+70|Uzbek belyash (fried meat pie)|120g|320|11|18|28|1.3|1.5|5|430|35|0|GE|-|7
+71|Chebureki (fried meat turnover)|150g|300|10|17|27|1.2|1|4.5|450|30|0|G|-|8
+72|Bichak (baked pie with meat)|120g|300|10|16|29|1.2|1|6|430|35|0|GE|-|6
+73|Uzbek kutab (thin pie with meat or greens)|150g|245|9|11|27|1.5|1|4|420|25|0|G|-|5
+74|Shirmoy non (sweet tandoor bread)|150g|300|8.5|6|53|2|8|2.5|420|20|0|GMEZ|v|6
+75|Achichuk (tomato and onion salad)|150g|25|0.9|0.2|5|1.3|3.2|0|140|0|0||V|8
+76|Tashkent salad (radish, beef, egg)|200g|165|8|13|4|1.2|2|2.5|330|70|0|EU|-|6
+77|Uzbekistan salad (radish, meat, onion, egg)|200g|175|8|14|4.5|1.2|2|2.6|330|75|0|EU|-|5
+78|Bahor salad (vegetables with sour cream)|200g|75|1.5|5.5|5|1.5|3|2|150|10|0|M|v|5
+79|Andijan salad (vegetables with mayonnaise)|200g|140|2.5|12|6|1.5|3|1.8|300|15|0|EU|v|5
+80|Achichuk with radish|150g|30|1|0.3|6|1.6|3.5|0|150|0|0||V|7
+81|Kazy (horse meat sausage)|50g|370|16|33|0.5|0|0|13|900|80|0||-|7
+82|Kazy karta (horse sausage and intestine)|50g|350|16|31|0.5|0|0|12.5|850|90|0||-|5
+83|Cold naryn (noodles with horse meat)|250g|210|12|9|21|0.8|0.6|3.4|460|35|0|G|-|6
+84|Suzma (strained yogurt)|100g|130|9|8|4.5|0|3.5|5|60|25|0|M|v|8
+85|Chakka (strained sour milk with herbs)|100g|120|9|7|5|0.2|3.5|4.5|200|22|0|M|v|7
+86|Katyk (fermented milk)|200ml|58|3|3.2|4.2|0|4|2|45|11|0|M|v|8
+87|Radish and carrot salad|150g|60|1|3.5|6.5|2.2|3.5|0.4|180|0|0||V|6
+88|Pickled garlic|30g|110|5|0.3|23|1.5|2|0|1200|0|0||V|7
+89|Assorted pickles|150g|20|0.9|0.1|3.5|1.2|1.7|0|1100|0|0||V|7
+90|Lagman salad (cold noodles with vegetables)|250g|150|5|5.5|21|1.5|2.5|0.9|450|5|0|GS|V|5
+91|Cold khasip (lamb sausage with rice)|100g|240|13|17|9|0.4|0.5|7|520|90|0||-|5
+92|Walnut halva|50g|510|10|28|55|3|45|5|30|0|0|T|V|6
+93|Kholvaytar (flour halva)|100g|380|5|17|52|1|28|8|60|35|0|GM|v|5
+94|Nishalda (whipped egg white and sugar dessert)|50g|320|3|0.2|78|0|70|0|40|0|0|E|v|6
+95|Parvarda (pulled sugar candy)|30g|380|0.5|0.2|95|0|85|0|5|0|0|G|V|6
+96|Chak-chak (fried dough with honey)|80g|430|7|18|60|1.2|35|4|30|90|0|GE|v|7
+97|Uzbek pakhlava (baklava)|80g|440|6.5|25|48|2|30|9|150|35|0|GMT|v|6
+98|Sumalak (sprouted wheat pudding)|100g|180|4|2|36|2.5|15|0.3|10|0|0|G|V|5
+99|Khushkiyk (dried sweet cookies)|50g|430|7|16|65|1.5|30|7|150|50|0|GME|v|4
+100|Novvot (crystal rock sugar)|20g|390|0|0|98|0|98|0|1|0|0||V|8
+101|Dried apricots and raisins|50g|270|3|0.5|65|6|58|0|12|0|0|X|V|8
+102|Khvorost (fried dough strips with sugar)|80g|440|7|22|55|1.3|15|4|100|60|0|GEM|v|7
+103|Uzbek pakhlava with honey|80g|450|6.5|25|51|2|34|9|140|35|0|GMT|v|6
+104|Beshbarmak (boiled meat with noodles)|400g|200|13|9.5|16|0.6|0.8|4|380|45|0|GE|-|7
+105|Kuyrdak (fried offal and meat)|250g|220|16|15|5|0.9|1.5|5.5|420|220|0||-|6
+106|Kazy (horse meat sausage)|50g|370|16|33|0.5|0|0|13|900|80|0||-|7
+107|Shuzhuk (horse meat sausage)|50g|330|17|29|0.5|0|0|12|950|75|0||-|6
+108|Karta (horse intestine)|50g|300|12|28|0|0|0|11|500|90|0||-|5
+109|Zhal-zhaya (horse neck fat and meat)|50g|500|10|50|0|0|0|19|500|70|0||-|5
+110|Sorpa with meat (meat broth)|400g|55|5|3.5|1|0.2|0.5|1.4|350|15|0||-|6
+111|Kespe (noodle soup)|400g|85|4.5|3|10|0.6|0.8|1.1|340|20|0|GE|-|7
+112|Kazakh manti|300g|225|10|10.5|22|1.2|1|4.2|420|35|0|G|-|7
+113|Asip (sausage with rice and offal)|100g|250|12|18|10|0.4|0.3|7|500|100|0||-|5
+114|Syrne (lamb stewed in its own juice)|300g|230|18|17|2|0.4|1|7.5|380|75|0||-|6
+115|Palau (Kazakh pilaf)|350g|210|6.5|11|21|1.1|1.8|3.5|420|25|0||-|7
+116|Tostik (fried lamb brisket)|150g|330|17|29|0|0|0|13|400|80|0||-|5
+117|Baursaki (fried dough puffs)|100g|360|7.5|17|44|1.5|5|3|380|20|0|GME|v|7
+118|Shelpek (thin fried flatbread)|80g|380|7|18|47|1.6|2|3|420|5|0|GM|v|6
+119|Taba nan (pan-baked flatbread)|150g|260|8|2.5|51|2.2|2|0.6|480|2|0|G|V|7
+120|Kuimak (Kazakh pancakes)|150g|230|6.5|9|31|1|6|3.5|280|60|0|GME|v|6
+121|Zhent (millet with butter and sugar)|80g|430|7|22|52|2|25|13|30|50|0|M|v|5
+122|Kurt (dried salted cheese balls)|30g|330|28|17|13|0|10|11|2000|60|0|M|v|6
+123|Irimshik (dried cottage cheese)|50g|340|30|15|20|0|18|10|300|50|0|M|v|5
+124|Balkaimak (cream with honey)|50g|330|2|25|25|0|24|15|30|70|0|M|v|5
+125|Sorpa (clear meat broth)|400g|40|3.5|2.5|0.8|0.1|0.4|1|360|10|0||-|6
+126|Kespe-kozhe (noodle soup with milk)|400g|75|3|2.5|10|0.5|3|1.4|250|10|0|GME|-|4
+127|Sut-kozhe (millet and milk soup)|400g|85|3.5|3|11|0.7|4.5|1.8|80|10|0|M|v|5
+128|Kazakh shorpa (meat and vegetable soup)|450g|75|5|4|5|0.9|1.5|1.7|300|15|0||-|7
+129|Ashlyanfu (cold noodles and starch jelly with egg)|400g|90|3.5|3|12.5|0.9|2|0.5|480|35|0|GES|v|6
+130|Kulchetay (Kyrgyz noodles with meat)|400g|190|12|8.5|16.5|0.6|0.8|3.3|380|40|0|GE|-|5
+131|Chuchuk (Kyrgyz horse sausage)|50g|360|16|32|0.5|0|0|13|900|80|0||-|6
+132|Gurcha (Tajik flatbread pie)|150g|290|9|14|31|1.4|1.5|5|430|30|0|G|-|4
+133|Kyrgyz kuurdak (fried meat with onion)|250g|230|17|16|4.5|0.8|1.8|6.5|420|65|0||-|6
+134|Boorsok (fried dough puffs)|100g|360|7.5|17|44|1.5|5|3|380|20|0|GME|v|7
+135|Kurutob (flatbread with yogurt and vegetables)|350g|135|4.5|6|16|1.8|3|2.5|360|8|0|GM|v|6
+136|Oshi palav (Tajik pilaf)|350g|210|6.5|11|21|1.1|1.8|3.5|420|25|0||-|7
+137|Tajik mantui (steamed dumplings)|300g|225|10|10.5|22|1.2|1|4.2|420|35|0|G|-|7
+138|Kabobi kiyma (minced meat kebab)|200g|270|17|21|3|0.4|1.2|9|480|68|0||-|6
+139|Tukhumbarak (dumplings with egg filling)|250g|200|7|9|23|0.8|0.8|3.5|330|150|0|GEM|v|6
+140|Tajik sambusa (meat pastry)|120g|310|10|17|29|1.3|1|6.5|430|35|0|G|-|6
+141|Fatir (layered flatbread)|120g|340|7.5|13|48|1.8|2.5|6|420|30|0|GM|v|6
+142|Tajik shakarob (tomato and onion salad)|150g|25|0.9|0.2|5|1.3|3.2|0|140|0|0||V|7
+143|Shir choy (milk tea with butter and salt)|250ml|70|2.8|5|3.8|0|3.8|3.2|120|14|0|M|v|6
+144|Kyrgyz naryn (noodles with horse meat)|300g|200|11|8|21|0.8|0.6|3|450|35|0|G|-|5
+145|Tushbera (small dumplings in broth)|400g|95|4.5|3.5|11|0.5|0.5|1.4|330|14|0|G|-|6
+146|Tsomyan lagman (chopped fried noodles)|350g|175|7|7.5|20|1.3|2|2|470|18|0|G|-|6
+147|Suiru lagman (lagman with sauce)|450g|135|6|4.8|16.5|1.3|2|1.5|400|15|0|G|-|6
+148|Guru lagman (dry fried lagman)|350g|175|7|7.5|20|1.3|2|2|460|18|0|G|-|6
+149|Ding-ding lagman (diced noodles fried with meat)|350g|180|7|8|20|1.2|2|2.1|470|18|0|G|-|6
+150|Ganfan (rice with meat and vegetable sauce)|400g|130|5|4.5|17|1|2|1.5|380|12|0||-|6
+151|Ganfan with beef|400g|135|6|4.5|17|1|2|1.6|390|14|0||-|6
+152|Ganfan with chicken|400g|125|6|3.8|17|1|2|1|390|16|0||-|6
+153|Mampar (dough pieces in meat and vegetable soup)|450g|95|4.5|3.5|11.5|1|2|1.3|360|10|0|G|-|5
+154|Pinmyan (noodles with meat stir-fry)|350g|170|7|7|20|1.2|2|1.8|480|18|0|G|-|5
+155|Dungan funchoza (glass noodles with vegetables and meat)|300g|150|5|6|19|1|2|1|520|12|0|S|-|5
+156|Dungan ashlyamfu (cold noodles with starch jelly)|400g|90|3.5|3|12.5|0.9|2|0.5|480|35|0|GES|v|6
+157|Ganban (fried noodles with meat)|350g|180|7|8|20|1.2|2|2.1|470|18|0|G|-|5
+158|Tsomyan (fried cut noodles)|350g|175|7|7.5|20|1.3|2|2|470|18|0|G|-|5
+159|Uyghur samsa|150g|300|10|17|27|1.2|1|7|430|35|0|GZ|-|7
+160|Goshnan (flatbread pie with minced meat)|200g|290|11|15|28|1.3|1.2|5.5|450|35|0|G|-|6
+161|Uyghur polu (pilaf)|350g|210|6.5|11|21|1.1|2|3.5|420|25|0||-|6
+162|Khoshan (fried meat buns)|150g|300|10|16|29|1.2|1.2|5|440|30|0|G|-|6
+163|La zi ji (chicken with dried chili peppers)|250g|260|18|18|6|1|1.5|3|700|80|0|SZG|-|6
+164|Biguyan (fried dough with meat)|150g|300|10|16|29|1.2|1|5|440|30|0|G|-|4
+165|Mantou (steamed bun)|100g|225|7|1.5|46|1.5|4|0.3|300|0|0|G|V|7
+166|Sayshyan (stir-fried vegetables with meat)|250g|110|6|7|6|1.8|3|1.5|420|15|0|S|-|5
+167|Uyghur eggplant salad|200g|110|1.5|8|8.5|3|4|1.1|380|0|0|S|V|6
+168|Khantsai (stir-fried meat with vegetables)|250g|130|8|8|6|1.8|3|2|450|20|0|S|-|5
+169|Spicy ashlyamfu salad|250g|95|2.5|4|13|1|2|0.6|520|25|0|SE|v|5
+170|Cold funchoza (glass noodle salad)|200g|140|1.5|5|22|1.3|3|0.7|550|0|0|SZ|V|7

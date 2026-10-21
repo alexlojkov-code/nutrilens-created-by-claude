@@ -1,0 +1,139 @@
+# Испанская и португальская, греческая, центральноевропейская, британская и скандинавская — индексы 1194–1331
+1194|Seafood paella|400g|160|9|5|20|0.8|1|1|450|50|0|CLFX|-|8
+1195|Paella valenciana (chicken, rabbit, beans)|400g|165|9|5.5|20|1.2|1|1.2|420|35|0||-|7
+1196|Chicken paella|400g|160|9|5|20|0.8|1|1.1|420|35|0||-|8
+1197|Black paella (with squid ink)|400g|155|8.5|5|19.5|0.6|0.8|0.9|480|80|0|LCF|-|7
+1198|Fideuà (noodle paella with seafood)|400g|165|8.5|5.5|20|1|1|1|480|50|0|GCLF|-|7
+1199|Gazpacho|300ml|45|0.9|3|4|1|2.8|0.4|350|0|0|G|V|8
+1200|Salmorejo (thick tomato soup with egg and ham)|300g|95|2.5|6|8|1|3|1|450|25|0|GE|P|7
+1201|Tortilla española (potato omelette)|150g|190|6.5|12|14|1.3|1|2.5|330|170|0|E|v|8
+1202|Patatas bravas|200g|170|2.2|10|18|2|1.5|1.5|420|5|0|E|v|8
+1203|Jamón serrano|50g|240|30|13|0.3|0|0|4.5|2200|80|0||P|8
+1204|Jamón ibérico|50g|375|31|28|0.5|0|0|9.5|2000|80|0||P|8
+1205|Chorizo|50g|450|24|38|2|0|1|14|1200|90|0||P|8
+1206|Ham croquettes (croquetas de jamón)|120g|250|8|14|23|0.8|2|6|550|35|0|GEM|P|8
+1207|Gambas al ajillo (garlic shrimp)|150g|220|15|17|2|0.2|0.3|2.5|600|150|0|C|-|8
+1208|Pulpo a la gallega (Galician octopus with potatoes)|200g|140|12|6.5|9|1|0.4|1|500|40|0|L|-|7
+1209|Albóndigas (meatballs in tomato sauce)|200g|190|11|12|8|0.8|2.5|4.5|450|45|0|GE|P|7
+1210|Pimientos de Padrón (fried green peppers)|100g|80|1.5|6|5|2|2.5|0.9|450|0|0||V|8
+1211|Pan con tomate|100g|200|5.5|7|29|2|2.5|1.1|400|0|0|G|V|8
+1212|Bocadillo (Spanish sandwich)|250g|260|12|10|30|1.5|2|3.5|850|30|0|G|P|6
+1213|Manzanilla olives|50g|145|1|15|3.8|3.3|0|2|1500|0|0||V|8
+1214|Churros with chocolate|200g|370|5|20|43|1.5|20|7|250|10|0|GM|v|7
+1215|Crema catalana|120g|200|4.5|10|23|0|21|5.5|50|180|0|EM|v|8
+1216|Flan (caramel custard)|120g|160|4.5|5|24|0|23|2.5|60|110|0|EM|v|8
+1217|Turrón (nougat with almonds)|40g|480|11|25|55|3.5|45|2.5|20|0|0|TE|v|8
+1218|Bacalhau à Brás (salt cod with potatoes and egg)|300g|180|11|10|11|1|0.5|2|600|120|0|FE|-|7
+1219|Francesinha (meat sandwich with cheese and beer sauce)|500g|230|13|12|17|0.8|2|5.5|700|60|0|GMEX|P|7
+1220|Caldo verde (kale and potato soup with chouriço)|350g|60|2.5|3.5|5|1|0.6|1|380|5|0||P|8
+1221|Pastel de nata (custard tart)|60g|300|5|15|36|0.5|18|8|150|100|0|GEM|v|8
+1222|Bifana (pork sandwich)|200g|250|15|9|27|1.3|2|2.5|550|40|0|G|P|7
+1223|Grilled sardines|200g|210|25|12|0|0|0|3|400|140|0|F|-|8
+1224|Cataplana (seafood stew)|400g|110|11|5|5|1|1.5|1.3|500|60|0|CLFX|P|6
+1225|Greek salad (horiatiki)|250g|110|3.5|9|4.5|1.4|3|3.2|420|15|0|M|v|9
+1226|Pork gyros in pita|300g|245|12|12|22|1.5|2|3.8|550|35|0|GM|P|8
+1227|Chicken gyros|300g|220|13|9.5|21|1.5|2|2.3|520|40|0|GM|-|8
+1228|Souvlaki|200g|220|25|12|2|0.3|1|4|450|75|0||P|7
+1229|Moussaka|350g|160|7.5|10.5|9|2|3.5|4.5|380|45|0|GME|-|8
+1230|Pastitsio (baked pasta with meat and béchamel)|350g|190|10|9|18|1.2|2.5|4.5|420|50|0|GME|-|8
+1231|Spanakopita (spinach and feta pie)|150g|280|9|17|23|2|1.5|7|550|45|0|GME|v|8
+1232|Tiropita (cheese pie)|150g|320|11|20|25|1|1.5|9|650|60|0|GME|v|7
+1233|Dolmades (stuffed vine leaves)|150g|160|2.8|8|20|3|2|1.1|420|0|0||V|8
+1234|Tzatziki|100g|90|4|6.5|4|0.5|3.5|3|250|12|0|M|v|8
+1235|Taramasalata (fish roe dip)|80g|450|4|46|5|0.2|1|4|650|50|0|FG|-|7
+1236|Melitzanosalata (eggplant dip)|100g|120|1.5|10|6|3|3.5|1.4|350|0|0||V|7
+1237|Skordalia (garlic and potato dip)|80g|230|2.5|17|18|1.5|0.8|2.5|450|0|0|T|V|6
+1238|Baked feta|150g|270|13|22|5|0.8|3|13|1000|65|0|M|v|7
+1239|Saganaki (fried cheese)|100g|340|19|26|7|0.2|1|15|900|75|0|MG|v|7
+1240|Kleftiko (slow-roasted lamb with potatoes)|400g|200|14|12|9|1.2|1|5|380|50|0||-|7
+1241|Stifado (beef and onion stew)|350g|160|15|8|6|1.2|3.5|3|400|45|0|X|-|7
+1242|Keftedes (Greek meatballs)|150g|260|16|18|8|0.6|1|6.5|450|80|0|GE|-|7
+1243|Gemista (stuffed tomatoes and peppers)|300g|110|2|5|14|2|4|0.8|350|0|0||V|7
+1244|Avgolemono (egg-lemon chicken soup)|350g|60|4.5|2|6|0.2|0.3|0.6|400|50|0|E|-|7
+1245|Fasolada (white bean soup)|350g|90|4.5|3.5|10|4|2|0.5|380|0|0|Y|V|7
+1246|Grilled octopus|200g|160|25|5|3|0|0|0.9|500|90|0|L|-|8
+1247|Fried calamari|150g|240|14|12|18|0.6|0.5|1.8|450|200|0|LG|-|8
+1248|Loukoumades (honey doughnuts)|100g|340|5|14|50|1.5|25|2|150|10|0|GT|v|7
+1249|Galaktoboureko (custard filo pie)|120g|300|5.5|13|41|0.4|26|7|150|90|0|GEM|v|7
+1250|Greek yogurt with honey and walnuts|200g|180|7|10|16|0.6|15|4.5|40|10|0|MT|v|8
+1251|Greek baklava|60g|430|6|25|47|2.5|28|7|180|20|0|GMT|v|8
+1252|Kourabiedes (almond butter cookies)|40g|520|7|32|52|2|25|15|60|50|0|GMT|v|7
+1253|Bavarian sausages with sauerkraut|350g|170|7|13|5.5|2|1.5|4.8|900|30|0|U|P|7
+1254|Würstchen (frankfurters)|150g|280|12|25|2|0|1|9|1000|60|0|U|P|7
+1255|Currywurst|300g|200|7|13|14|1.2|8|4.5|850|25|0||P|7
+1256|Bratwurst|150g|300|13|26|2|0|0.5|9|800|70|0|U|P|8
+1257|Wiener schnitzel (breaded veal)|200g|260|20|13|14|0.6|0.5|3.5|380|90|0|GE|-|8
+1258|Jägerschnitzel (with mushroom sauce)|300g|210|16|13|8|0.8|1|5|450|65|0|GEM|P|7
+1259|Eisbein (boiled pork knuckle)|400g|260|20|20|0|0|0|7|700|95|0||P|7
+1260|Schweinshaxe (roast pork knuckle)|400g|290|22|22|0|0|0|8|650|100|0||P|7
+1261|Sauerkraut|150g|25|1.1|0.2|4|2.4|1.8|0|650|0|0||V|9
+1262|German potato salad|200g|130|2|7|15|1.5|2|1.5|420|10|0|U|P|7
+1263|Spätzle (egg noodles)|200g|180|6|5|27|1|0.5|2.5|330|80|0|GEM|v|7
+1264|Käsespätzle (cheese spätzle with fried onions)|300g|260|11|13|24|1|1|7.5|500|80|0|GEM|v|8
+1265|Maultaschen (Swabian stuffed pasta)|250g|210|10|9|22|1.3|1|3.5|500|70|0|GE|P|7
+1266|Sauerbraten (marinated pot roast)|300g|170|19|7|6|0.4|4|2.7|500|60|0|GX|-|6
+1267|Pretzel (Brezel)|100g|300|9|3.5|58|2.5|1|0.8|1100|0|0|G|V|8
+1268|Leberkäse (baked meatloaf)|150g|290|12|26|2|0|0.5|9.5|900|70|0||P|7
+1269|Obatzda (Bavarian cheese spread)|60g|300|14|26|3|0.4|1.5|16|800|70|0|M|v|7
+1270|Rösti (Swiss potato pancake)|200g|170|2.5|9|20|2|0.8|4|380|15|0|M|v|8
+1271|Swiss cheese fondue|300g|330|15|16|28|1.2|1|9.5|480|45|1|MG|vA|7
+1272|Swiss raclette|400g|220|11|13|14|1.2|1|7.5|650|40|0|M|P|7
+1273|Zürcher Geschnetzeltes (veal in cream sauce)|300g|190|15|13|3|0.3|1.2|7|400|70|0|MX|-|7
+1274|Knedliky (bread dumplings)|150g|220|7|2.5|43|2|2|0.8|420|30|0|GEM|v|7
+1275|Duck with dumplings and cabbage|450g|210|11|12|15|1.5|3|3.8|450|55|0|GEM|-|7
+1276|Svíčková (beef in creamy vegetable sauce with dumplings)|450g|170|9|8|16|1.2|4|4|400|45|0|GEMY|-|7
+1277|Goulash in a bread bowl|500g|200|8|7|26|1.8|2|2.2|520|20|0|G|-|6
+1278|Pork knee (vepřové koleno)|500g|290|22|22|0|0|0|8|650|100|0||P|7
+1279|Fried cheese (smažený sýr)|200g|320|16|20|18|0.6|1|10|700|70|0|GEM|v|8
+1280|Utopenci (pickled sausages)|150g|260|12|22|3|0.4|2|8|1100|55|0|U|P|6
+1281|Bigos (hunter's stew)|350g|130|7|9|5|2|2|3.2|600|25|0||P|7
+1282|Żurek (sour rye soup with sausage and egg)|400g|75|4|4.5|5|0.6|1|1.6|500|40|0|GEM|P|7
+1283|Pierogi (Polish dumplings)|250g|190|6|6|28|1.5|1.5|2.5|380|20|0|GEM|v|7
+1284|Hungarian goulash (gulyás soup)|400g|80|6|3.5|6.5|1|1.5|1.1|420|18|0|Y|-|8
+1285|Chicken paprikash|350g|160|14|9|5|0.6|2.5|3.8|400|60|0|MG|-|7
+1286|Lecsó (pepper and tomato stew)|250g|70|1.3|4.5|6|1.8|4|0.6|350|0|0||V|7
+1287|Lángos (fried flatbread with sour cream and cheese)|200g|330|8|17|37|1.5|2|6|500|20|0|GM|v|7
+1288|Halászlé (fisherman's soup)|400g|70|7|3.5|2.5|0.5|1.5|0.7|420|25|0|F|-|6
+1289|Töltött káposzta (stuffed cabbage)|350g|130|7|8|8|1.5|2.5|3|550|25|0|M|P|7
+1290|Kürtőskalács (chimney cake)|100g|380|7|10|65|1.5|25|5|200|40|0|GEMT|v|7
+1291|Apple strudel|150g|240|3|10|34|1.6|20|5|150|20|0|GEM|v|8
+1292|Sachertorte|100g|390|5.5|20|48|2.5|38|11|80|100|0|GEM|v|8
+1293|Black Forest cherry cake|120g|290|4.5|16|32|1.5|22|9.5|80|80|0.8|GEM|vA|7
+1294|Kaiserschmarrn (shredded pancake with raisins)|250g|240|7|10|30|0.8|14|5|200|130|0|GEM|v|7
+1295|Linzer torte|100g|410|6|21|50|3|25|9|100|60|0|GEMT|v|7
+1296|Stollen|80g|390|6|16|55|2.5|30|8|180|30|0|GEMT|v|7
+1297|Berliner (jam doughnut)|80g|330|6|14|45|1.5|17|4|250|40|0|GEM|v|8
+1298|Trdelník (chimney cake)|100g|380|7|10|65|1.5|25|5|200|40|0|GEMT|v|7
+1299|Dobos torte|100g|410|6|21|50|1|38|12|80|110|0|GEM|v|7
+1300|Esterházy torte|100g|440|8|28|40|2|33|10|60|90|0|GEMT|v|7
+1301|German apple charlotte|120g|220|4|6.5|37|1.3|22|3|120|70|0|GEM|v|6
+1302|Marlenka (Czech honey cake)|100g|420|6|20|53|1|32|10|200|60|0|GEMT|v|7
+1303|Fish and chips|450g|200|9|10.5|19|1.6|0.5|1.5|300|25|0|FG|-|8
+1304|Full English breakfast|500g|190|10|12|10|2|2.5|4|650|110|0|GE|P|8
+1305|Full Irish breakfast|500g|200|10|13|10|2|2.5|4.5|700|110|0|GE|P|7
+1306|Beans on toast|250g|140|6|3.5|21|4|5|1.2|450|5|0|GM|v|8
+1307|Shepherd's pie (lamb with mashed potato)|400g|130|7.5|6.5|10.5|1.5|1.5|3.2|380|25|0|MY|-|8
+1308|Cottage pie (beef with mashed potato)|400g|125|7.5|6|10.5|1.5|1.5|3|380|25|0|MY|-|8
+1309|Steak and kidney pie|250g|240|10|14|19|1|1|6|480|70|0|GEM|-|7
+1310|Bangers and mash|400g|170|6|10|13|1.2|1.5|4.5|550|25|0|GM|P|8
+1311|Sausage roll|120g|340|9|23|25|1.2|1|9|650|35|0|GEM|P|8
+1312|Beef Wellington|250g|260|16|15|15|1|1|7|450|90|0|GEM|P|7
+1313|Roast beef with Yorkshire pudding|400g|160|13|7|11|0.8|1|2.8|380|50|0|GEM|-|7
+1314|Scotch egg|120g|240|12|16|12|0.6|0.5|4.5|500|180|0|GE|P|8
+1315|Cornish pasty|250g|280|8|16|27|1.5|1|7|450|25|0|GM|-|8
+1316|Irish stew (lamb and potatoes)|450g|95|7|4|7.5|1.2|1|1.7|350|20|0|Y|-|7
+1317|Colcannon (mashed potato with cabbage)|200g|110|2|5|14|2|1.5|3|300|12|0|M|v|7
+1318|Swedish meatballs with lingonberry|350g|200|10|11|15|1.2|5|5|450|60|0|GEM|P|8
+1319|Gravlax (cured salmon)|80g|190|20|11|3|0|3|2|1500|55|0|FU|-|8
+1320|Smørrebrød (open sandwich)|150g|230|10|12|21|3|2|4|650|60|0|GFEM|-|6
+1321|Scandinavian pickled herring|100g|210|12|13|11|0|10|2.5|800|40|0|FU|-|7
+1322|Lohikeitto (Finnish salmon and cream soup)|400g|85|6|5|4|0.5|1|2.6|380|25|0|FM|-|7
+1323|Karelian pies (rice-filled rye pastries)|80g|230|6|7|35|3|2|3.5|380|25|0|GM|v|7
+1324|Cinnamon and cardamom buns|100g|370|7|14|54|2|22|6|300|40|0|GEM|v|8
+1325|Scones with jam and clotted cream|150g|380|5.5|20|45|1.3|20|12|400|60|0|GEM|v|8
+1326|Banoffee pie|120g|400|4|24|44|1|35|14|250|60|0|GM|v|7
+1327|Sticky toffee pudding|150g|380|4|17|54|1|40|10|300|80|0|GEM|v|7
+1328|Trifle|200g|190|3|9|25|0.5|20|5|80|60|0.4|GEM|vA|6
+1329|Apple crumble|150g|230|2.5|9|36|2|22|5|100|20|0|GM|v|8
+1330|Carrot cake|120g|410|4.5|23|48|1.5|35|5|300|60|0|GEMT|v|8
+1331|British cheesecake|120g|360|5.5|23|33|0.5|25|13|300|80|0|GEM|v|7

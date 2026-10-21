@@ -1,0 +1,156 @@
+# Американская, мексиканская и латиноамериканская — индексы 1332–1486
+1332|Cheeseburger|220g|260|14|13|22|1.4|5|5.5|560|40|0|GMZU|-|9
+1333|Double cheeseburger|300g|280|17|16|17|1.1|4|7|620|55|0|GMZU|-|8
+1334|Classic hamburger|220g|245|13|11|23|1.5|5|4.4|500|35|0|GZU|-|9
+1335|Bacon burger|260g|285|15|16|20|1.2|4.5|6.5|700|50|0|GMZU|P|8
+1336|Angus burger|300g|270|15|15|19|1.2|4|6|560|50|0|GMZU|-|8
+1337|Smash burger|250g|285|15|16.5|19|1|4|7|620|50|0|GMZU|-|8
+1338|BBQ burger|280g|265|13|12|25|1.2|8|5|650|40|0|GMZU|P|8
+1339|Mushroom Swiss burger|280g|255|14|13.5|19|1.4|4|6|540|45|0|GMZ|-|8
+1340|Burger with fried egg|300g|260|15|15|17|1.2|4|5.5|560|120|0|GMEZU|-|7
+1341|Jalapeño burger|260g|265|14|14|20|1.5|4|6|620|45|0|GMZU|-|7
+1342|Chicken burger|240g|255|12|12|24|1.4|4|2.4|560|35|0|GEZU|-|8
+1343|Fish burger|200g|270|11|13|27|1.3|5|2.5|560|30|0|GFEZ|-|8
+1344|Vegetarian burger|250g|220|7|10|26|3|5|2|520|15|0|GEMZ|v|7
+1345|Chickpea patty burger|250g|220|7.5|9|27|4|5|1.4|520|5|0|GEZ|v|7
+1346|Plant-based patty burger|250g|245|12|12|22|2.5|5|4|580|10|0|GSZU|V|7
+1347|Burger with pineapple|280g|240|13|11|22|1.4|7|4.5|520|40|0|GMZU|-|6
+1348|Sliders (mini burgers)|250g|275|14|14|23|1.2|5|5.5|560|45|0|GMZU|-|7
+1349|Black bun burger|280g|260|14|13|22|1.4|5|5.5|600|40|0|GMZU|-|6
+1350|Ribeye steak|300g|280|23|21|0|0|0|9|380|85|0||-|8
+1351|New York strip steak|300g|240|25|15|0|0|0|6|380|80|0||-|8
+1352|Filet mignon steak|250g|220|27|12.5|0|0|0|5|380|85|0||-|8
+1353|T-bone steak|400g|250|24|17|0|0|0|7|380|80|0||-|8
+1354|Tomahawk steak|600g|280|23|21|0|0|0|9|380|85|0||-|7
+1355|Machete steak (skirt steak)|300g|230|25|14.5|0|0|0|6|400|80|0||-|7
+1356|Denver steak|300g|230|24|15|0|0|0|6|380|80|0||-|7
+1357|Flank steak|250g|190|28|8.5|0|0|0|3.5|400|80|0||-|8
+1358|Brisket (smoked beef)|250g|290|25|21|1|0|0.5|8|600|90|0||-|7
+1359|Pulled pork|250g|230|22|11|10|0.3|8|4|650|75|0||P|7
+1360|BBQ pork ribs|400g|290|19|20|9|0.3|8|7|650|80|0||P|8
+1361|BBQ beef ribs|400g|310|21|23|6|0.2|5|9.5|600|85|0||-|7
+1362|Buffalo chicken wings|250g|280|21|21|2|0.3|0.5|5.5|900|120|0|M|-|8
+1363|BBQ chicken wings|250g|270|20|16|12|0.3|10|4.5|750|110|0||-|8
+1364|Honey mustard chicken wings|250g|270|20|16|12|0.3|10|4.5|700|110|0|U|-|7
+1365|Chicken strips (tenders)|200g|260|18|13|17|0.8|0.5|2.5|600|55|0|GE|-|8
+1366|Chicken nuggets|150g|280|15|17|16|1|0.5|3|550|45|0|G|-|8
+1367|Southern fried chicken|300g|270|20|16|10|0.4|0.3|4.2|600|90|0|GEM|-|8
+1368|Mac and cheese|300g|220|9|10.5|22|1|2.5|6|520|30|0|GM|v|8
+1369|Meatloaf|200g|210|15|12|10|0.6|4|4.5|550|80|0|GE|P|7
+1370|Chili con carne|350g|120|9|5|10|3.5|2.5|1.9|450|25|0||-|8
+1371|Clam chowder|350g|95|4|5|8.5|0.6|1.5|2.8|480|20|0|LMG|P|7
+1372|Jambalaya|400g|160|9|5.5|18|1.2|2|1.6|600|45|0|CY|P|7
+1373|Gumbo|400g|105|8|5.5|6|1|1.5|1.5|600|45|0|CGY|P|6
+1374|Cajun shrimp|200g|160|20|8|2|0.5|0.5|3|700|170|0|CM|-|7
+1375|Lobster roll|200g|250|12|13|21|1|3|4|600|60|0|CGEM|-|7
+1376|Philly cheesesteak|300g|240|14|11|21|1.2|3|5|600|40|0|GM|-|8
+1377|Reuben sandwich (corned beef, sauerkraut, Swiss cheese)|280g|260|14|14|19|2|3|5.5|1000|50|0|GMEU|-|7
+1378|Club sandwich|300g|240|13|12|19|1.5|3|3.5|700|45|0|GEU|P|8
+1379|BLT sandwich (bacon, lettuce, tomato)|200g|250|10|14|21|1.5|3|4|700|25|0|GEU|P|8
+1380|Pastrami sandwich|280g|240|15|10|22|1.4|3|3.5|1100|50|0|GU|-|7
+1381|Tuna sandwich|220g|240|12|11|23|1.5|3|2|550|25|0|GFE|-|8
+1382|Turkey sandwich|220g|210|13|7|23|1.6|3|1.8|800|30|0|GEU|-|7
+1383|Chicken sandwich|220g|230|14|8.5|24|1.5|3|1.8|550|35|0|GEU|-|7
+1384|Classic hot dog|150g|260|9|14|24|1.2|4|4.8|750|30|0|GU|P|8
+1385|Chili dog|220g|250|10|13|23|2|4|5|800|35|0|GU|P|7
+1386|Corn dog|130g|290|9|16|28|1.2|6|4|700|40|0|GEM|P|8
+1387|French fries|150g|310|3.5|15|41|3.8|0.3|2.3|210|0|0||V|9
+1388|Cheese fries|250g|300|7|17|29|2.5|1|6.5|600|25|0|M|v|8
+1389|Country-style potatoes|200g|165|2.5|8|21|2.2|0.5|1|350|0|0||V|8
+1390|Potato wedges|200g|180|3|8.5|23|2.5|0.5|1|420|0|0||V|8
+1391|Curly fries|150g|310|3.5|16|38|3.5|0.5|2.5|700|0|0|G|V|8
+1392|Hash browns|100g|270|2.5|15|31|2.8|0.4|2|450|0|0||V|8
+1393|Onion rings|150g|330|4.5|18|38|2.5|5|2.5|500|10|0|GEM|v|8
+1394|Mozzarella sticks|150g|310|14|17|25|1.2|2|7|750|35|0|GEM|v|8
+1395|Jalapeño poppers|150g|280|8|19|19|1.5|2|8|600|35|0|GEM|v|7
+1396|Nachos with cheese|200g|330|8|19|33|3|1.5|6|600|20|0|M|v|8
+1397|Coleslaw|150g|140|1|11|9|1.8|7|1.6|250|10|0|EU|v|8
+1398|Corn on the cob|200g|110|3.3|2.5|19|2.4|5|1.2|200|5|0|M|v|8
+1399|Loaded baked potato|400g|160|5|8|17|1.8|1.3|4|380|20|0|M|P|7
+1400|Tater tots|150g|250|2.5|14|29|2.5|0.5|2.5|480|0|0||V|8
+1401|Sweet potato fries|150g|260|2.5|12|36|4|8|1.6|300|0|0||V|8
+1402|Sauces (ketchup, BBQ, ranch, blue cheese)|30g|220|1|15|20|0.3|17|2.5|900|15|0|EMU|v|5
+1403|Pancakes with maple syrup|250g|240|5|7|40|0.8|18|2.8|400|50|0|GEM|v|8
+1404|Pancakes with berries|250g|200|5|6.5|31|1.5|11|2.5|380|50|0|GEM|v|8
+1405|Belgian waffles|150g|300|7|14|37|1|10|7|450|70|0|GEM|v|8
+1406|Chicken and waffles|350g|270|15|13|24|1|6|3.5|600|70|0|GEM|-|7
+1407|French toast|200g|230|7.5|10|27|1|10|4|300|110|0|GEM|v|8
+1408|Eggs Benedict|300g|230|11|16|12|0.6|1.5|8|650|240|0|GEM|P|8
+1409|Bacon omelette|200g|230|14|18|1.5|0|1|6.5|600|340|0|EM|P|8
+1410|Bagel with salmon and cream cheese|200g|260|13|10|30|1.5|4|4.5|700|30|0|GMFZ|-|8
+1411|Oat pancake (ovsyanoblin)|200g|150|10|7|11|1.5|2.5|2.2|250|200|0|GEM|v|7
+1412|Granola with yogurt|250g|170|6|6|24|2|14|2.5|60|8|0|GMT|v|8
+1413|New York cheesecake|120g|330|6|23|26|0.3|20|13|300|90|0|GEM|v|8
+1414|Brownie|70g|430|5.5|22|55|2.5|38|8|200|70|0|GEM|v|8
+1415|Glazed doughnuts|70g|420|5|23|49|1.2|23|10|300|20|0|GEMS|v|8
+1416|Muffins|100g|380|5.5|17|52|1.5|28|3.5|350|50|0|GEM|v|8
+1417|Cupcakes|80g|400|4|19|55|0.8|40|9|300|50|0|GEM|v|8
+1418|Chocolate chip cookies|40g|480|5.5|23|64|2.5|35|12|330|40|0|GEM|v|8
+1419|Apple pie|150g|260|2.5|12|36|1.6|17|5|220|10|0|GM|v|8
+1420|Pumpkin pie|150g|230|4.5|10|30|1.5|18|4|250|50|0|GEM|v|8
+1421|Key lime pie|120g|360|6|17|46|0.5|35|9|250|80|0|GEM|v|7
+1422|Banana split|300g|170|2.5|7|25|1.3|20|4.5|50|20|0|MT|v|7
+1423|Milkshake|400ml|110|3.3|4|16|0.2|15|2.5|60|15|0|M|v|8
+1424|Cinnabon (cinnamon roll with frosting)|150g|390|5.5|16|56|2|28|7|380|30|0|GEM|v|8
+1425|Red velvet cake|120g|390|4.5|20|49|0.8|38|8|300|60|0|GEM|v|7
+1426|Beef tacos|200g|215|11|10.5|20|2.5|2|4|450|30|0|M|-|8
+1427|Chicken tacos|200g|195|12|8|19|2.5|2|2.6|430|35|0|M|-|8
+1428|Tacos al pastor (marinated pork with pineapple)|200g|210|11|9|21|2.5|4|3|500|30|0||P|8
+1429|Fish tacos|200g|200|10|9|20|2.5|2|1.6|420|25|0|FGEM|-|7
+1430|Shrimp tacos|200g|190|10|8|20|2.5|2|1.5|480|70|0|CEM|-|7
+1431|Carnitas tacos (braised pork)|200g|230|12|11|20|2.5|1.5|3.8|480|40|0||P|8
+1432|Birria tacos (beef in consommé)|250g|230|13|11|20|2.5|1.5|4.5|500|40|0|M|-|7
+1433|Beef burrito|350g|200|10|8|22|3|1.5|3.5|520|25|0|GM|-|8
+1434|Chicken burrito|350g|185|10|6.5|22|3|1.5|2.6|500|25|0|GM|-|8
+1435|Vegetarian burrito|350g|170|6|6|23|4|2|2.3|480|10|0|GM|v|8
+1436|Burrito bowl|450g|140|8|5|16|3.5|1.5|1.8|420|20|0|M|-|7
+1437|Chicken quesadilla|250g|260|14|12|23|1.6|1.5|5.5|600|40|0|GM|-|8
+1438|Cheese quesadilla|200g|300|13|15|27|1.5|1.5|8|650|40|0|GM|v|8
+1439|Enchiladas|350g|170|9|8.5|14|2.2|2.5|4|500|30|0|M|-|8
+1440|Fajitas (sizzling chicken or beef with tortillas)|400g|160|11|6.5|14|1.6|3|2|480|35|0|GM|-|7
+1441|Chimichanga (deep-fried burrito)|300g|260|11|13|24|2.5|1.5|4.5|550|30|0|GM|-|7
+1442|Tostadas|200g|210|9|10|20|3.5|2|3.5|420|25|0|M|-|7
+1443|Tamales|200g|210|7|11|20|2.5|1.5|4|450|25|0||P|7
+1444|Guacamole with nachos|200g|290|4|19|27|5.5|1.5|2.8|420|0|0||V|8
+1445|Salsa|60g|30|1.2|0.2|6|1.5|4|0|450|0|0||V|8
+1446|Pico de gallo|60g|25|1|0.2|5|1.3|3|0|300|0|0||V|8
+1447|Nachos grande (with beef, beans and cheese)|350g|260|10|15|22|3.5|2|5.5|550|30|0|M|-|7
+1448|Elote (Mexican street corn)|200g|170|4.5|10|17|2|5|3|350|15|0|ME|v|7
+1449|Chilaquiles|300g|200|7.5|11|18|2.5|2.5|3.5|500|90|0|ME|v|7
+1450|Huevos rancheros|300g|170|8|10|13|2.8|2.5|3|450|150|0|E|v|7
+1451|Mole poblano (chicken in chocolate chili sauce)|350g|190|14|10|11|2.5|5|2.8|450|50|0|TZNG|-|6
+1452|Pozole (hominy and pork soup)|500g|80|5.5|3|8|1.5|1|1|450|15|0||P|7
+1453|Tortilla soup|400g|70|3.5|3.5|6.5|1.2|1.5|1.2|450|10|0|M|-|7
+1454|Quesabirria (cheese tacos with birria)|250g|260|14|14|19|2|1.5|6|550|45|0|M|-|7
+1455|Churros|100g|410|5|22|48|1.5|18|5|300|20|0|GE|v|8
+1456|Tres leches cake|120g|280|6|11|39|0.2|30|6.5|120|80|0|GEM|v|8
+1457|Peruvian ceviche|200g|95|15|1.5|6|1|2|0.3|500|45|0|FC|-|8
+1458|Lomo saltado (beef stir-fry with fries and rice)|450g|175|10|7.5|17|1.5|2|2|550|30|0|S|-|7
+1459|Anticuchos (grilled beef heart skewers)|200g|190|21|10|3|0.3|1|3|450|180|0||-|6
+1460|Pollo a la brasa (Peruvian rotisserie chicken)|300g|220|22|14|1|0|0|4|550|95|0|S|-|7
+1461|Causa (layered potato terrine)|200g|170|5|9|17|1.5|1|1.5|350|50|0|EF|-|6
+1462|Argentine asado (mixed grill)|400g|300|23|23|0|0|0|9|450|90|0||P|7
+1463|Chimichurri|30g|420|1|45|4|1.5|1|6.5|600|0|0||V|8
+1464|Beef empanadas|150g|280|10|15|26|1.5|2|5|450|40|0|GE|-|8
+1465|Cheese empanadas|150g|300|10|16|28|1.2|2|7|500|35|0|GEM|v|7
+1466|Choripán (chorizo sandwich)|250g|300|12|16|27|1.5|2|5.5|750|40|0|G|P|7
+1467|Milanesa (breaded beef cutlet)|250g|250|20|12|15|0.8|0.6|3|450|80|0|GE|-|8
+1468|Alfajores (dulce de leche cookies)|50g|430|5|17|64|1.5|35|9|200|40|0|GEM|v|8
+1469|Dulce de leche|30g|315|7|7.5|55|0|50|4.5|130|25|0|M|v|8
+1470|Feijoada (black bean and pork stew)|400g|160|11|8|11|4.5|0.5|3|550|35|0||P|7
+1471|Picanha (top sirloin cap)|250g|270|24|19|0|0|0|8|400|85|0||-|8
+1472|Churrasco (Brazilian mixed grill)|400g|270|25|18.5|0|0|0|7|450|85|0||P|7
+1473|Pão de queijo (cheese bread)|80g|330|8|17|38|0.3|1|6|550|60|0|EM|v|8
+1474|Coxinha (chicken croquette)|100g|290|10|15|29|1|1|4|500|40|0|GEM|-|8
+1475|Acarajé (black-eyed pea fritters)|150g|300|9|19|23|5|2|3.5|450|60|0|CN|-|6
+1476|Brigadeiro (chocolate fudge balls)|30g|400|5.5|14|65|1.5|60|8|80|20|0|M|v|8
+1477|Açaí bowl|350g|120|1.8|4|20|3|13|1.3|20|0|0|T|V|7
+1478|Arepas with chicken|250g|230|11|9|26|2.5|1.5|2.5|450|30|0|E|-|7
+1479|Arepas with cheese|200g|270|9|12|31|2.5|1.5|6|500|25|0|M|v|7
+1480|Pabellón criollo (shredded beef, beans, rice, plantain)|500g|170|9|6|20|3|5|1.8|420|25|0||-|7
+1481|Cuban sandwich|280g|270|16|12|24|1.2|2.5|4.5|1000|50|0|GMU|P|8
+1482|Ropa vieja (shredded beef stew)|300g|150|16|7|5|1.2|3|2.3|500|50|0||-|7
+1483|Jamaican jerk chicken|300g|210|22|12|3|0.6|2|3.2|700|90|0||-|7
+1484|Tostones (fried plantains)|150g|240|1.3|11|35|2.5|3|1.5|350|0|0||V|8
+1485|Mofongo (mashed fried plantains with pork)|300g|260|5|13|32|2.3|3|4|450|20|0||P|6
+1486|Pupusa (stuffed corn tortilla)|150g|240|8|10|30|2.5|1|4.5|450|25|0|M|-|7
