@@ -6,7 +6,7 @@
    3) если похожего нет — типовой состав категории («Супы», «Десерты», «Коктейли»…).
    Оценки честно помечаются в интерфейсе, с ИИ их можно уточнить. */
 
-const CAT_SCRIPT = 'js/catalog-data.js?v=2';
+const CAT_SCRIPT = 'js/catalog-data.js?v=3';
 const CAT_ALC = 1;
 // флаги CATALOG.nut[i][10]
 const NUT_ML = 1, NUT_VEG = 2, NUT_VEGAN = 4, NUT_PORK = 8, NUT_ALC = 16;
@@ -143,7 +143,16 @@ const Catalog = {
   },
 
   // название на языке интерфейса
-  name(e) { return Store.state.settings.lang === 'en' && e.en ? e.en : e.name; },
+  name(e) { return catEn() && e.en ? e.en : e.name; },
+  // для превью в плитках — без пояснения в скобках
+  shortName(e) { return this.name(e).split(' (')[0]; },
+  // названия для превью плитки: короткие, а при совпадении — полные (Khorovats (pork) · Khorovats (lamb))
+  previews(items, n) {
+    const list = items.slice(0, n), short = list.map(e => this.shortName(e));
+    return list.map((e, i) => short.indexOf(short[i]) !== short.lastIndexOf(short[i]) ? this.name(e) : short[i]);
+  },
+  catName(c) { return (catEn() && this.data.cats_en ? this.data.cats_en : this.data.cats)[c]; },
+  tagsOf(e) { return catEn() && this.data.tags_en ? e.tags.map(x => this.data.tags_en[this.data.tags.indexOf(x)]) : e.tags; },
 
   // аллергены и пометки; халяль не утверждаем — только «без свинины и алкоголя»
   diet(e) {
@@ -241,5 +250,9 @@ const Catalog = {
   },
 };
 
-const groupShortName = g => String(g[1]).split(' (')[0];
-const groupSubName = g => { const m = String(g[1]).match(/\((.+)\)/); return m ? m[1] : ''; };
+const catEn = () => Store.state.settings.lang === 'en';
+// группа: [id, название, регион, тип, название en, регион en]
+const groupFullName = g => (catEn() && g[4]) || g[1];
+const groupShortName = g => String(groupFullName(g)).split(' (')[0];
+const groupSubName = g => { const m = String(groupFullName(g)).match(/\((.+)\)/); return m ? m[1] : ''; };
+const groupRegion = g => (catEn() && g[5]) || g[2];

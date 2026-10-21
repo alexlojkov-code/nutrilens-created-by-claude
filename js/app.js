@@ -262,7 +262,7 @@ function resultRow(r, i) {
   if (r.kind === 'cat') {
     const est = Catalog.estimate(r.e);
     const dt = r.e.type === 'drinks' ? [] : dietTags(Catalog.diet(r.e), true);
-    return `<button data-i="${i}"><span>${esc(Catalog.name(r.e))}${r.e.alc ? ' <i class="b18">18+</i>' : ''}<br><small>${isApprox(est.source) ? '≈ ' : ''}${fmt(est.per100.kcal)} ${t('u.kcal')} / 100 ${unitLbl(est.opts)} · ${esc(groupShortName(r.e.group))} · ${esc(r.e.cat)}${dt.length ? ' · ' + esc(dt.join(', ')) : ''}</small></span><small>${t('cat.title')}</small></button>`;
+    return `<button data-i="${i}"><span>${esc(Catalog.name(r.e))}${r.e.alc ? ' <i class="b18">18+</i>' : ''}<br><small>${isApprox(est.source) ? '≈ ' : ''}${fmt(est.per100.kcal)} ${t('u.kcal')} / 100 ${unitLbl(est.opts)} · ${esc(groupShortName(r.e.group))} · ${esc(Catalog.catName(r.e.c))}${dt.length ? ' · ' + esc(dt.join(', ')) : ''}</small></span><small>${t('cat.title')}</small></button>`;
   }
   const name = r.kind === 'db' ? foodName(r.food) : r.my.name, p = r.kind === 'db' ? r.food.per100 : r.my.per100;
   const unit = r.kind === 'db' ? unitLbl(r.food.opts) : t('u.g');
@@ -1124,7 +1124,7 @@ function catalogHomeHtml() {
   const dcats = [];
   Catalog.list.filter(e => e.g === drinks.gi).forEach(e => {
     let d = dcats.find(x => x.c === e.c);
-    if (!d) dcats.push(d = { c: e.c, name: e.cat, items: [], alc: true });
+    if (!d) dcats.push(d = { c: e.c, name: Catalog.catName(e.c), items: [], alc: true });
     d.items.push(e); if (!e.alc) d.alc = false;
   });
   const shownDrinks = dcats.filter(d => !d.alc || Catalog.allowAlcohol());
@@ -1135,12 +1135,12 @@ function catalogHomeHtml() {
       <div class="search-res" id="cres" style="max-height:none"></div></div>
     <div id="chome">
       <section class="section"><div class="sec-head"><h2 class="h2">${UI.split(t('cat.cuisines'))}</h2><span class="mono muted">${cuis.length} · ${sum(cuis)} ${t('cat.items')}</span></div>
-        <div class="cgrid">${cuis.map((x, i) => catTile(`#/foods/cat/${x.g[0]}`, i, `/ ${String(i + 1).padStart(2, '0')} · ${x.g[2]}`, groupShortName(x.g), groupSubName(x.g), x.items.length, x.items.slice(0, 3).map(e => Catalog.name(e)))).join('')}</div></section>
+        <div class="cgrid">${cuis.map((x, i) => catTile(`#/foods/cat/${x.g[0]}`, i, `/ ${String(i + 1).padStart(2, '0')} · ${groupRegion(x.g)}`, groupShortName(x.g), groupSubName(x.g), x.items.length, Catalog.previews(x.items, 3))).join('')}</div></section>
       <section class="section"><div class="sec-head"><h2 class="h2">${UI.split(t('cat.snacks'))}</h2><span class="mono muted">${sum(snacks)} ${t('cat.items')}</span></div>
-        <div class="cgrid">${snacks.map((x, i) => catTile(`#/foods/cat/${x.g[0]}`, i, `/ ${x.g[2]}`, groupShortName(x.g), '', x.items.length, x.items.slice(0, 4).map(e => Catalog.name(e)))).join('')}</div></section>
+        <div class="cgrid">${snacks.map((x, i) => catTile(`#/foods/cat/${x.g[0]}`, i, `/ ${groupRegion(x.g)}`, groupShortName(x.g), '', x.items.length, Catalog.previews(x.items, 4))).join('')}</div></section>
       <section class="section"><div class="sec-head"><h2 class="h2">${UI.split(t('cat.drinks'))}</h2><span class="mono muted">${shownDrinks.reduce((n, d) => n + d.items.length, 0)} ${t('cat.items')}</span></div>
         ${Catalog.allowAlcohol() ? '' : `<p class="callout" style="font-size:14px">${t('cat.hidden18')}</p>`}
-        <div class="cgrid">${shownDrinks.map((d, i) => catTile(`#/foods/cat/drinks?c=${d.c}`, i, `/ ${String(i + 1).padStart(2, '0')}`, d.name, '', d.items.length, d.items.slice(0, 3).map(e => Catalog.name(e)), d.alc)).join('')}</div></section>
+        <div class="cgrid">${shownDrinks.map((d, i) => catTile(`#/foods/cat/drinks?c=${d.c}`, i, `/ ${String(i + 1).padStart(2, '0')}`, d.name, '', d.items.length, Catalog.previews(d.items, 3), d.alc)).join('')}</div></section>
       <section class="section"><div class="sec-head"><h2 class="h2">${UI.split(t('cat.base'))}</h2><span class="mono muted">${base.length} ${t('cat.items')}</span></div>
         <div class="cgrid">${catTile('#/foods/cat/base', 0, '/ USDA · ' + t('src.local').toLowerCase(), t('cat.base.title'), t('cat.base.sub'), base.length, base.slice(0, 4).map(foodName))}</div></section>
     </div>`;
@@ -1153,7 +1153,7 @@ function catalogRows(list) {
       return `<button class="crow" data-food="${f.id}"><span class="cn">${esc(foodName(f))}<small>${fmt(f.per100.kcal)} ${t('u.kcal')} / 100 ${unitLbl(f.opts)} · ${macroLine(f.per100)}</small></span><span class="cplus">${ICON.plus}</span></button>`;
     }
     const e = x, est = Catalog.estimate(e);
-    const extra = [...(e.type === 'drinks' ? [] : dietTags(Catalog.diet(e), true)), ...e.tags];
+    const extra = [...(e.type === 'drinks' ? [] : dietTags(Catalog.diet(e), true)), ...Catalog.tagsOf(e)];
     return `<button class="crow" data-id="${e.id}"><span class="cn">${esc(Catalog.name(e))}${e.alc ? '<i class="b18">18+</i>' : ''}<small>${isApprox(est.source) ? '≈ ' : ''}${fmt(est.per100.kcal)} ${t('u.kcal')} / 100 ${unitLbl(est.opts)}${extra.length ? ' · ' + esc(extra.join(', ')) : ''}</small></span><span class="cplus">${ICON.plus}</span></button>`;
   }).join('');
 }
@@ -1173,11 +1173,11 @@ function catalogGroupHtml(r) {
   if (gi < 0) return `${back}<p class="serif" style="font-size:26px">${t('cat.nothing')}</p>`;
   const g = C.groups[gi], items = Catalog.groupItems(gi);
   const cats = [];
-  items.forEach(e => { let c = cats.find(x => x.c === e.c); if (!c) cats.push(c = { c: e.c, name: e.cat, n: 0, alc: true }); c.n++; if (!e.alc) c.alc = false; });
+  items.forEach(e => { let c = cats.find(x => x.c === e.c); if (!c) cats.push(c = { c: e.c, name: Catalog.catName(e.c), n: 0, alc: true }); c.n++; if (!e.alc) c.alc = false; });
   const sel = r.q.c !== undefined && r.q.c !== '' ? Number(r.q.c) : null;
-  const title = gid === 'drinks' && sel !== null ? C.cats[sel] : groupShortName(g);
+  const title = gid === 'drinks' && sel !== null ? Catalog.catName(sel) : groupShortName(g);
   return `${back}
-    <span class="kicker" style="display:flex;margin-top:16px">${esc(g[2])} · ${items.length} ${t('cat.items')}</span>
+    <span class="kicker" style="display:flex;margin-top:16px">${esc(groupRegion(g))} · ${items.length} ${t('cat.items')}</span>
     <h1 class="h1">${UI.split(title, 'hoverable')}</h1>
     ${groupSubName(g) ? `<p class="serif" style="font-size:24px;margin:8px 0 0">${esc(groupSubName(g))}</p>` : ''}
     <div class="card catgroup" style="margin-top:22px">
@@ -1209,7 +1209,7 @@ function catalogGroupMount(el, r) {
   const draw = () => {
     const shown = items.filter(e => (sel === null || e.c === sel) && (!q.value.trim() || hit(e.name) || (e.en && hit(e.en))));
     const sections = [];
-    shown.forEach(e => { let s = sections.find(x => x.c === e.c); if (!s) sections.push(s = { c: e.c, name: e.cat, items: [] }); s.items.push(e); });
+    shown.forEach(e => { let s = sections.find(x => x.c === e.c); if (!s) sections.push(s = { c: e.c, name: Catalog.catName(e.c), items: [] }); s.items.push(e); });
     list.innerHTML = sections.map(s => `<section class="catsec"><h3 class="h3">${esc(s.name)} <small class="mono muted">${s.items.length}</small></h3><div class="clist">${catalogRows(s.items)}</div></section>`).join('') || `<p class="muted">${t('cat.nothing')}</p>`;
     list.style.animation = 'none'; void list.offsetWidth; list.style.animation = 'viewIn .6s var(--ease-out) both';
   };

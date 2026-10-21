@@ -2,7 +2,7 @@
 
 Запуск: python3 scripts/build_catalog.py
 В файл попадают только нужные сайту поля, в компактном виде:
-  CATALOG.groups — [id, название, регион, тип]
+  CATALOG.groups — [id, название, регион, тип, название en, регион en]
   CATALOG.cats   — названия категорий
   CATALOG.tags   — список тегов (в позиции — битовая маска)
   CATALOG.items  — [индекс группы, индекс категории, название, флаги, маска тегов, id]
@@ -12,6 +12,7 @@
       порция, флаги, маска аллергенов, уверенность %, английское название]
      флаги: 1 — мл, 2 — вегетарианское, 4 — веганское, 8 — свинина, 16 — алкоголь в составе
   CATALOG.allergens — список аллергенов для маски
+  CATALOG.cats_en, CATALOG.tags_en — английские названия категорий и тегов (параллельно cats, tags)
 """
 import json
 import pathlib
@@ -49,6 +50,52 @@ for it in items:
     short_id = it['id'].split('__', 1)[1] if '__' in it['id'] else it['id']
     rows.append([group_idx[it['cuisine_id']], cat_idx[it['category']], it['name'], flags, mask, short_id])
 
+# английские названия групп, регионов, категорий и тегов для интерфейса на английском
+GROUPS_EN = {
+    'uzbek': 'Uzbek', 'kazakh': 'Kazakh', 'kyrgyz_tajik': 'Kyrgyz and Tajik', 'uyghur_dungan': 'Uyghur and Dungan',
+    'russian': 'Russian', 'ukrainian_belarusian': 'Ukrainian and Belarusian', 'georgian': 'Georgian', 'armenian': 'Armenian',
+    'azerbaijani': 'Azerbaijani', 'caucasus_north': 'North Caucasus (Dagestan, Ossetia, Chechnya, Kabarda)',
+    'tatar_bashkir': 'Tatar and Bashkir', 'korean': 'Korean', 'japanese': 'Japanese', 'chinese': 'Chinese', 'thai': 'Thai',
+    'vietnamese': 'Vietnamese', 'se_asia_other': 'Indonesian, Malaysian, Singaporean, Filipino', 'indian': 'Indian and Pakistani',
+    'middle_east': 'Middle Eastern (Lebanese, Syrian, Israeli, Arab)', 'turkish': 'Turkish', 'iranian_afghan': 'Iranian and Afghan',
+    'italian': 'Italian', 'french': 'French', 'spanish_portuguese': 'Spanish and Portuguese', 'greek': 'Greek',
+    'german_central': 'German, Austrian, Swiss, Czech, Polish, Hungarian', 'british_irish_nordic': 'British, Irish, Nordic',
+    'american': 'American', 'latin_american': 'Mexican and Latin American', 'african': 'African',
+    'poke_healthy': 'Bowls and healthy eating', 'breakfast_world': 'Breakfasts (international)',
+    'snacks': 'Snacks and street food', 'sauces': 'Sauces and extras', 'drinks': 'Drinks',
+}
+REGIONS_EN = {
+    'Средняя Азия': 'Central Asia', 'Средняя Азия / Китай': 'Central Asia / China', 'Восточная Европа': 'Eastern Europe',
+    'Кавказ': 'Caucasus', 'Поволжье': 'Volga region', 'Восточная Азия': 'East Asia', 'Юго-Восточная Азия': 'Southeast Asia',
+    'Южная Азия': 'South Asia', 'Ближний Восток': 'Middle East', 'Западная Европа': 'Western Europe', 'Южная Европа': 'Southern Europe',
+    'Центральная Европа': 'Central Europe', 'Северная Европа': 'Northern Europe', 'Северная Америка': 'North America',
+    'Латинская Америка': 'Latin America', 'Африка': 'Africa', 'Интернациональная': 'International',
+}
+CATS_EN = {
+    'Основные блюда': 'Main dishes', 'Гриль и шашлык': 'Grill and kebabs', 'Супы': 'Soups', 'Выпечка и хлеб': 'Pastries and bread',
+    'Салаты и закуски': 'Salads and starters', 'Десерты и сладости': 'Desserts and sweets', 'Выпечка и закуски': 'Pastries and starters',
+    'Закуски': 'Starters', 'Завтраки': 'Breakfasts', 'Салаты': 'Salads', 'Холодные закуски': 'Cold starters', 'Гарниры': 'Sides',
+    'Выпечка': 'Pastries', 'Десерты': 'Desserts', 'Блюда': 'Dishes', 'Хачапури и выпечка': 'Khachapuri and pastries',
+    'Соусы и десерты': 'Sauces and desserts', 'Закуски (панчхан и «по-корейски»)': 'Starters (banchan and Korean-style salads)',
+    'Уличная еда и десерты': 'Street food and desserts', 'Суши и роллы': 'Sushi and rolls', 'Горячие блюда': 'Hot dishes',
+    'Супы и закуски': 'Soups and starters', 'Карри и основные блюда': 'Curries and mains', 'Хлеб и закуски': 'Bread and starters',
+    'Десерты и напитки': 'Desserts and drinks', 'Мезе и закуски': 'Meze and starters', 'Пицца': 'Pizza', 'Паста': 'Pasta',
+    'Основные блюда и ризотто': 'Mains and risotto', 'Закуски и салаты': 'Starters and salads', 'Выпечка и десерты': 'Pastries and desserts',
+    'Блюда и тапас': 'Dishes and tapas', 'Бургеры': 'Burgers', 'Основные блюда и гриль': 'Mains and grill', 'Гарниры и закуски': 'Sides and starters',
+    'Завтраки и десерты': 'Breakfasts and desserts', 'Мексиканская и Tex-Mex': 'Mexican and Tex-Mex', 'Южная Америка и Карибы': 'South America and the Caribbean',
+    'Боулы и салаты': 'Bowls and salads', 'ПП и диетические блюда': 'Healthy and diet dishes', 'Шаурма, кебабы, роллы в лаваше': 'Shawarma, kebabs and wraps',
+    'Хот-доги и сосиски': 'Hot dogs and sausages', 'Сэндвичи и бутерброды': 'Sandwiches', 'Пирожки и выпечка на ходу': 'Pies and pastries to go',
+    'Курица и картофель': 'Chicken and potatoes', 'Снеки к пиву и закуски': 'Beer snacks', 'Чипсы и упакованные снеки': 'Chips and packaged snacks',
+    'Сладкие перекусы': 'Sweet snacks', 'Мороженое и холодные десерты': 'Ice cream and frozen desserts', 'Молочные и лёгкие перекусы': 'Dairy and light snacks',
+    'Комбо и детское': 'Combos and kids', 'Соусы': 'Sauces', 'Кофе': 'Coffee', 'Чай': 'Tea', 'Безалкогольные холодные напитки': 'Soft drinks',
+    'Соки, смузи, шейки': 'Juices, smoothies, shakes', 'Пиво и слабоалкогольные': 'Beer and low-alcohol', 'Вино': 'Wine', 'Игристые': 'Sparkling wine',
+    'Крепкие напитки': 'Spirits', 'Ликёры и аперитивы': 'Liqueurs and aperitifs', 'Коктейли': 'Cocktails', 'Безалкогольные коктейли (моктейли)': 'Mocktails',
+}
+TAGS_EN = {'рыба': 'fish', 'конина': 'horse meat', 'курица': 'chicken', 'тофу/вег': 'tofu/veg', 'баранина': 'lamb', 'говядина': 'beef',
+           'свинина': 'pork', 'сладкое': 'sweet', 'сыр': 'cheese', 'острое': 'spicy', 'морепродукты': 'seafood', 'грибы': 'mushrooms'}
+for g in groups:
+    g += [GROUPS_EN[g[0]], REGIONS_EN[g[2]]]
+
 nut_src = json.loads(NUT.read_text(encoding='utf-8'))['items'] if NUT.exists() else {}
 
 
@@ -78,6 +125,8 @@ payload = {
     'tags': tags,
     'items': rows,
     'allergens': ALLERGENS,
+    'cats_en': [CATS_EN[c] for c in cats],
+    'tags_en': [TAGS_EN[t] for t in tags],
     'nut': nut,
 }
 body = json.dumps(payload, ensure_ascii=False, separators=(',', ':'))
