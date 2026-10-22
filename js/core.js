@@ -20,7 +20,7 @@ const defaultState = () => ({
   version: 1,
   profile: null,
   targets: null,
-  settings: { lang: 'ru', mass: 'g', body: 'kg', apiKey: '', model: 'gpt-6.1-sol', photoPolicy: '30', theme: 'auto', onboarded: false, createdAt: Date.now() },
+  settings: { lang: 'ru', mass: 'g', body: 'kg', apiKey: '', model: 'gemini-3.8-flash', photoPolicy: '30', theme: 'auto', onboarded: false, createdAt: Date.now() },
   days: {},
   myFoods: [],
   recent: [],
@@ -47,7 +47,7 @@ function sanitizeState(st) {
   st.weights = arr(st.weights).filter(w => w && Number(w.kg) > 0 && isFinite(Number(w.kg)));
   st.chat = arr(st.chat).filter(x => x && typeof x.text === 'string');
   st.settings = Object.assign(defaultState().settings, obj(st.settings));
-  if (/^claude-/.test(st.settings.model)) st.settings.model = defaultState().settings.model; // переход с Claude на OpenAI
+  if (/^(claude|gpt)-/.test(st.settings.model)) st.settings.model = defaultState().settings.model; // переход на Gemini
   return st;
 }
 

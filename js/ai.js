@@ -1,13 +1,13 @@
-/* NutriLens — ИИ-пайплайн. OpenAI API (Chat Completions) вызывается прямо из браузера с ключом пользователя.
+/* NutriLens — ИИ-пайплайн. Gemini API (Interactions) вызывается прямо из браузера с ключом пользователя.
    Модель только разбирает ввод (что, сколько, уверенность); нутриенты сопоставляются с базой и считаются кодом. */
 
 const PROMPT_VERSION = 'nl-food-v1';
-const API_URL = 'https://api.openai.com/v1/chat/completions';
+const API_URL = 'https://generativelanguage.googleapis.com/v1beta/interactions';
 const AI_TIMEOUT = 45000;
 const MODELS = [
-  { id: 'gpt-6.1-sol', label: 'GPT-6.1 Sol — баланс' },
-  { id: 'gpt-6-astra', label: 'GPT-6 Astra — точнее' },
-  { id: 'gpt-6-luna', label: 'GPT-6 Luna — дешевле' },
+  { id: 'gemini-3.8-flash', label: 'Gemini 3.8 Flash — баланс' },
+  { id: 'gemini-4-argon', label: 'Gemini 4 Argon — точнее' },
+  { id: 'gemini-3.5-flash-lite', label: 'Gemini 3.5 Flash-Lite — дешевле' },
 ];
 const DEFAULT_MODEL = MODELS[0].id;
 
@@ -64,24 +64,27 @@ Rules:
 - If there is no food or drink at all (or the text is unrelated to eating), return status "no_food", no items, and a short friendly message.
 - Weights: 1–3000 g per item. message: one short sentence for the user, may be empty.`;
 
-// ключ OpenAI; старый ключ Anthropic (sk-ant-…) здесь не подходит
-function aiReady() { const k = (Store.state.settings.apiKey || '').trim(); return !!k && !k.startsWith('sk-ant-'); }
+// ключ Gemini (AIza…); ключи OpenAI и Anthropic (sk-…) здесь не подходят
+function aiReady() { const k = (Store.state.settings.apiKey || '').trim(); return !!k && !k.startsWith('sk-'); }
 
 class AIError extends Error { constructor(code, detail) { super(code); this.code = code; this.detail = detail; } }
 
-/* Запрос к OpenAI. Если выбранная модель недоступна для ключа (404 / model_not_found),
+/* Запрос к Gemini. Если выбранная модель недоступна для ключа (404 / model_not_found),
    пробуем следующую из списка и запоминаем рабочую до перезагрузки страницы. */
-async function callOpenAI(body, { signal, stream = false } = {}) {
+async function callGemini(body, { signal, stream = false } = {}) {
   const s = Store.state.settings;
   const chosen = MODELS.some(m => m.id === s.model) ? s.model : DEFAULT_MODEL;
-  const order = [callOpenAI.working || chosen, ...MODELS.map(m => m.id)].filter((m, i, a) => a.indexOf(m) === i);
+  const order = [callGemini.working || chosen, ...MODELS.map(m => m.id)].filter((m, i, a) => a.indexOf(m) === i);
   let lastErr;
   for (const model of order) {
     try {
-      const r = await requestOpenAI(Object.assign({ model }, body, stream ? { stream: true } : {}), { signal, stream });
-      callOpenAI.working = model;
+      // store: false — запросы и ответы не сохраняются на стороне Google для повторного чтения
+      const payload = Object.assign({ model, store: callGemini.noStore ? undefined : false }, body, stream ? { stream: true } : {});
+      const r = await requestGemini(payload, { signal, stream });
+      callGemini.working = model;
       return r;
     } catch (e) {
+      if (e.code === 'STORE_UNSUPPORTED' && !callGemini.noStore) { callGemini.noStore = true; return callGemini(body, { signal, stream }); }
       if (e.code !== 'MODEL_UNAVAILABLE') throw e;
       lastErr = e;
     }
@@ -89,46 +92,54 @@ async function callOpenAI(body, { signal, stream = false } = {}) {
   throw new AIError('AI_UNAVAILABLE', lastErr && lastErr.detail);
 }
 
-async function requestOpenAI(payload, { signal, stream }) {
+// ошибки Google приходят как {error:{code,status,message,details:[{reason}]}}, иногда внутри массива
+function geminiError(status, raw) {
+  const err = (Array.isArray(raw) ? raw[0] : raw || {}).error || {};
+  const reasons = (err.details || []).map(d => d.reason).filter(Boolean).join(' ');
+  const msg = err.message || '', key = `${err.code} ${err.status} ${reasons} ${msg}`;
+  if (/API_KEY|authentication|UNAUTHENTICATED/i.test(key) || status === 401) return new AIError('AUTH', msg);
+  if (status === 403 || /PERMISSION_DENIED|permission_denied/.test(key)) return new AIError('AUTH', msg);
+  if (status === 404 || /model_not_found|NOT_FOUND/.test(key)) return new AIError('MODEL_UNAVAILABLE', msg);
+  if (/\bstore\b/i.test(msg) && status === 400) return new AIError('STORE_UNSUPPORTED', msg);
+  if (/safety|jailbreak|prohibited_content|blocklist/i.test(key)) return new AIError('REFUSAL', msg);
+  if (/quota|billing/i.test(msg)) return new AIError('QUOTA', msg);
+  if (status === 429 || /RESOURCE_EXHAUSTED|rate_limit/i.test(key)) return new AIError('RATE', msg);
+  return new AIError('AI_UNAVAILABLE', msg);
+}
+
+async function requestGemini(payload, { signal, stream }) {
   const ctrl = new AbortController();
   const onAbort = () => ctrl.abort();
   signal && signal.addEventListener('abort', onAbort);
   const timer = setTimeout(() => { ctrl.timedOut = true; ctrl.abort(); }, stream ? 90000 : AI_TIMEOUT);
   let res;
   try {
-    res = await fetch(API_URL, {
+    res = await fetch(API_URL + (stream ? '?alt=sse' : ''), {
       method: 'POST',
-      headers: { 'content-type': 'application/json', authorization: 'Bearer ' + Store.state.settings.apiKey.trim() },
+      headers: { 'content-type': 'application/json', 'x-goog-api-key': Store.state.settings.apiKey.trim() },
       body: JSON.stringify(payload), signal: ctrl.signal,
     });
   } catch (e) {
     clearTimeout(timer);
     if (ctrl.timedOut) throw new AIError('TIMEOUT');
     if (signal && signal.aborted) throw new AIError('cancelled');
-    // ответы OpenAI с ошибкой (неверный ключ, пустой баланс) приходят без CORS-заголовка,
-    // и браузер скрывает их от страницы — сообщаем вероятные причины
-    throw new AIError(navigator.onLine === false ? 'OFFLINE' : 'AI_UNREACHABLE', e.message);
+    throw new AIError(navigator.onLine === false ? 'OFFLINE' : 'AI_UNAVAILABLE', e.message);
   } finally { signal && signal.removeEventListener('abort', onAbort); }
   if (!res.ok) {
     clearTimeout(timer);
-    let err = {};
-    try { err = (await res.json()).error || {}; } catch (e) {}
-    const msg = err.message || res.statusText, code = err.code || err.type || '';
-    if (res.status === 404 || code === 'model_not_found') throw new AIError('MODEL_UNAVAILABLE', msg);
-    if (res.status === 401 || res.status === 403) throw new AIError('AUTH', msg);
-    if (code === 'insufficient_quota') throw new AIError('QUOTA', msg);
-    if (res.status === 429) throw new AIError('RATE', msg);
-    throw new AIError('AI_UNAVAILABLE', msg);
+    let raw = {};
+    try { raw = await res.json(); } catch (e) {}
+    throw geminiError(res.status, raw);
   }
   if (stream) { res._timer = timer; return res; }
   const data = await res.json();
   clearTimeout(timer);
-  const msg = data.choices && data.choices[0] && data.choices[0].message;
-  if (msg && msg.refusal) throw new AIError('REFUSAL', msg.refusal);
+  if (data.status === 'failed') throw new AIError('AI_UNAVAILABLE', data.error && data.error.message);
   return data;
 }
 
-const textOf = data => ((data.choices && data.choices[0] && data.choices[0].message) || {}).content || '';
+// текст ответа: шаги model_output → блоки text
+const textOf = data => (data.steps || []).filter(st => st.type === 'model_output').flatMap(st => st.content || []).filter(c => c.type === 'text').map(c => c.text).join('');
 
 function validateAnalysis(r) {
   const problems = [];
@@ -149,28 +160,27 @@ function validateAnalysis(r) {
 async function aiAnalyze({ text, images, answers }, { signal, onStage } = {}) {
   const lang = Store.state.settings.lang;
   const content = [];
-  (images || []).forEach(src => content.push({ type: 'image_url', image_url: { url: src, detail: 'high' } }));
+  (images || []).forEach(src => content.push({ type: 'image', data: src.split(',')[1], mime_type: 'image/jpeg' }));
   let userText = `<user_input>\n${text || (images && images.length ? '(photo only, no comment)' : '')}\n</user_input>`;
   if (answers && answers.length) userText += `\n<clarifications>\n${answers.map(a => `Q: ${a.q}\nA: ${a.a}`).join('\n')}\n</clarifications>\nThe user has answered; do not ask these again.`;
   content.push({ type: 'text', text: userText });
 
-  const sys = { role: 'developer', content: analysisSystem(lang) };
   const body = {
-    max_completion_tokens: 8000,
-    reasoning_effort: 'low',
-    messages: [sys, { role: 'user', content }],
-    response_format: { type: 'json_schema', json_schema: { name: 'meal_analysis', strict: true, schema: ANALYSIS_SCHEMA } },
+    system_instruction: analysisSystem(lang),
+    input: content,
+    generation_config: { thinking_level: 'low', max_output_tokens: 8000 },
+    response_format: { type: 'text', mime_type: 'application/json', schema: ANALYSIS_SCHEMA },
   };
   onStage && onStage('recognize');
-  let data = await callOpenAI(body, { signal });
+  let data = await callGemini(body, { signal });
   let raw = textOf(data), parsed = null, problems;
   try { parsed = JSON.parse(raw); } catch (e) {}
   problems = parsed ? validateAnalysis(parsed) : ['invalid JSON'];
   if (problems.length) {
     // один повтор с описанием ошибки
-    body.messages = [sys, { role: 'user', content }, { role: 'assistant', content: raw || '{}' },
-      { role: 'user', content: `Your previous answer failed validation:\n- ${problems.join('\n- ')}\nReturn the corrected full JSON.` }];
-    data = await callOpenAI(body, { signal });
+    // один повтор: тот же ввод + прежний ответ и список ошибок
+    body.input = content.concat({ type: 'text', text: `<previous_answer>\n${raw || '{}'}\n</previous_answer>\nYour previous answer failed validation:\n- ${problems.join('\n- ')}\nReturn the corrected full JSON.` });
+    data = await callGemini(body, { signal });
     raw = textOf(data);
     try { parsed = JSON.parse(raw); } catch (e) { throw new AIError('VALIDATION_FAILED'); }
     if (validateAnalysis(parsed).length) parsed.items.forEach(it => it.confidence = Math.min(it.confidence, 0.5));
@@ -213,10 +223,14 @@ Profile: sex=${p.sex || '?'}, age=${p.age || '?'}, height_cm=${p.height || '?'},
 }
 
 async function aiChat(history, { signal, onText } = {}) {
-  const res = await callOpenAI({
-    max_completion_tokens: 4000,
-    reasoning_effort: 'low',
-    messages: [{ role: 'developer', content: chatSystem() }, ...history.map(m => ({ role: m.role, content: m.text }))],
+  // история передаётся в самом запросе (без хранения переписки на стороне Google)
+  const past = history.slice(0, -1).map(m => `${m.role === 'user' ? 'User' : 'Assistant'}: ${m.text}`).join('\n\n');
+  const last = history[history.length - 1];
+  const input = (past ? `<conversation_so_far>\n${past}\n</conversation_so_far>\n\nReply to the user's latest message:\n` : '') + last.text;
+  const res = await callGemini({
+    system_instruction: chatSystem(),
+    input,
+    generation_config: { thinking_level: 'low', max_output_tokens: 4000 },
   }, { signal, stream: true });
   const reader = res.body.getReader();
   const dec = new TextDecoder();
@@ -234,10 +248,8 @@ async function aiChat(history, { signal, onText } = {}) {
         const payload = line.slice(5).trim();
         if (payload === '[DONE]') continue;
         let ev; try { ev = JSON.parse(payload); } catch (e) { continue; }
-        if (ev.error) throw new AIError('AI_UNAVAILABLE', ev.error.message);
-        const d = ev.choices && ev.choices[0] && ev.choices[0].delta;
-        if (d && d.refusal) throw new AIError('REFUSAL', d.refusal);
-        if (d && d.content) { out += d.content; onText && onText(out); }
+        if (ev.error || ev.event_type === 'error') throw geminiError(0, ev);
+        if (ev.event_type === 'step.delta' && ev.delta && ev.delta.type === 'text') { out += ev.delta.text; onText && onText(out); }
       }
     }
   } catch (e) {
@@ -249,6 +261,6 @@ async function aiChat(history, { signal, onText } = {}) {
 }
 
 async function aiPing() {
-  const data = await callOpenAI({ max_completion_tokens: 200, reasoning_effort: 'low', messages: [{ role: 'user', content: 'Reply with: ok' }] });
+  const data = await callGemini({ input: 'Reply with: ok', generation_config: { thinking_level: 'low', max_output_tokens: 200 } });
   return textOf(data);
 }
