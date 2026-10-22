@@ -837,7 +837,7 @@ async function runAnalysis(host, answers) {
       try {
         result = await aiAnalyze({ text, images: s.photos.map(p => p.full), answers }, { signal: ctrl.signal, onStage: stage });
       } catch (e) {
-        if (['AI_UNAVAILABLE', 'TIMEOUT', 'RATE', 'AUTH'].includes(e.code) && text && !s.photos.length) {
+        if (['AI_UNAVAILABLE', 'AI_UNREACHABLE', 'OFFLINE', 'TIMEOUT', 'RATE', 'AUTH', 'QUOTA'].includes(e.code) && text && !s.photos.length) {
           UI.toast(t('err.' + e.code), { err: true });
           result = localAnalyze(text);
         } else throw e;
@@ -1436,6 +1436,7 @@ Views.settings = {
 
         <div class="card dark rv" style="--d:3"><h3 class="h3">${t('set.ai')}</h3>
           <p style="margin:0;color:#c8ccd6;font-size:14px">${t('set.ai.lead')}</p>
+          ${/^sk-ant-/.test(st.apiKey || '') ? `<div class="callout warn" style="font-size:14px">${t('set.key.old')}</div>` : ''}
           <label class="field"><span style="color:#9aa0ae">${t('set.key')}</span><input class="input" id="akey" type="password" autocomplete="off" spellcheck="false" placeholder="${st.apiKey ? '••••••••' + esc(st.apiKey.slice(-4)) : t('set.key.ph')}" style="background:#1c1d21;color:#fff"></label>
           <label class="field"><span style="color:#9aa0ae">${t('set.model')}</span><select class="select" id="amodel" style="background:#1c1d21;color:#fff">${MODELS.map(m => `<option value="${m.id}" ${st.model === m.id ? 'selected' : ''}>${m.label}</option>`).join('')}</select></label>
           <div class="row"><button class="btn lime" id="asave">${t('set.save')}<span class="arr">${ICON.check}</span></button>${st.apiKey ? `<button class="pill" id="atest" style="background:#1c1d21;color:#fff">${t('set.key.test')}</button><button class="pill" id="akeydel" style="background:#1c1d21;color:#fff">${t('set.key.del')}</button>` : ''}</div>
@@ -1490,12 +1491,13 @@ Views.settings = {
     });
     $('#asave', el).onclick = () => {
       const k = $('#akey', el).value.trim();
+      if (k.startsWith('sk-ant-')) { UI.toast(t('set.key.old'), { err: true, ms: 6000 }); return; }
       if (k) s.settings.apiKey = k;
-      s.settings.model = $('#amodel', el).value; callClaude.noFallback = false;
+      s.settings.model = $('#amodel', el).value; callOpenAI.working = null;
       Store.save(); UI.toast(k ? t('set.key.saved') : t('set.saved')); reload();
     };
     const at = $('#atest', el);
-    at && (at.onclick = async () => { at.disabled = true; try { await aiPing(); UI.toast(t('set.key.ok')); } catch (e) { UI.toast(t('err.' + (e.code || 'AI_UNAVAILABLE')) + (e.detail ? ` (${e.detail})` : ''), { err: true, ms: 7000 }); } at.disabled = false; });
+    at && (at.onclick = async () => { at.disabled = true; try { await aiPing(); UI.toast(t('set.key.ok')); } catch (e) { UI.toast(t('err.' + (e.code || 'AI_UNAVAILABLE')) + (e.detail && e.code !== 'AI_UNREACHABLE' ? ` (${e.detail})` : ''), { err: true, ms: 7000 }); } at.disabled = false; });
     const ad = $('#akeydel', el);
     ad && (ad.onclick = () => { s.settings.apiKey = ''; Store.save(); reload(); });
     $('#dcsv', el).onclick = exportCSV;

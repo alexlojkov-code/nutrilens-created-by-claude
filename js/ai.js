@@ -1,15 +1,15 @@
-/* NutriLens — ИИ-пайплайн. Claude API вызывается прямо из браузера с ключом пользователя.
+/* NutriLens — ИИ-пайплайн. OpenAI API (Chat Completions) вызывается прямо из браузера с ключом пользователя.
    Модель только разбирает ввод (что, сколько, уверенность); нутриенты сопоставляются с базой и считаются кодом. */
 
 const PROMPT_VERSION = 'nl-food-v1';
-const API_URL = 'https://api.anthropic.com/v1/messages';
-const AI_TIMEOUT = 30000;
+const API_URL = 'https://api.openai.com/v1/chat/completions';
+const AI_TIMEOUT = 45000;
 const MODELS = [
-  { id: 'claude-opus-5-5', label: 'Claude Opus 5.5 — точнее' },
-  { id: 'claude-sonnet-5-5', label: 'Claude Sonnet 5.5 — быстрее' },
-  { id: 'claude-haiku-5-5', label: 'Claude Haiku 5.5 — дешевле' },
+  { id: 'gpt-6.1-sol', label: 'GPT-6.1 Sol — баланс' },
+  { id: 'gpt-6-astra', label: 'GPT-6 Astra — точнее' },
+  { id: 'gpt-6-luna', label: 'GPT-6 Luna — дешевле' },
 ];
-const FALLBACK_MODELS = ['claude-opus-5-5', 'claude-sonnet-5-5'];
+const DEFAULT_MODEL = MODELS[0].id;
 
 const per100Schema = {
   type: 'object', additionalProperties: false, required: NUTRIENT_KEYS,
@@ -64,55 +64,71 @@ Rules:
 - If there is no food or drink at all (or the text is unrelated to eating), return status "no_food", no items, and a short friendly message.
 - Weights: 1–3000 g per item. message: one short sentence for the user, may be empty.`;
 
-function aiReady() { return !!(Store.state.settings.apiKey || '').trim(); }
+// ключ OpenAI; старый ключ Anthropic (sk-ant-…) здесь не подходит
+function aiReady() { const k = (Store.state.settings.apiKey || '').trim(); return !!k && !k.startsWith('sk-ant-'); }
 
 class AIError extends Error { constructor(code, detail) { super(code); this.code = code; this.detail = detail; } }
 
-async function callClaude(body, { signal, stream = false } = {}) {
+/* Запрос к OpenAI. Если выбранная модель недоступна для ключа (404 / model_not_found),
+   пробуем следующую из списка и запоминаем рабочую до перезагрузки страницы. */
+async function callOpenAI(body, { signal, stream = false } = {}) {
   const s = Store.state.settings;
-  const model = s.model || MODELS[0].id;
-  const headers = {
-    'content-type': 'application/json',
-    'x-api-key': s.apiKey.trim(),
-    'anthropic-version': '2023-06-01',
-    'anthropic-dangerous-direct-browser-access': 'true',
-  };
-  const payload = Object.assign({ model }, body, stream ? { stream: true } : {});
-  const useFallback = FALLBACK_MODELS.includes(model) && !callClaude.noFallback;
-  if (useFallback) { headers['anthropic-beta'] = 'server-side-fallback-2026-07-01'; payload.fallbacks = 'default'; }
+  const chosen = MODELS.some(m => m.id === s.model) ? s.model : DEFAULT_MODEL;
+  const order = [callOpenAI.working || chosen, ...MODELS.map(m => m.id)].filter((m, i, a) => a.indexOf(m) === i);
+  let lastErr;
+  for (const model of order) {
+    try {
+      const r = await requestOpenAI(Object.assign({ model }, body, stream ? { stream: true } : {}), { signal, stream });
+      callOpenAI.working = model;
+      return r;
+    } catch (e) {
+      if (e.code !== 'MODEL_UNAVAILABLE') throw e;
+      lastErr = e;
+    }
+  }
+  throw new AIError('AI_UNAVAILABLE', lastErr && lastErr.detail);
+}
 
+async function requestOpenAI(payload, { signal, stream }) {
   const ctrl = new AbortController();
   const onAbort = () => ctrl.abort();
   signal && signal.addEventListener('abort', onAbort);
   const timer = setTimeout(() => { ctrl.timedOut = true; ctrl.abort(); }, stream ? 90000 : AI_TIMEOUT);
   let res;
   try {
-    res = await fetch(API_URL, { method: 'POST', headers, body: JSON.stringify(payload), signal: ctrl.signal });
+    res = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', authorization: 'Bearer ' + Store.state.settings.apiKey.trim() },
+      body: JSON.stringify(payload), signal: ctrl.signal,
+    });
   } catch (e) {
     clearTimeout(timer);
     if (ctrl.timedOut) throw new AIError('TIMEOUT');
     if (signal && signal.aborted) throw new AIError('cancelled');
-    throw new AIError('AI_UNAVAILABLE', e.message);
+    // ответы OpenAI с ошибкой (неверный ключ, пустой баланс) приходят без CORS-заголовка,
+    // и браузер скрывает их от страницы — сообщаем вероятные причины
+    throw new AIError(navigator.onLine === false ? 'OFFLINE' : 'AI_UNREACHABLE', e.message);
   } finally { signal && signal.removeEventListener('abort', onAbort); }
   if (!res.ok) {
     clearTimeout(timer);
     let err = {};
-    try { err = await res.json(); } catch (e) {}
-    const msg = (err.error && err.error.message) || res.statusText;
-    if (res.status === 400 && useFallback && /fallback/i.test(msg)) { callClaude.noFallback = true; return callClaude(body, { signal, stream }); }
+    try { err = (await res.json()).error || {}; } catch (e) {}
+    const msg = err.message || res.statusText, code = err.code || err.type || '';
+    if (res.status === 404 || code === 'model_not_found') throw new AIError('MODEL_UNAVAILABLE', msg);
     if (res.status === 401 || res.status === 403) throw new AIError('AUTH', msg);
+    if (code === 'insufficient_quota') throw new AIError('QUOTA', msg);
     if (res.status === 429) throw new AIError('RATE', msg);
-    if (res.status >= 500 || res.status === 529) throw new AIError('AI_UNAVAILABLE', msg);
     throw new AIError('AI_UNAVAILABLE', msg);
   }
   if (stream) { res._timer = timer; return res; }
   const data = await res.json();
   clearTimeout(timer);
-  if (data.stop_reason === 'refusal') throw new AIError('REFUSAL');
+  const msg = data.choices && data.choices[0] && data.choices[0].message;
+  if (msg && msg.refusal) throw new AIError('REFUSAL', msg.refusal);
   return data;
 }
 
-const textOf = data => (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
+const textOf = data => ((data.choices && data.choices[0] && data.choices[0].message) || {}).content || '';
 
 function validateAnalysis(r) {
   const problems = [];
@@ -133,27 +149,28 @@ function validateAnalysis(r) {
 async function aiAnalyze({ text, images, answers }, { signal, onStage } = {}) {
   const lang = Store.state.settings.lang;
   const content = [];
-  (images || []).forEach(src => content.push({ type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: src.split(',')[1] } }));
+  (images || []).forEach(src => content.push({ type: 'image_url', image_url: { url: src, detail: 'high' } }));
   let userText = `<user_input>\n${text || (images && images.length ? '(photo only, no comment)' : '')}\n</user_input>`;
   if (answers && answers.length) userText += `\n<clarifications>\n${answers.map(a => `Q: ${a.q}\nA: ${a.a}`).join('\n')}\n</clarifications>\nThe user has answered; do not ask these again.`;
   content.push({ type: 'text', text: userText });
 
+  const sys = { role: 'developer', content: analysisSystem(lang) };
   const body = {
-    max_tokens: 6000,
-    system: analysisSystem(lang),
-    messages: [{ role: 'user', content }],
-    output_config: { effort: 'low', format: { type: 'json_schema', schema: ANALYSIS_SCHEMA } },
+    max_completion_tokens: 8000,
+    reasoning_effort: 'low',
+    messages: [sys, { role: 'user', content }],
+    response_format: { type: 'json_schema', json_schema: { name: 'meal_analysis', strict: true, schema: ANALYSIS_SCHEMA } },
   };
   onStage && onStage('recognize');
-  let data = await callClaude(body, { signal });
+  let data = await callOpenAI(body, { signal });
   let raw = textOf(data), parsed = null, problems;
   try { parsed = JSON.parse(raw); } catch (e) {}
   problems = parsed ? validateAnalysis(parsed) : ['invalid JSON'];
   if (problems.length) {
     // один повтор с описанием ошибки
-    body.messages = [{ role: 'user', content }, { role: 'assistant', content: raw || '{}' },
+    body.messages = [sys, { role: 'user', content }, { role: 'assistant', content: raw || '{}' },
       { role: 'user', content: `Your previous answer failed validation:\n- ${problems.join('\n- ')}\nReturn the corrected full JSON.` }];
-    data = await callClaude(body, { signal });
+    data = await callOpenAI(body, { signal });
     raw = textOf(data);
     try { parsed = JSON.parse(raw); } catch (e) { throw new AIError('VALIDATION_FAILED'); }
     if (validateAnalysis(parsed).length) parsed.items.forEach(it => it.confidence = Math.min(it.confidence, 0.5));
@@ -196,11 +213,10 @@ Profile: sex=${p.sex || '?'}, age=${p.age || '?'}, height_cm=${p.height || '?'},
 }
 
 async function aiChat(history, { signal, onText } = {}) {
-  const res = await callClaude({
-    max_tokens: 4000,
-    system: chatSystem(),
-    messages: history.map(m => ({ role: m.role, content: m.text })),
-    output_config: { effort: 'low' },
+  const res = await callOpenAI({
+    max_completion_tokens: 4000,
+    reasoning_effort: 'low',
+    messages: [{ role: 'developer', content: chatSystem() }, ...history.map(m => ({ role: m.role, content: m.text }))],
   }, { signal, stream: true });
   const reader = res.body.getReader();
   const dec = new TextDecoder();
@@ -211,14 +227,17 @@ async function aiChat(history, { signal, onText } = {}) {
       if (done) break;
       buf += dec.decode(value, { stream: true });
       let i;
-      while ((i = buf.indexOf('\n\n')) >= 0) {
-        const chunk = buf.slice(0, i); buf = buf.slice(i + 2);
-        const line = chunk.split('\n').find(l => l.startsWith('data:'));
-        if (!line) continue;
-        let ev; try { ev = JSON.parse(line.slice(5)); } catch (e) { continue; }
-        if (ev.type === 'content_block_delta' && ev.delta && ev.delta.type === 'text_delta') { out += ev.delta.text; onText && onText(out); }
-        if (ev.type === 'message_delta' && ev.delta && ev.delta.stop_reason === 'refusal') throw new AIError('REFUSAL');
-        if (ev.type === 'error') throw new AIError('AI_UNAVAILABLE', ev.error && ev.error.message);
+      // поток Server-Sent Events: строки «data: {…}», в конце «data: [DONE]»
+      while ((i = buf.indexOf('\n')) >= 0) {
+        const line = buf.slice(0, i).trim(); buf = buf.slice(i + 1);
+        if (!line.startsWith('data:')) continue;
+        const payload = line.slice(5).trim();
+        if (payload === '[DONE]') continue;
+        let ev; try { ev = JSON.parse(payload); } catch (e) { continue; }
+        if (ev.error) throw new AIError('AI_UNAVAILABLE', ev.error.message);
+        const d = ev.choices && ev.choices[0] && ev.choices[0].delta;
+        if (d && d.refusal) throw new AIError('REFUSAL', d.refusal);
+        if (d && d.content) { out += d.content; onText && onText(out); }
       }
     }
   } catch (e) {
@@ -230,6 +249,6 @@ async function aiChat(history, { signal, onText } = {}) {
 }
 
 async function aiPing() {
-  const data = await callClaude({ max_tokens: 50, messages: [{ role: 'user', content: 'Reply with: ok' }], output_config: { effort: 'low' } });
+  const data = await callOpenAI({ max_completion_tokens: 200, reasoning_effort: 'low', messages: [{ role: 'user', content: 'Reply with: ok' }] });
   return textOf(data);
 }
