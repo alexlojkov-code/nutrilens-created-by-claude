@@ -9,7 +9,7 @@ import { createHash } from 'node:crypto';
 import { route, body, db, send, problem, currentSession } from './_lib/server.js';
 
 const GEMINI_URL = process.env.GEMINI_URL || 'https://generativelanguage.googleapis.com/v1beta/interactions'; // GEMINI_URL — только для локальных тестов
-const MODELS = ['gemini-3.8-flash', 'gemini-4-argon', 'gemini-3.5-flash-lite'];
+const MODELS = ['gemini-3.8-flash', 'gemini-3.5-flash-lite', 'gemini-4-argon']; // и порядок перебора при перегрузке
 const LEVELS = ['minimal', 'low', 'medium', 'high'];
 const LIMIT_USER = Number(process.env.AI_DAILY_LIMIT_USER || 50);
 const LIMIT_GUEST = Number(process.env.AI_DAILY_LIMIT_GUEST || 15);
@@ -78,11 +78,13 @@ function clean(b) {
 }
 
 async function callOnce(payload) {
+  // зависшая модель не должна держать запрос: без ответа за 25 с (поток — 60 с) считаем её перегруженной
   const req = store => fetch(GEMINI_URL + (payload.stream ? '?alt=sse' : ''), {
     method: 'POST',
     headers: { 'content-type': 'application/json', 'x-goog-api-key': process.env.GEMINI_API_KEY },
     body: JSON.stringify(store ? payload : { ...payload, store: undefined }),
-  });
+    signal: AbortSignal.timeout(payload.stream ? 60000 : 25000),
+  }).catch(e => new Response(JSON.stringify({ error: { message: 'timeout: ' + e.message, code: 'service_unavailable' } }), { status: 503 }));
   let r = await req(true);
   if (r.status === 400) {
     // если Google не принимает поле store — повторяем без него

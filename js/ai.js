@@ -10,6 +10,9 @@ const MODELS = [
   { id: 'gemini-3.5-flash-lite', label: 'Gemini 3.5 Flash-Lite — дешевле' },
 ];
 const DEFAULT_MODEL = MODELS[0].id;
+// порядок перебора при перегрузке: быстрая Flash → лёгкая Flash-Lite → Argon (на бесплатном тарифе недоступна)
+const FALLBACK_ORDER = ['gemini-3.8-flash', 'gemini-3.5-flash-lite', 'gemini-4-argon'];
+const ATTEMPT_TIMEOUT = 25000;
 
 const per100Schema = {
   type: 'object', additionalProperties: false, required: NUTRIENT_KEYS,
@@ -80,7 +83,8 @@ const AIServer = {
 };
 const ownKey = () => { const k = (Store.state.settings.apiKey || '').trim(); return k && !k.startsWith('sk-') ? k : ''; };
 function aiReady() { return !!ownKey() || AIServer.enabled; }
-const aiViaServer = () => !ownKey() && AIServer.enabled;
+// через сервер: нет своего ключа, или свой ключ упёрся в лимит / не подошёл (тогда до перезагрузки страницы)
+const aiViaServer = () => AIServer.enabled && (!ownKey() || callGemini.forceServer);
 
 class AIError extends Error { constructor(code, detail) { super(code); this.code = code; this.detail = detail; } }
 
@@ -89,21 +93,27 @@ class AIError extends Error { constructor(code, detail) { super(code); this.code
 async function callGemini(body, { signal, stream = false } = {}) {
   const s = Store.state.settings;
   const chosen = MODELS.some(m => m.id === s.model) ? s.model : DEFAULT_MODEL;
-  const order = [callGemini.working || chosen, ...MODELS.map(m => m.id)].filter((m, i, a) => a.indexOf(m) === i);
+  const viaServer = aiViaServer();
+  // через сервер перебор моделей делает сам сервер — отправляем один запрос
+  const order = viaServer ? [chosen] : [callGemini.working || chosen, ...FALLBACK_ORDER].filter((m, i, a) => a.indexOf(m) === i);
   let lastErr;
   for (const model of order) {
     try {
       // store: false — запросы и ответы не сохраняются на стороне Google для повторного чтения
-      const payload = Object.assign({ model, store: callGemini.noStore || aiViaServer() ? undefined : false }, body, stream ? { stream: true } : {});
-      const r = await requestGemini(payload, { signal, stream });
-      callGemini.working = model;
+      const payload = Object.assign({ model, store: callGemini.noStore || viaServer ? undefined : false }, body, stream ? { stream: true } : {});
+      const r = await requestGemini(payload, { signal, stream, attemptTimeout: viaServer ? 0 : ATTEMPT_TIMEOUT });
+      if (!viaServer) callGemini.working = model;
       return r;
     } catch (e) {
       if (e.code === 'STORE_UNSUPPORTED' && !callGemini.noStore) { callGemini.noStore = true; return callGemini(body, { signal, stream }); }
-      if (e.code !== 'MODEL_UNAVAILABLE') throw e;
-      lastErr = e;
+      if (e.code === 'MODEL_UNAVAILABLE' || (e.code === 'TIMEOUT' && !viaServer && !(signal && signal.aborted))) { lastErr = e; continue; }
+      // свой ключ не подошёл или упёрся в лимит — повторяем через общий ключ сервиса
+      if (!viaServer && AIServer.enabled && ['AUTH', 'RATE', 'QUOTA'].includes(e.code)) { callGemini.forceServer = true; return callGemini(body, { signal, stream }); }
+      throw e;
     }
   }
+  // все модели перегружены по своему ключу — последняя попытка через сервер
+  if (!viaServer && AIServer.enabled) { callGemini.forceServer = true; return callGemini(body, { signal, stream }); }
   throw new AIError('AI_UNAVAILABLE', lastErr && lastErr.detail);
 }
 
@@ -116,6 +126,7 @@ function geminiError(status, raw) {
   if (status === 403 || /PERMISSION_DENIED|permission_denied/.test(key)) return new AIError('AUTH', msg);
   if (status === 404 || /model_not_found|NOT_FOUND/.test(key)) return new AIError('MODEL_UNAVAILABLE', msg);
   if (status === 503 || /service_unavailable|high demand|overloaded/i.test(key)) return new AIError('MODEL_UNAVAILABLE', msg); // перегрузка — пробуем другую модель
+  if (/limit: 0\b/i.test(msg)) return new AIError('MODEL_UNAVAILABLE', msg); // модель недоступна на тарифе ключа
   if (/\bstore\b/i.test(msg) && status === 400) return new AIError('STORE_UNSUPPORTED', msg);
   if (/safety|jailbreak|prohibited_content|blocklist/i.test(key)) return new AIError('REFUSAL', msg);
   if (/quota|billing/i.test(msg)) return new AIError('QUOTA', msg);
@@ -123,11 +134,11 @@ function geminiError(status, raw) {
   return new AIError('AI_UNAVAILABLE', msg);
 }
 
-async function requestGemini(payload, { signal, stream }) {
+async function requestGemini(payload, { signal, stream, attemptTimeout = 0 }) {
   const ctrl = new AbortController();
   const onAbort = () => ctrl.abort();
   signal && signal.addEventListener('abort', onAbort);
-  const timer = setTimeout(() => { ctrl.timedOut = true; ctrl.abort(); }, stream ? 90000 : AI_TIMEOUT);
+  const timer = setTimeout(() => { ctrl.timedOut = true; ctrl.abort(); }, stream ? 90000 : attemptTimeout || AI_TIMEOUT);
   const viaServer = aiViaServer();
   let res;
   try {
