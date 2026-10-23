@@ -65,7 +65,7 @@ Rules:
 - Weights: 1–3000 g per item. message: one short sentence for the user, may be empty.`;
 
 /* Два способа доступа к ИИ:
-   1) свой ключ Gemini (AIza…) — запросы идут из браузера напрямую в Google, без лимитов сервиса;
+   1) свой ключ Gemini (AQ.… или старого формата AIza…) — запросы идут из браузера напрямую в Google, без лимитов сервиса;
    2) общий ключ сервиса — запросы идут через наш сервер /api/ai с дневным лимитом (ключ в браузер не попадает). */
 const AIServer = {
   enabled: false, limit: 0, remaining: 0,
