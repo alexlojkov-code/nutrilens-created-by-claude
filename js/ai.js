@@ -115,6 +115,7 @@ function geminiError(status, raw) {
   if (/API_KEY|authentication|UNAUTHENTICATED/i.test(key) || status === 401) return new AIError('AUTH', msg);
   if (status === 403 || /PERMISSION_DENIED|permission_denied/.test(key)) return new AIError('AUTH', msg);
   if (status === 404 || /model_not_found|NOT_FOUND/.test(key)) return new AIError('MODEL_UNAVAILABLE', msg);
+  if (status === 503 || /service_unavailable|high demand|overloaded/i.test(key)) return new AIError('MODEL_UNAVAILABLE', msg); // перегрузка — пробуем другую модель
   if (/\bstore\b/i.test(msg) && status === 400) return new AIError('STORE_UNSUPPORTED', msg);
   if (/safety|jailbreak|prohibited_content|blocklist/i.test(key)) return new AIError('REFUSAL', msg);
   if (/quota|billing/i.test(msg)) return new AIError('QUOTA', msg);

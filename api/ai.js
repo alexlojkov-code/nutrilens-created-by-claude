@@ -77,7 +77,7 @@ function clean(b) {
   return [out, null];
 }
 
-async function callGemini(payload) {
+async function callOnce(payload) {
   const req = store => fetch(GEMINI_URL + (payload.stream ? '?alt=sse' : ''), {
     method: 'POST',
     headers: { 'content-type': 'application/json', 'x-goog-api-key': process.env.GEMINI_API_KEY },
@@ -88,6 +88,20 @@ async function callGemini(payload) {
     // если Google не принимает поле store — повторяем без него
     const text = await r.clone().text();
     if (/\bstore\b/i.test(text) && !/API_KEY/.test(text)) r = await req(false);
+  }
+  return r;
+}
+// модель перегружена (503) или недоступна (404) — сразу пробуем следующую из списка
+async function callGemini(payload) {
+  const order = [payload.model, ...MODELS.filter(m => m !== payload.model)];
+  let r;
+  for (const model of order) {
+    r = await callOnce({ ...payload, model });
+    if (r.ok || ![404, 429, 500, 503].includes(r.status)) return r;
+    const text = await r.clone().text();
+    // 429 с «limit: 0» — модель недоступна на этом тарифе; остальные 429 — настоящий лимит ключа, не перебираем
+    if (r.status === 429 && !/limit: 0\b|high demand|overloaded|capacity/i.test(text)) return r;
+    console.warn('Gemini', model, r.status, text.slice(0, 160));
   }
   return r;
 }
