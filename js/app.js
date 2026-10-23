@@ -837,7 +837,7 @@ async function runAnalysis(host, answers) {
       try {
         result = await aiAnalyze({ text, images: s.photos.map(p => p.full), answers }, { signal: ctrl.signal, onStage: stage });
       } catch (e) {
-        if (['AI_UNAVAILABLE', 'OFFLINE', 'TIMEOUT', 'RATE', 'AUTH', 'QUOTA'].includes(e.code) && text && !s.photos.length) {
+        if (['AI_UNAVAILABLE', 'OFFLINE', 'TIMEOUT', 'RATE', 'AUTH', 'QUOTA', 'AI_LIMIT', 'AI_LIMIT_TOTAL'].includes(e.code) && text && !s.photos.length) {
           UI.toast(t('err.' + e.code), { err: true });
           result = localAnalyze(text);
         } else throw e;
@@ -1437,6 +1437,7 @@ Views.settings = {
         <div class="card dark rv" style="--d:3"><h3 class="h3">${t('set.ai')}</h3>
           <p style="margin:0;color:#c8ccd6;font-size:14px">${t('set.ai.lead')}</p>
           ${/^sk-/.test(st.apiKey || '') ? `<div class="callout warn" style="font-size:14px">${t('set.key.old')}</div>` : ''}
+          ${AIServer.enabled ? `<div class="callout" style="font-size:14px;background:#1c1d21;color:#e8eaee">${ownKey() ? t('set.ai.own') : t('set.ai.shared', { n: AIServer.remaining, m: AIServer.limit })}</div>` : ''}
           <label class="field"><span style="color:#9aa0ae">${t('set.key')}</span><input class="input" id="akey" type="password" autocomplete="off" spellcheck="false" placeholder="${st.apiKey ? '••••••••' + esc(st.apiKey.slice(-4)) : t('set.key.ph')}" style="background:#1c1d21;color:#fff"></label>
           <label class="field"><span style="color:#9aa0ae">${t('set.model')}</span><select class="select" id="amodel" style="background:#1c1d21;color:#fff">${MODELS.map(m => `<option value="${m.id}" ${st.model === m.id ? 'selected' : ''}>${m.label}</option>`).join('')}</select></label>
           <div class="row"><button class="btn lime" id="asave">${t('set.save')}<span class="arr">${ICON.check}</span></button>${st.apiKey ? `<button class="pill" id="atest" style="background:#1c1d21;color:#fff">${t('set.key.test')}</button><button class="pill" id="akeydel" style="background:#1c1d21;color:#fff">${t('set.key.del')}</button>` : ''}</div>
@@ -1588,7 +1589,7 @@ async function boot() {
   document.addEventListener('keydown', e => { if (e.key === 'Escape') UI.closeModal(); });
   const p = preloader();
   let cloudReady = false;
-  const ready = Cloud.init().then(() => { cloudReady = true; });
+  const ready = Promise.all([Cloud.init(), AIServer.init()]).then(() => { cloudReady = true; });
   await Promise.race([ready, new Promise(r => setTimeout(r, 3000))]);
   Router.render();
   if (!cloudReady) ready.then(() => { Router.silent = true; Router.render(); });

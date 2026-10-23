@@ -64,8 +64,23 @@ Rules:
 - If there is no food or drink at all (or the text is unrelated to eating), return status "no_food", no items, and a short friendly message.
 - Weights: 1–3000 g per item. message: one short sentence for the user, may be empty.`;
 
-// ключ Gemini (AIza…); ключи OpenAI и Anthropic (sk-…) здесь не подходят
-function aiReady() { const k = (Store.state.settings.apiKey || '').trim(); return !!k && !k.startsWith('sk-'); }
+/* Два способа доступа к ИИ:
+   1) свой ключ Gemini (AIza…) — запросы идут из браузера напрямую в Google, без лимитов сервиса;
+   2) общий ключ сервиса — запросы идут через наш сервер /api/ai с дневным лимитом (ключ в браузер не попадает). */
+const AIServer = {
+  enabled: false, limit: 0, remaining: 0,
+  async init() {
+    try {
+      const r = await fetch('/api/ai', { headers: { 'x-nl': '1' } });
+      if (!(r.headers.get('content-type') || '').includes('json')) return;
+      const j = await r.json();
+      Object.assign(this, { enabled: !!j.enabled, limit: j.limit || 0, remaining: j.remaining ?? 0 });
+    } catch (e) { this.enabled = false; }
+  },
+};
+const ownKey = () => { const k = (Store.state.settings.apiKey || '').trim(); return k && !k.startsWith('sk-') ? k : ''; };
+function aiReady() { return !!ownKey() || AIServer.enabled; }
+const aiViaServer = () => !ownKey() && AIServer.enabled;
 
 class AIError extends Error { constructor(code, detail) { super(code); this.code = code; this.detail = detail; } }
 
@@ -79,7 +94,7 @@ async function callGemini(body, { signal, stream = false } = {}) {
   for (const model of order) {
     try {
       // store: false — запросы и ответы не сохраняются на стороне Google для повторного чтения
-      const payload = Object.assign({ model, store: callGemini.noStore ? undefined : false }, body, stream ? { stream: true } : {});
+      const payload = Object.assign({ model, store: callGemini.noStore || aiViaServer() ? undefined : false }, body, stream ? { stream: true } : {});
       const r = await requestGemini(payload, { signal, stream });
       callGemini.working = model;
       return r;
@@ -112,23 +127,32 @@ async function requestGemini(payload, { signal, stream }) {
   const onAbort = () => ctrl.abort();
   signal && signal.addEventListener('abort', onAbort);
   const timer = setTimeout(() => { ctrl.timedOut = true; ctrl.abort(); }, stream ? 90000 : AI_TIMEOUT);
+  const viaServer = aiViaServer();
   let res;
   try {
-    res = await fetch(API_URL + (stream ? '?alt=sse' : ''), {
-      method: 'POST',
-      headers: { 'content-type': 'application/json', 'x-goog-api-key': Store.state.settings.apiKey.trim() },
-      body: JSON.stringify(payload), signal: ctrl.signal,
-    });
+    res = viaServer
+      ? await fetch('/api/ai', { method: 'POST', headers: { 'content-type': 'application/json', 'x-nl': '1' }, body: JSON.stringify(payload), signal: ctrl.signal })
+      : await fetch(API_URL + (stream ? '?alt=sse' : ''), {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', 'x-goog-api-key': ownKey() },
+        body: JSON.stringify(payload), signal: ctrl.signal,
+      });
   } catch (e) {
     clearTimeout(timer);
     if (ctrl.timedOut) throw new AIError('TIMEOUT');
     if (signal && signal.aborted) throw new AIError('cancelled');
     throw new AIError(navigator.onLine === false ? 'OFFLINE' : 'AI_UNAVAILABLE', e.message);
   } finally { signal && signal.removeEventListener('abort', onAbort); }
+  if (viaServer && res.headers.get('x-ai-remaining') !== null) AIServer.remaining = Number(res.headers.get('x-ai-remaining'));
   if (!res.ok) {
     clearTimeout(timer);
     let raw = {};
     try { raw = await res.json(); } catch (e) {}
+    // ошибки нашего сервера (лимит, общий ключ) — свои коды
+    if (viaServer && raw && typeof raw.code === 'string' && /^AI_|VALIDATION_FAILED/.test(raw.code)) {
+      if (raw.code === 'AI_LIMIT' || raw.code === 'AI_LIMIT_TOTAL') { AIServer.remaining = 0; throw new AIError(raw.code, raw.detail); }
+      throw new AIError('AI_UNAVAILABLE', raw.detail);
+    }
     throw geminiError(res.status, raw);
   }
   if (stream) { res._timer = timer; return res; }

@@ -32,5 +32,13 @@ await sql`create table if not exists user_data (
   updated_at timestamptz not null default now()
 )`;
 
+// счётчик запросов к общему ИИ: subject — «u:<id пользователя>», «ip:<хэш IP>» или «global»
+await sql`create table if not exists ai_usage (
+  subject text not null,
+  day     date not null,
+  count   int  not null default 0,
+  primary key (subject, day)
+)`;
+
 const tables = await sql`select table_name from information_schema.tables where table_schema = 'public' order by 1`;
 console.log('tables:', tables.map(t => t.table_name).join(', '));

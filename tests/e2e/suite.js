@@ -160,6 +160,8 @@ scenario('Редактирование записи: масса, перенос,
 
 scenario('Анализ текста без ИИ (локальная база) → результат → в дневник', async () => {
   await fresh();
+  const shared = AIServer.enabled; AIServer.enabled = false; // проверяем именно встроенную базу
+  try {
   await go('#/add?meal=breakfast');
   await type(LOC.addText, '2 яйца, 200 мл кофе с молоком, 40 г хлеба');
   await click(LOC.addCalc);
@@ -170,6 +172,7 @@ scenario('Анализ текста без ИИ (локальная база) �
   await waitFor(() => dayMeal('breakfast').length === n, 'записи в завтраке');
   const tot = sumN(dayMeal('breakfast'));
   expect(tot.kcal > 150 && tot.kcal < 600, 'итог завтрака неправдоподобен: ' + tot.kcal);
+  } finally { AIServer.enabled = shared; }
 });
 
 scenario('Каталог: кухня, сортировка по калориям и алфавиту, фильтр, поиск, запись', async () => {
