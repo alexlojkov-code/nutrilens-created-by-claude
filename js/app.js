@@ -8,6 +8,7 @@ const ICON = {
   left: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>',
   right: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>',
   camera: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.6"/></svg>',
+  flip: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><path d="M9.5 12.5a2.8 2.8 0 0 1 5-1.4M14.5 14a2.8 2.8 0 0 1-5 1.4"/><path d="M14.6 9.8v1.5h-1.5M9.4 16.2v-1.5h1.5"/></svg>',
   image: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><circle cx="9" cy="10" r="1.8"/><path d="M4 17l5-5 4 4 3-3 4 4"/></svg>',
   trash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 7V4h4v3M6 7l1 13h10l1-13"/></svg>',
   star: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.5l1.9 7.2 6.9-2.9-5.3 5.2 5.3 5.2-6.9-2.9L12 22.5l-1.9-7.2-6.9 2.9 5.3-5.2L3.2 7.8l6.9 2.9z"/></svg>',
@@ -779,8 +780,22 @@ Views.add = {
     drop.onclick = e => {
       const del = e.target.closest('[data-delph]');
       if (del) { s.photos.splice(Number(del.dataset.delph), 1); refresh(); return; }
-      if (e.target.closest('[data-cam]')) return $('#f-cam', el).click();
+      if (e.target.closest('[data-cam]')) return openCamera();
       if (e.target.closest('[data-gal]')) return $('#f-gal', el).click();
+    };
+    // камера: на телефоне — системная (снимает лучше), на компьютере — своя, через getUserMedia
+    const openCamera = () => {
+      const phone = matchMedia('(pointer: coarse)').matches;
+      if (phone || !(navigator.mediaDevices && navigator.mediaDevices.getUserMedia)) return $('#f-cam', el).click();
+      if (s.photos.length >= 4) { UI.toast(t('add.photos.max'), { err: true }); return; }
+      cameraSheet({
+        left: 4 - s.photos.length,
+        onFallback: () => $('#f-gal', el).click(),
+        onPhotos: async (files, analyze) => {
+          await addFiles(files);
+          if (analyze && s.photos.length) runAnalysis($('#composer', el));
+        },
+      });
     };
     $('#f-gal', el).onchange = e => { addFiles(e.target.files); e.target.value = ''; };
     $('#f-cam', el).onchange = e => { addFiles(e.target.files); e.target.value = ''; };
@@ -803,12 +818,86 @@ Views.add = {
     $('#calc', el).onclick = () => runAnalysis($('#composer', el));
   },
 };
+/* Камера в окне приложения: живое изображение, снимок, «Рассчитать» / «Ещё фото» / «Переснять».
+   onPhotos(files, analyze) получает снимки; analyze — сразу отправить на оценку ИИ. */
+function cameraSheet({ left = 4, onPhotos, onFallback }) {
+  let stream = null, cams = [], camIdx = 0, current = null, sent = false, closed = false;
+  const shots = [];
+  const stop = () => { if (stream) stream.getTracks().forEach(tr => tr.stop()); stream = null; };
+  const sheet = UI.modal(`
+    <div class="kicker">${t('add.camera')}</div>
+    <h2 class="h2" style="margin:10px 0 14px">${t('cam.title')}</h2>
+    <div class="cam" id="cam">
+      <video id="camv" playsinline autoplay muted></video>
+      <img id="camshot" alt="" hidden>
+      <div class="cam-msg" id="cammsg">${t('cam.starting')}</div>
+      <span class="cam-count" id="camcount" hidden></span>
+    </div>
+    <p class="mono muted" style="margin:0 0 14px;font-size:12px">${t('cam.hint')}</p>
+    <div class="cam-bar" id="camlive">
+      <button class="pill ghosty" id="camfile">${ICON.image.replace('<svg', '<svg width="16" height="16"')} ${t('add.photo')}</button>
+      <button class="cam-shutter" id="camshoot" aria-label="${t('cam.shoot')}" disabled></button>
+      <button class="pill ghosty" id="camflip" aria-label="${t('cam.flip')}" style="visibility:hidden">${ICON.flip.replace('<svg', '<svg width="18" height="18"')}</button>
+    </div>
+    <div class="cam-bar" id="camreview" hidden>
+      <button class="pill ghosty" id="camretake">${t('cam.retake')}</button>
+      <button class="pill" id="cammore">${ICON.plus.replace('<svg', '<svg width="14" height="14"')} ${t('cam.more')}</button>
+      <button class="btn lime" id="camgo">${t('add.calc')}<span class="arr">${ICON.arrow}</span></button>
+    </div>`, {
+    cls: 'camsheet',
+    onClose: () => { closed = true; stop(); if (!sent && shots.length) onPhotos(shots.slice(), false); },
+  });
+  const v = $('#camv', sheet), img = $('#camshot', sheet), msg = $('#cammsg', sheet), shoot = $('#camshoot', sheet);
+  const showMsg = text => { msg.textContent = text; msg.hidden = !text; };
+  const live = on => { $('#camlive', sheet).hidden = !on; $('#camreview', sheet).hidden = on; v.hidden = !on; img.hidden = on; };
+  const count = () => { const c = $('#camcount', sheet); c.hidden = !shots.length; c.textContent = t('cam.count', { n: shots.length }); };
+  async function start() {
+    stop(); shoot.disabled = true; showMsg(t('cam.starting'));
+    try {
+      const id = cams[camIdx] && cams[camIdx].deviceId;
+      stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: id ? { deviceId: { exact: id }, width: { ideal: 1920 }, height: { ideal: 1440 } } : { facingMode: { ideal: 'environment' }, width: { ideal: 1920 }, height: { ideal: 1440 } } });
+      if (closed) { stop(); return; } // окно закрыли, пока камера включалась
+      v.srcObject = stream; await v.play().catch(() => {});
+      showMsg(''); shoot.disabled = false;
+      if (!cams.length) {
+        cams = (await navigator.mediaDevices.enumerateDevices()).filter(d => d.kind === 'videoinput');
+        const curId = stream.getVideoTracks()[0].getSettings().deviceId;
+        camIdx = Math.max(0, cams.findIndex(d => d.deviceId === curId));
+      }
+      $('#camflip', sheet).style.visibility = cams.length > 1 ? 'visible' : 'hidden';
+    } catch (e) {
+      const denied = e.name === 'NotAllowedError' || e.name === 'SecurityError';
+      showMsg(t(denied ? 'cam.denied' : 'cam.none'));
+    }
+  }
+  shoot.onclick = () => {
+    if (!v.videoWidth) return;
+    const c = document.createElement('canvas'); c.width = v.videoWidth; c.height = v.videoHeight;
+    c.getContext('2d').drawImage(v, 0, 0);
+    $('#cam', sheet).classList.remove('flash'); void sheet.offsetWidth; $('#cam', sheet).classList.add('flash');
+    c.toBlob(b => {
+      if (!b) return;
+      current = new File([b], `camera-${Date.now()}.jpg`, { type: 'image/jpeg' });
+      if (img.src) URL.revokeObjectURL(img.src);
+      img.src = URL.createObjectURL(current);
+      live(false);
+      $('#cammore', sheet).hidden = shots.length + 1 >= left;
+    }, 'image/jpeg', 0.92);
+  };
+  $('#camretake', sheet).onclick = () => { current = null; live(true); };
+  $('#cammore', sheet).onclick = () => { if (current) shots.push(current); current = null; count(); live(true); };
+  $('#camgo', sheet).onclick = () => { if (current) shots.push(current); sent = true; UI.closeModal(); onPhotos(shots.slice(), true); };
+  $('#camflip', sheet).onclick = () => { if (cams.length > 1) { camIdx = (camIdx + 1) % cams.length; start(); } };
+  $('#camfile', sheet).onclick = () => { UI.closeModal(); setTimeout(onFallback, 300); };
+  start();
+}
+
 function photosHtml(photos) {
   if (!photos.length) return `<div>
     <div class="h3">${UI.split(Store.state.settings.lang === 'en' ? 'Drop a photo here' : 'Перетащи фото сюда')}</div>
     <p class="mono muted" style="margin:8px 0 0">JPEG · PNG · WebP · HEIC · ≤ 10 MB · ≤ 4</p>
     <div class="acts"><button class="pill" data-gal>${ICON.image.replace('<svg', '<svg width="18" height="18"')} ${t('add.photo')}</button><button class="pill" data-cam>${ICON.camera.replace('<svg', '<svg width="18" height="18"')} ${t('add.camera')}</button></div></div>`;
-  return `<div class="thumbs">${photos.map((p, i) => `<div class="thumb"><img src="${p.thumb}" alt=""><button data-delph="${i}" aria-label="${t('res.delete')}">${ICON.x}</button></div>`).join('')}${photos.length < 4 ? `<button class="thumb addmore" data-gal aria-label="${t('add.photo')}">${ICON.plus.replace('<svg', '<svg width="22" height="22"')}</button>` : ''}</div>`;
+  return `<div class="thumbs">${photos.map((p, i) => `<div class="thumb"><img src="${p.thumb}" alt=""><button data-delph="${i}" aria-label="${t('res.delete')}">${ICON.x}</button></div>`).join('')}${photos.length < 4 ? `<button class="thumb addmore" data-cam aria-label="${t('add.camera')}">${ICON.camera.replace('<svg', '<svg width="24" height="24"')}</button><button class="thumb addmore" data-gal aria-label="${t('add.photo')}">${ICON.plus.replace('<svg', '<svg width="22" height="22"')}</button>` : ''}</div>`;
 }
 
 async function runAnalysis(host, answers) {
@@ -859,6 +948,14 @@ async function runAnalysis(host, answers) {
   }
 }
 
+// «1 позиция», «2 позиции», «5 позиций» / «1 item», «2 items»
+function itemsLabel(n) {
+  if (Store.state.settings.lang === 'en') return `${n} ${n === 1 ? 'item' : 'items'}`;
+  const m10 = n % 10, m100 = n % 100;
+  const w = m10 === 1 && m100 !== 11 ? 'позиция' : m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14) ? 'позиции' : 'позиций';
+  return `${n} ${w}`;
+}
+
 /* ===== Результат ===== */
 Views.result = {
   html() {
@@ -866,7 +963,7 @@ Views.result = {
     const d = draft;
     return `
       <span class="kicker">${t('res.title')} · ${t('meal.' + d.meal)} · ${esc(relDay(d.date))}</span>
-      <h1 class="h1" style="margin-top:12px">${UI.split(`${d.items.length} ${t('res.items')}`)}</h1>
+      <h1 class="h1" style="margin-top:12px">${UI.split(`${itemsLabel(d.items.length)}`)}</h1>
       <div class="res">
         <div class="photos rv">
           ${d.photos.map(p => `<img src="${p.full}" alt="">`).join('')}
@@ -896,7 +993,7 @@ Views.result = {
         <span class="spacer"></span>
         <button class="btn lime big" id="save" ${d.items.length ? '' : 'disabled'}>${t('res.add')}<span class="arr">${ICON.arrow}</span></button>`;
       $('#save', el).onclick = save;
-      $('h1', el).setAttribute('aria-label', `${d.items.length} ${t('res.items')}`);
+      $('h1', el).setAttribute('aria-label', `${itemsLabel(d.items.length)}`);
     };
     const updRow = (row, it) => {
       const n = itemNutrients(it);
@@ -906,7 +1003,7 @@ Views.result = {
       if (Number(it.grams) > Number(r.max)) r.max = Math.ceil(it.grams * 1.5 / 50) * 50;
       r.style.setProperty('--p', (it.grams / r.max * 100) + '%');
     };
-    const rerender = () => { $('h1', el).innerHTML = UI.split(`${d.items.length} ${t('res.items')}`); list.innerHTML =d.items.map((it, i) => ritemHtml(it, i)).join(''); $$('.ritem', list).forEach((row, i) => updRow(row, d.items[i])); totals(); };
+    const rerender = () => { $('h1', el).innerHTML = UI.split(`${itemsLabel(d.items.length)}`); list.innerHTML =d.items.map((it, i) => ritemHtml(it, i)).join(''); $$('.ritem', list).forEach((row, i) => updRow(row, d.items[i])); totals(); };
     $$('.ritem', list).forEach((row, i) => updRow(row, d.items[i]));
     totals();
     list.oninput = e => {

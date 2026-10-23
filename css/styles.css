@@ -786,3 +786,19 @@ input[type=range]::-moz-range-thumb { width: 18px; height: 18px; border-radius: 
 
 /* длинные названия без пробелов не растягивают страницу */
 .h1, .h2, .h3, .crow .cn, .search-res button span { overflow-wrap: anywhere; }
+
+/* камера в окне добавления фото */
+.camsheet { max-width: 720px; }
+.cam { position: relative; aspect-ratio: 4 / 3; border-radius: 18px; overflow: hidden; background: #0b0b0c; margin: 0 0 12px; }
+.cam video, .cam img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cam-msg { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; text-align: center; color: #e8eaee; font-size: 15px; line-height: 1.45; }
+.cam-msg[hidden] { display: none; }
+.cam-count { position: absolute; top: 12px; left: 12px; padding: 5px 10px; border-radius: 999px; background: var(--lime); color: #0b0b0c; font-family: var(--mono); font-size: 11px; }
+.cam.flash::after { content: ''; position: absolute; inset: 0; background: #fff; animation: camflash .35s ease-out forwards; pointer-events: none; }
+@keyframes camflash { from { opacity: .85; } to { opacity: 0; } }
+.cam-bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.cam-bar[hidden] { display: none; }
+.cam-shutter { width: 74px; height: 74px; border-radius: 50%; background: var(--lime); border: 5px solid var(--card); box-shadow: 0 0 0 3px var(--lime); flex: none; transition: transform .15s var(--ease-out), opacity .2s; }
+.cam-shutter:active { transform: scale(.9); }
+.cam-shutter:disabled { opacity: .35; }
+@media (max-width: 600px) { .cam-bar #camgo { flex: 1; justify-content: center; } }
