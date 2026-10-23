@@ -40,5 +40,11 @@ await sql`create table if not exists ai_usage (
   primary key (subject, day)
 )`;
 
+// модели Gemini, которые сейчас перегружены или исчерпали дневной лимит (общая отметка для всех экземпляров функции)
+await sql`create table if not exists ai_model_busy (
+  model text primary key,
+  until timestamptz not null
+)`;
+
 const tables = await sql`select table_name from information_schema.tables where table_schema = 'public' order by 1`;
 console.log('tables:', tables.map(t => t.table_name).join(', '));

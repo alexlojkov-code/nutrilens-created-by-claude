@@ -78,12 +78,12 @@ function clean(b) {
 }
 
 async function callOnce(payload) {
-  // зависшая модель не должна держать запрос: без ответа за 25 с (поток — 60 с) считаем её перегруженной
+  // зависшая модель не должна держать запрос: без ответа за 25 с считаем её перегруженной (поток — не дольше 90 с)
   const req = store => fetch(GEMINI_URL + (payload.stream ? '?alt=sse' : ''), {
     method: 'POST',
     headers: { 'content-type': 'application/json', 'x-goog-api-key': process.env.GEMINI_API_KEY },
     body: JSON.stringify(store ? payload : { ...payload, store: undefined }),
-    signal: AbortSignal.timeout(payload.stream ? 60000 : 25000),
+    signal: AbortSignal.timeout(payload.stream ? 90000 : 25000),
   }).catch(e => new Response(JSON.stringify({ error: { message: 'timeout: ' + e.message, code: 'service_unavailable' } }), { status: 503 }));
   let r = await req(true);
   if (r.status === 400) {
@@ -120,12 +120,15 @@ async function firstEvent(r) {
 }
 
 // модель перегружена (503), недоступна (404) или молчит в потоке — сразу пробуем следующую из списка
-// занятые модели запоминаем на 3 минуты (пока функция «тёплая») и пробуем их последними
-const busyUntil = new Map(), BUSY_MS = 3 * 60 * 1000;
-const markBusy = (model, ms = BUSY_MS) => busyUntil.set(model, Date.now() + ms);
+// занятые модели запоминаем в базе (общей для всех экземпляров функции) и пробуем их последними
+const BUSY_MS = 3 * 60 * 1000;
+const markBusy = (model, ms = BUSY_MS) => db()`
+  insert into ai_model_busy (model, until) values (${model}, now() + make_interval(secs => ${ms / 1000}))
+  on conflict (model) do update set until = excluded.until`.catch(() => {});
 async function callGemini(payload) {
   const all = [payload.model, ...MODELS.filter(m => m !== payload.model)];
-  const free = m => !(busyUntil.get(m) > Date.now());
+  const busy = new Set((await db()`select model from ai_model_busy where until > now()`.catch(() => [])).map(r => r.model));
+  const free = m => !busy.has(m);
   const order = [...all.filter(free), ...all.filter(m => !free(m))];
   let r;
   for (const model of order) {
@@ -134,7 +137,7 @@ async function callGemini(payload) {
       const s = await firstEvent(r);
       if (s) return s;
       console.warn('Gemini', model, 'stream: no text within', FIRST_EVENT_MS, 'ms');
-      markBusy(model);
+      await markBusy(model);
       r = new Response(JSON.stringify({ error: { message: 'All models are busy, try again shortly', code: 'service_unavailable' } }), { status: 503 });
       continue;
     }
@@ -143,7 +146,7 @@ async function callGemini(payload) {
     // лимиты Google считаются по каждой модели отдельно — при 429 пробуем следующую;
     // исчерпан дневной лимит модели или она недоступна на тарифе («limit: 0») — откладываем её на час
     console.warn('Gemini', model, r.status, text.slice(0, 160));
-    markBusy(model, r.status === 429 && /per day|limit: 0\b/i.test(text) ? 60 * 60 * 1000 : BUSY_MS);
+    await markBusy(model, r.status === 429 && /per day|limit: 0\b/i.test(text) ? 60 * 60 * 1000 : BUSY_MS);
   }
   return r;
 }
