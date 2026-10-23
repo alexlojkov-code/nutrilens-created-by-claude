@@ -93,17 +93,57 @@ async function callOnce(payload) {
   }
   return r;
 }
-// модель перегружена (503) или недоступна (404) — сразу пробуем следующую из списка
+/* Перегруженная модель в потоковом режиме отвечает 200 и шлёт только «: keep-alive», не выдавая текста.
+   Ждём первое настоящее событие (текст, ошибку или завершение) не дольше FIRST_EVENT_MS;
+   не дождались — модель считаем занятой. Возвращает поток с уже прочитанным началом или null. */
+const FIRST_EVENT_MS = 10000;
+const REAL_EVENT = /event_type"\s*:\s*"(step\.delta|error|interaction\.completed)|data:\s*\[DONE\]/;
+async function firstEvent(r) {
+  const reader = r.body.getReader(), dec = new TextDecoder(), head = [];
+  let text = '';
+  const deadline = Date.now() + FIRST_EVENT_MS;
+  for (;;) {
+    const left = deadline - Date.now();
+    const step = left > 0 ? await Promise.race([reader.read(), new Promise(res => setTimeout(() => res('timeout'), left))]) : 'timeout';
+    if (step === 'timeout') { reader.cancel().catch(() => {}); return null; }
+    if (step.done) break;
+    head.push(step.value); text += dec.decode(step.value, { stream: true });
+    if (REAL_EVENT.test(text)) break;
+  }
+  return new Response(new ReadableStream({
+    async start(c) {
+      head.forEach(x => c.enqueue(x));
+      try { for (;;) { const { value, done } = await reader.read(); if (done) break; c.enqueue(value); } } catch (e) {}
+      c.close();
+    },
+  }), { status: 200, headers: { 'content-type': 'text/event-stream' } });
+}
+
+// модель перегружена (503), недоступна (404) или молчит в потоке — сразу пробуем следующую из списка
+// занятые модели запоминаем на 3 минуты (пока функция «тёплая») и пробуем их последними
+const busyUntil = new Map(), BUSY_MS = 3 * 60 * 1000;
+const markBusy = (model, ms = BUSY_MS) => busyUntil.set(model, Date.now() + ms);
 async function callGemini(payload) {
-  const order = [payload.model, ...MODELS.filter(m => m !== payload.model)];
+  const all = [payload.model, ...MODELS.filter(m => m !== payload.model)];
+  const free = m => !(busyUntil.get(m) > Date.now());
+  const order = [...all.filter(free), ...all.filter(m => !free(m))];
   let r;
   for (const model of order) {
     r = await callOnce({ ...payload, model });
+    if (r.ok && payload.stream) {
+      const s = await firstEvent(r);
+      if (s) return s;
+      console.warn('Gemini', model, 'stream: no text within', FIRST_EVENT_MS, 'ms');
+      markBusy(model);
+      r = new Response(JSON.stringify({ error: { message: 'All models are busy, try again shortly', code: 'service_unavailable' } }), { status: 503 });
+      continue;
+    }
     if (r.ok || ![404, 429, 500, 503].includes(r.status)) return r;
     const text = await r.clone().text();
-    // 429 с «limit: 0» — модель недоступна на этом тарифе; остальные 429 — настоящий лимит ключа, не перебираем
-    if (r.status === 429 && !/limit: 0\b|high demand|overloaded|capacity/i.test(text)) return r;
+    // лимиты Google считаются по каждой модели отдельно — при 429 пробуем следующую;
+    // исчерпан дневной лимит модели или она недоступна на тарифе («limit: 0») — откладываем её на час
     console.warn('Gemini', model, r.status, text.slice(0, 160));
+    markBusy(model, r.status === 429 && /per day|limit: 0\b/i.test(text) ? 60 * 60 * 1000 : BUSY_MS);
   }
   return r;
 }

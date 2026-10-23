@@ -126,12 +126,38 @@ function geminiError(status, raw) {
   if (status === 403 || /PERMISSION_DENIED|permission_denied/.test(key)) return new AIError('AUTH', msg);
   if (status === 404 || /model_not_found|NOT_FOUND/.test(key)) return new AIError('MODEL_UNAVAILABLE', msg);
   if (status === 503 || /service_unavailable|high demand|overloaded/i.test(key)) return new AIError('MODEL_UNAVAILABLE', msg); // перегрузка — пробуем другую модель
-  if (/limit: 0\b/i.test(msg)) return new AIError('MODEL_UNAVAILABLE', msg); // модель недоступна на тарифе ключа
+  if (/limit: 0\b|per day/i.test(msg)) return new AIError('MODEL_UNAVAILABLE', msg); // модель недоступна на тарифе или исчерпан её дневной лимит — лимиты у моделей раздельные
   if (/\bstore\b/i.test(msg) && status === 400) return new AIError('STORE_UNSUPPORTED', msg);
   if (/safety|jailbreak|prohibited_content|blocklist/i.test(key)) return new AIError('REFUSAL', msg);
   if (/quota|billing/i.test(msg)) return new AIError('QUOTA', msg);
   if (status === 429 || /RESOURCE_EXHAUSTED|rate_limit/i.test(key)) return new AIError('RATE', msg);
   return new AIError('AI_UNAVAILABLE', msg);
+}
+
+/* Перегруженная модель в потоке отвечает 200 и шлёт только «: keep-alive» без текста.
+   Ждём первое настоящее событие до 15 с; иначе — модель занята (MODEL_UNAVAILABLE). */
+async function firstStreamEvent(res, signal) {
+  const reader = res.body.getReader(), dec = new TextDecoder(), head = [];
+  let text = '';
+  const deadline = Date.now() + 15000;
+  for (;;) {
+    const left = deadline - Date.now();
+    const step = left > 0 ? await Promise.race([reader.read(), new Promise(r => setTimeout(() => r('timeout'), left))]) : 'timeout';
+    if (step === 'timeout') { reader.cancel().catch(() => {}); if (signal && signal.aborted) throw new AIError('cancelled'); throw new AIError('MODEL_UNAVAILABLE', 'no text in stream'); }
+    if (step.done) break;
+    head.push(step.value); text += dec.decode(step.value, { stream: true });
+    if (/event_type"\s*:\s*"(step\.delta|error|interaction\.completed)|data:\s*\[DONE\]/.test(text)) break;
+  }
+  const body = new ReadableStream({
+    async start(c) {
+      head.forEach(x => c.enqueue(x));
+      try { for (;;) { const { value, done } = await reader.read(); if (done) break; c.enqueue(value); } } catch (e) { c.error(e); return; }
+      c.close();
+    },
+  });
+  const out = new Response(body, { status: 200 });
+  out._timer = res._timer;
+  return out;
 }
 
 async function requestGemini(payload, { signal, stream, attemptTimeout = 0 }) {
@@ -167,7 +193,7 @@ async function requestGemini(payload, { signal, stream, attemptTimeout = 0 }) {
     }
     throw geminiError(res.status, raw);
   }
-  if (stream) { res._timer = timer; return res; }
+  if (stream) { res._timer = timer; return viaServer ? res : firstStreamEvent(res, signal); }
   const data = await res.json();
   clearTimeout(timer);
   if (data.status === 'failed') throw new AIError('AI_UNAVAILABLE', data.error && data.error.message);
