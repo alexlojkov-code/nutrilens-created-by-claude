@@ -719,6 +719,10 @@ input[type=range]::-moz-range-thumb { width: 18px; height: 18px; border-radius: 
 /* На лаймовом фоне текст и значки всегда тёмные — в обеих темах */
 .pill .tick, .tag.lime, .card.lime, .kpi.lime { --fg: #0B0B0C; --mute: #3A4420; color: #0B0B0C; }
 .kpi.lime { background: var(--lime); }
+/* Кнопки-ответы на лаймовой карточке: светлые с тёмным текстом, выбранная — чёрная с лаймовым; в обеих темах */
+.card.lime .pill:not(.on):not([aria-pressed="true"]) { background: #FBFBFD; color: #0B0B0C; }
+.card.lime .pill:hover { border-color: #0B0B0C; }
+:root .card.lime :is(.pill.on, .pill[aria-pressed="true"]) { background: #0B0B0C; color: var(--lime); }
 
 /* Контурная бегущая строка: обводка рисуется под заливкой цветом фона,
    поэтому внутренние линии перекрывающихся частей букв не видны — остаётся только внешний контур */
