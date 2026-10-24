@@ -2,9 +2,7 @@
 
 > Проект целиком создан **Claude** (Anthropic) в Claude Code по PRD и техспецификации NutriLens.
 
-**Открыть дневник:** https://alexlojkov-code.github.io/nutrilens-created-by-claude/ · **Варианты логотипа:** https://alexlojkov-code.github.io/nutrilens-created-by-claude/logos.html
-
-**Сайт с аккаунтами:** https://nutrilens-orcin-seven.vercel.app
+**Открыть дневник:** https://nutrilens-orcin-seven.vercel.app — полная версия: ИИ-ассистент, регистрация и синхронизация · **Варианты логотипа:** https://nutrilens-orcin-seven.vercel.app/logos.html
 
 Дневник работает в двух режимах:
 - **без аккаунта** — всё хранится только в браузере (`localStorage` и IndexedDB);

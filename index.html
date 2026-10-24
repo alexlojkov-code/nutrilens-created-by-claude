@@ -6,6 +6,12 @@
   <meta name="theme-color" content="#E8E9ED">
   <meta name="robots" content="noindex, nofollow">
   <title>NutriLens — дневник</title>
+  <script>
+    // копия на GitHub Pages — без сервера (нет ИИ и аккаунтов): уводим на основной сайт
+    if (/\.github\.io$/.test(location.hostname)) {
+      location.replace('https://nutrilens-orcin-seven.vercel.app' + location.pathname.replace(/^\/nutrilens-created-by-claude/, '') + location.search + location.hash);
+    }
+  </script>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230B0B0C'/%3E%3Cpath d='M14 50V14l21 36V14m0 36h16' fill='none' stroke='%23fff' stroke-width='7'/%3E%3Ccircle cx='48' cy='19' r='5.5' fill='%23BEFF4F'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
