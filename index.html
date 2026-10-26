@@ -7,9 +7,19 @@
   <meta name="robots" content="noindex, nofollow">
   <title>NutriLens — дневник</title>
   <script>
-    // копия на GitHub Pages — без сервера (нет ИИ и аккаунтов): уводим на основной сайт
+    // копия на GitHub Pages — без сервера (нет ИИ и аккаунтов): уводим на основной сайт.
+    // Если здесь уже есть дневник без аккаунта и он ещё не перенесён — остаёмся: js/migrate.js предложит перенос.
     if (/\.github\.io$/.test(location.hostname)) {
-      location.replace('https://nutrilens-orcin-seven.vercel.app' + location.pathname.replace(/^\/nutrilens-created-by-claude/, '') + location.search + location.hash);
+      var nlHasDiary = false;
+      try {
+        var nlSt = JSON.parse(localStorage.getItem('nutrilens.v1') || 'null');
+        nlHasDiary = !!nlSt && localStorage.getItem('nutrilens.moved') !== '1' &&
+          (!!(nlSt.settings && nlSt.settings.onboarded) || Object.keys(nlSt.days || {}).length > 0);
+      } catch (e) {}
+      if (!nlHasDiary) {
+        // первый сегмент пути — имя репозитория, какое бы оно ни было
+        location.replace('https://nutrilens-orcin-seven.vercel.app' + location.pathname.replace(/^\/[^/]+/, '') + location.search + location.hash);
+      }
     }
   </script>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230B0B0C'/%3E%3Cpath d='M14 50V14l21 36V14m0 36h16' fill='none' stroke='%23fff' stroke-width='7'/%3E%3Ccircle cx='48' cy='19' r='5.5' fill='%23BEFF4F'/%3E%3C/svg%3E">
@@ -21,7 +31,7 @@
     try { var th = (JSON.parse(localStorage.getItem('nutrilens.v1') || '{}').settings || {}).theme || 'auto';
       document.documentElement.dataset.theme = th === 'auto' ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : th; } catch (e) {}
   </script>
-  <link rel="stylesheet" href="css/styles.css?v=40">
+  <link rel="stylesheet" href="css/styles.css?v=41">
 </head>
 <body>
   <div id="preloader" aria-hidden="true">
@@ -37,14 +47,15 @@
   <div id="modal" class="modal"></div>
   <div id="toasts" aria-live="polite"></div>
 
-  <script src="js/foods.js?v=40"></script>
-  <script src="js/i18n.js?v=40"></script>
-  <script src="js/dishes.js?v=40"></script>
-  <script src="js/profiles.js?v=40"></script>
-  <script src="js/core.js?v=40"></script>
-  <script src="js/ai.js?v=40"></script>
-  <script src="js/catalog.js?v=40"></script>
-  <script src="js/cloud.js?v=40"></script>
-  <script src="js/app.js?v=40"></script>
+  <script src="js/foods.js?v=41"></script>
+  <script src="js/i18n.js?v=41"></script>
+  <script src="js/dishes.js?v=41"></script>
+  <script src="js/profiles.js?v=41"></script>
+  <script src="js/core.js?v=41"></script>
+  <script src="js/ai.js?v=41"></script>
+  <script src="js/catalog.js?v=41"></script>
+  <script src="js/cloud.js?v=41"></script>
+  <script src="js/app.js?v=41"></script>
+  <script src="js/migrate.js?v=41"></script>
 </body>
 </html>

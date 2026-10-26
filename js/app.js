@@ -1687,6 +1687,7 @@ async function boot() {
   const p = preloader();
   let cloudReady = false;
   const ready = Promise.all([Cloud.init(), AIServer.init()]).then(() => { cloudReady = true; });
+  window.nlReady = ready; // migrate.js ждёт загрузки облака, чтобы перенос не затёрла синхронизация
   await Promise.race([ready, new Promise(r => setTimeout(r, 3000))]);
   Router.render();
   if (!cloudReady) ready.then(() => { Router.silent = true; Router.render(); });
