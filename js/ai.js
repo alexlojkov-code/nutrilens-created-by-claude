@@ -90,7 +90,26 @@ class AIError extends Error { constructor(code, detail) { super(code); this.code
 
 /* Запрос к Gemini. Если выбранная модель недоступна для ключа (404 / model_not_found),
    пробуем следующую из списка и запоминаем рабочую до перезагрузки страницы. */
+/* Разовое согласие: тексты и фото уходят в Google Gemini (США), на бесплатном тарифе Google может использовать их
+   для улучшения своих продуктов. Без согласия запрос не отправляется. */
+const AI_CONSENT_V = 1;
+function aiConsent() {
+  const s = Store.state.settings;
+  if (s.aiConsent && s.aiConsent.v >= AI_CONSENT_V) return Promise.resolve();
+  if (aiConsent.pending) return aiConsent.pending;
+  return (aiConsent.pending = new Promise((resolve, reject) => {
+    let ok = false;
+    const sh = UI.modal(`<div class="kicker">${t('ai.consent.k')}</div><h2 class="h2" style="margin:10px 0 14px">${t('ai.consent.title')}</h2>
+      <p class="lead">${t('ai.consent.lead')}</p>
+      <p class="muted" style="margin-top:10px">${t('ai.consent.more', { link: `<a href="${policyHref()}" target="_blank" rel="noopener">${t('priv.name')}</a>` })}</p>
+      <div class="row" style="margin-top:18px"><button class="btn lime" id="aiok">${t('ai.consent.ok')}<span class="arr">${ICON.arrow}</span></button><button class="pill ghosty" data-close>${t('set.cancel')}</button></div>`,
+      { onClose: () => { aiConsent.pending = null; ok ? resolve() : reject(new AIError('AI_CONSENT')); } });
+    sh.querySelector('#aiok').onclick = () => { ok = true; s.aiConsent = { v: AI_CONSENT_V, at: Date.now() }; Store.save(); UI.closeModal(); };
+  }));
+}
+
 async function callGemini(body, { signal, stream = false } = {}) {
+  await aiConsent();
   const s = Store.state.settings;
   const chosen = MODELS.some(m => m.id === s.model) ? s.model : DEFAULT_MODEL;
   const viaServer = aiViaServer();

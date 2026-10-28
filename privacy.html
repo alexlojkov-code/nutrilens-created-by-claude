@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>NutriLens — политика конфиденциальности</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230B0B0C'/%3E%3Cpath d='M14 50V14l21 36V14m0 36h16' fill='none' stroke='%23fff' stroke-width='7'/%3E%3Ccircle cx='48' cy='19' r='5.5' fill='%23BEFF4F'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wdth,wght@8..144,25..151,100..1000&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg: #E8E9ED; --card: #FBFBFD; --fg: #0B0B0C; --mute: #585D6B; --line: #D5D8DF; --lime: #BEFF4F; --mark: #FFF1A8; }
+    @media (prefers-color-scheme: dark) { :root { --bg: #0E0F11; --card: #18191D; --fg: #ECEEF2; --mute: #A3A9B6; --line: #2B2D33; --mark: #5A4E12; } }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body { margin: 0; background: var(--bg); color: var(--fg); font: 400 17px/1.6 'Roboto Flex', system-ui, sans-serif; }
+    .wrap { max-width: 860px; margin: 0 auto; padding: 32px 16px 80px; }
+    header { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 28px; }
+    .brand { display: flex; align-items: center; gap: 10px; color: inherit; text-decoration: none; font-weight: 800; letter-spacing: .3px; }
+    .brand i { width: 34px; height: 34px; border-radius: 50%; background: #0B0B0C; display: grid; place-items: center; }
+    .spacer { flex: 1; }
+    .tabs { display: flex; gap: 4px; background: var(--card); border-radius: 999px; padding: 4px; }
+    .tabs a { padding: 8px 16px; border-radius: 999px; color: inherit; text-decoration: none; font: 500 14px 'JetBrains Mono', monospace; }
+    .tabs a[aria-current="true"] { background: var(--fg); color: var(--lime); }
+    .kicker { font: 500 13px 'JetBrains Mono', monospace; color: var(--mute); }
+    h1 { font-variation-settings: 'wdth' 25, 'wght' 900, 'opsz' 144; font-size: clamp(40px, 8vw, 76px); line-height: .95; text-transform: uppercase; margin: 10px 0 18px; letter-spacing: -1px; }
+    h2 { font-variation-settings: 'wdth' 60, 'wght' 800; font-size: 24px; line-height: 1.2; margin: 34px 0 10px; }
+    h3 { font-size: 18px; margin: 20px 0 6px; }
+    .card { background: var(--card); border-radius: 24px; padding: clamp(20px, 4vw, 40px); }
+    .meta { font: 400 13px/1.6 'JetBrains Mono', monospace; color: var(--mute); }
+    p, li { max-width: 72ch; }
+    ul { padding-left: 22px; }
+    li { margin: 4px 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 15px; margin: 10px 0; }
+    th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+    th { font: 500 12px 'JetBrains Mono', monospace; color: var(--mute); text-transform: uppercase; }
+    .tablewrap { overflow-x: auto; }
+    mark { background: var(--mark); color: inherit; padding: 0 4px; border-radius: 4px; }
+    .note { border-left: 4px solid var(--lime); padding: 6px 0 6px 16px; margin: 16px 0; }
+    a { color: inherit; }
+    [data-lang] { display: none; }
+    [data-lang].on { display: block; }
+    @media (max-width: 600px) { body { font-size: 16px; } th, td { padding: 8px 6px; } }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="brand" href="./"><i><svg width="22" height="22" viewBox="0 0 64 64"><path d="M14 50V14l21 36V14m0 36h16" fill="none" stroke="#fff" stroke-width="7"/><circle cx="48" cy="19" r="5.5" fill="#BEFF4F"/></svg></i>NUTRILENS</a>
+    <span class="spacer"></span>
+    <nav class="tabs" aria-label="Язык / Til / Language">
+      <a href="#ru" data-tab="ru">RU</a><a href="#uz" data-tab="uz">UZ</a><a href="#en" data-tab="en">EN</a>
+    </nav>
+  </header>
+
+  <!-- ═════════════════════════ РУССКИЙ ═════════════════════════ -->
+  <article data-lang="ru" lang="ru">
+    <span class="kicker">/ NutriLens · документ</span>
+    <h1>Политика конфиденциальности</h1>
+    <p class="meta">Версия 1.0 · действует с 28 октября 2026 года</p>
+    <div class="card">
+      <p>Эта политика объясняет, какие персональные данные обрабатывает сервис NutriLens — личный дневник питания с ИИ (далее — «Сервис»), зачем, где они хранятся, кому передаются и какие у вас есть права. Политика составлена в соответствии с Законом Республики Узбекистан «О персональных данных» № ЗРУ-547 от 2 июля 2019 года (с изменениями, в том числе внесёнными Законом № ЗРУ-1125 от 26 марта 2026 года).</p>
+
+      <h2>1. Кто обрабатывает данные</h2>
+      <p>Собственник и оператор персональных данных: <mark>[ОПЕРАТОР — ФИО / наименование]</mark>, <mark>[ГОРОД]</mark>, Республика Узбекистан.<br>
+      Контакт по вопросам персональных данных: <mark>[EMAIL]</mark>.</p>
+
+      <h2>2. Какие данные мы обрабатываем</h2>
+      <h3>Если вы пользуетесь Сервисом без аккаунта</h3>
+      <p>Дневник, профиль, нормы и фото хранятся только в памяти вашего браузера на вашем устройстве. На наш сервер они не отправляются. Исключение — запросы к ИИ (раздел 4) и обезличенный счётчик таких запросов.</p>
+      <h3>Если вы создали аккаунт</h3>
+      <ul>
+        <li><b>Данные аккаунта:</b> адрес электронной почты, имя (по желанию), пароль — только в виде криптографического хэша (scrypt со случайной солью), отметка о подтверждении почты, дата создания и последнего входа, счётчик неудачных попыток входа.</li>
+        <li><b>Дневник и профиль:</b> записи о приёмах пищи (продукты, граммы, калории и нутриенты), заметки, свои продукты, недавние продукты, пол, возраст, рост, вес и история веса, уровень активности, цель, нормы калорий и нутриентов, отметка о беременности, история переписки с ИИ-ассистентом, настройки.</li>
+        <li><b>Технические данные:</b> идентификатор сессии (на сервере — только его хэш), сведения о браузере (user-agent) для списка сессий, хэши одноразовых ссылок из писем.</li>
+      </ul>
+      <p>Фотографии блюд на сервер не синхронизируются и хранятся только в браузере — по умолчанию 30 дней, срок можно изменить в настройках.</p>
+      <h3>Данные о здоровье</h3>
+      <p>Вес, рацион, нормы питания и сведения о беременности относятся к данным о состоянии здоровья. Мы обрабатываем их только с вашего явного согласия и только для работы дневника.</p>
+      <h3>Чего мы не собираем</h3>
+      <p>Мы не используем рекламные и аналитические трекеры, не продаём и не передаём данные для рекламы, не собираем геолокацию, контакты, биометрические и генетические данные.</p>
+
+      <h2>3. Зачем мы обрабатываем данные</h2>
+      <ul>
+        <li>вести ваш дневник питания, считать калории и нутриенты, показывать статистику;</li>
+        <li>рассчитывать персональную норму по анкете;</li>
+        <li>распознавать блюда по фото и тексту и отвечать на вопросы через ИИ-ассистента;</li>
+        <li>синхронизировать дневник между вашими устройствами;</li>
+        <li>обеспечивать вход в аккаунт, восстановление пароля и подтверждение почты;</li>
+        <li>защищать Сервис от злоупотреблений: ограничивать число запросов и попыток входа.</li>
+      </ul>
+      <p>Правовое основание — ваше согласие на обработку персональных данных, в том числе данных о здоровье, и на их трансграничную передачу. Согласие даётся при регистрации и перед первым использованием ИИ.</p>
+
+      <h2>4. Кому передаются данные и где они хранятся</h2>
+      <p>Для работы Сервиса мы пользуемся услугами следующих компаний. Их серверы находятся за пределами Республики Узбекистан. Это допускается законом при наличии вашего согласия; данные NutriLens не относятся к категориям, которые по закону подлежат обязательному хранению в Узбекистане (биометрические, генетические данные и данные абонентов операторов связи).</p>
+      <div class="tablewrap"><table>
+        <tr><th>Компания</th><th>Страна</th><th>Что получает и зачем</th></tr>
+        <tr><td>Vercel Inc.</td><td>США</td><td>Хостинг сайта и серверных функций. Обрабатывает все запросы к Сервису, включая IP-адрес и сведения о браузере в технических журналах.</td></tr>
+        <tr><td>Neon Inc. (инфраструктура Amazon Web Services)</td><td>США (Огайо)</td><td>База данных: аккаунты, сессии и копия дневника пользователей с аккаунтом.</td></tr>
+        <tr><td>Google LLC — Gemini API</td><td>США и другие страны</td><td>Тексты и фотографии, которые вы отправляете на распознавание, и сообщения ИИ-ассистенту вместе с нужным для ответа контекстом (записи за день, норма, данные профиля).</td></tr>
+        <tr><td>Resend, Inc.</td><td>США</td><td>Адрес электронной почты и текст служебных писем: подтверждение почты, сброс пароля.</td></tr>
+        <tr><td>Google LLC — Google Fonts</td><td>США</td><td>IP-адрес при загрузке шрифтов сайта.</td></tr>
+      </table></div>
+      <div class="note"><b>Важно об ИИ.</b> Сервис использует бесплатный тариф Gemini API. По условиям Google на этом тарифе отправленные тексты и изображения могут использоваться Google для улучшения своих продуктов и могут просматриваться сотрудниками Google. Не отправляйте в ИИ сведения, которыми не хотите делиться. Если в настройках вы указали собственный ключ ИИ, запросы уходят в Google напрямую из вашего браузера по условиям вашего ключа.</div>
+      <p>Мы не продаём персональные данные и не передаём их третьим лицам, кроме перечисленных выше и случаев, прямо предусмотренных законодательством Республики Узбекистан.</p>
+
+      <h2>5. Сколько хранятся данные</h2>
+      <ul>
+        <li>Аккаунт и копия дневника — пока существует аккаунт. После удаления аккаунта они сразу удаляются из базы вместе с сессиями и ссылками из писем.</li>
+        <li>Сессия входа — до 30 дней или до выхода из аккаунта.</li>
+        <li>Ссылка для сброса пароля действует 1 час, ссылка подтверждения почты — 24 часа; устаревшие записи о них удаляются.</li>
+        <li>Счётчики запросов к ИИ и писем ведутся по дням и привязаны к внутреннему идентификатору или к хэшу IP-адреса, без самого адреса.</li>
+        <li>Данные в браузере хранятся, пока вы их не удалите (Настройки → Удалить все данные) или не очистите данные браузера.</li>
+      </ul>
+
+      <h2>6. Ваши права</h2>
+      <p>В соответствии с законом вы вправе:</p>
+      <ul>
+        <li>знать, какие ваши данные обрабатываются и как, и получить их копию — <i>Настройки → Резервная копия / Экспорт CSV</i>;</li>
+        <li>исправлять свои данные — в профиле и в дневнике;</li>
+        <li>удалить данные — <i>Настройки → Удалить аккаунт</i> или <i>Удалить все данные</i>;</li>
+        <li>отозвать согласие — удалив аккаунт; согласие на отправку данных в ИИ отзывается в настройках;</li>
+        <li>обратиться к оператору по адресу <mark>[EMAIL]</mark> — мы ответим в сроки, установленные законодательством;</li>
+        <li>обжаловать действия оператора в уполномоченном государственном органе в сфере персональных данных или в суде.</li>
+      </ul>
+
+      <h2>7. Как мы защищаем данные</h2>
+      <ul>
+        <li>все соединения — только по защищённому протоколу HTTPS;</li>
+        <li>пароли хранятся только в виде хэша scrypt, токены сессий и ссылок из писем — только в виде хэша;</li>
+        <li>cookie сессии недоступна скриптам страницы (HttpOnly) и передаётся только по HTTPS;</li>
+        <li>защита от подделки межсайтовых запросов, блокировка подбора пароля, ограничение частоты запросов;</li>
+        <li>ключ ИИ Сервиса хранится только на сервере и не передаётся в браузер.</li>
+      </ul>
+
+      <h2>8. Файлы cookie и хранилище браузера</h2>
+      <p>Сервис использует одну необходимую cookie — <code>nl_session</code> — только для входа в аккаунт. Дневник, настройки и фото хранятся в хранилище браузера (localStorage и IndexedDB) на вашем устройстве. Рекламных и аналитических cookie нет.</p>
+
+      <h2>9. Несовершеннолетние</h2>
+      <p>Если вам меньше 18 лет, пользуйтесь Сервисом и создавайте аккаунт только с согласия родителей или законных представителей.</p>
+
+      <h2>10. Сервис — не медицинская помощь</h2>
+      <p>Расчёты и ответы ИИ носят справочный характер, могут содержать ошибки и не заменяют консультацию врача или диетолога.</p>
+
+      <h2>11. Изменения политики</h2>
+      <p>Мы можем обновлять политику. Новая версия публикуется на этой странице с указанием даты. О существенных изменениях мы сообщим в Сервисе и, если потребуется, попросим согласие заново.</p>
+
+      <h2>12. Контакты</h2>
+      <p><mark>[ОПЕРАТОР]</mark> · <mark>[EMAIL]</mark></p>
+    </div>
+  </article>
+
+  <!-- ═════════════════════════ O'ZBEKCHA ═════════════════════════ -->
+  <article data-lang="uz" lang="uz">
+    <span class="kicker">/ NutriLens · hujjat</span>
+    <h1>Maxfiylik siyosati</h1>
+    <p class="meta">1.0-versiya · 2026-yil 28-oktabrdan amal qiladi</p>
+    <div class="card">
+      <p>Ushbu siyosat NutriLens — sun’iy intellektli shaxsiy ovqatlanish kundaligi (keyingi o‘rinlarda — «Xizmat») qanday shaxsga doir ma’lumotlarni qayta ishlashini, nima maqsadda, ular qayerda saqlanishini, kimga uzatilishini va sizning qanday huquqlaringiz borligini tushuntiradi. Siyosat O‘zbekiston Respublikasining 2019-yil 2-iyuldagi O‘RQ-547-son «Shaxsga doir ma’lumotlar to‘g‘risida»gi Qonuniga (o‘zgartishlar bilan, jumladan 2026-yil 26-martdagi O‘RQ-1125-son Qonun bilan kiritilgan o‘zgartishlar) muvofiq tuzilgan.</p>
+
+      <h2>1. Ma’lumotlarni kim qayta ishlaydi</h2>
+      <p>Shaxsga doir ma’lumotlar mulkdori va operatori: <mark>[OPERATOR — F.I.Sh. / nomi]</mark>, <mark>[SHAHAR]</mark>, O‘zbekiston Respublikasi.<br>
+      Shaxsga doir ma’lumotlar bo‘yicha aloqa: <mark>[EMAIL]</mark>.</p>
+
+      <h2>2. Qanday ma’lumotlarni qayta ishlaymiz</h2>
+      <h3>Xizmatdan akkauntsiz foydalansangiz</h3>
+      <p>Kundalik, profil, me’yorlar va fotosuratlar faqat qurilmangizdagi brauzer xotirasida saqlanadi. Ular serverimizga yuborilmaydi. Istisno — sun’iy intellektga so‘rovlar (4-bo‘lim) va bunday so‘rovlarning shaxssizlashtirilgan hisoblagichi.</p>
+      <h3>Akkaunt yaratgan bo‘lsangiz</h3>
+      <ul>
+        <li><b>Akkaunt ma’lumotlari:</b> elektron pochta manzili, ism (ixtiyoriy), parol — faqat kriptografik xesh ko‘rinishida (tasodifiy tuzli scrypt), pochta tasdiqlangani haqidagi belgi, yaratilgan va oxirgi kirish sanasi, muvaffaqiyatsiz kirishlar hisoblagichi.</li>
+        <li><b>Kundalik va profil:</b> ovqatlanish yozuvlari (mahsulotlar, grammlar, kaloriya va nutriyentlar), eslatmalar, o‘z mahsulotlaringiz, so‘nggi mahsulotlar, jins, yosh, bo‘y, vazn va vazn tarixi, faollik darajasi, maqsad, kaloriya va nutriyent me’yorlari, homiladorlik belgisi, AI-yordamchi bilan yozishmalar tarixi, sozlamalar.</li>
+        <li><b>Texnik ma’lumotlar:</b> sessiya identifikatori (serverda — faqat uning xeshi), seanslar ro‘yxati uchun brauzer haqidagi ma’lumot (user-agent), xatlardagi bir martalik havolalarning xeshlari.</li>
+      </ul>
+      <p>Taomlar fotosuratlari serverga sinxronlanmaydi va faqat brauzerda saqlanadi — standart bo‘yicha 30 kun, muddatni sozlamalarda o‘zgartirish mumkin.</p>
+      <h3>Salomatlik haqidagi ma’lumotlar</h3>
+      <p>Vazn, ratsion, ovqatlanish me’yorlari va homiladorlik haqidagi ma’lumotlar salomatlik holatiga oid ma’lumotlardir. Biz ularni faqat sizning aniq roziligingiz bilan va faqat kundalik ishlashi uchun qayta ishlaymiz.</p>
+      <h3>Nimalarni yig‘maymiz</h3>
+      <p>Biz reklama va tahliliy trekerlardan foydalanmaymiz, ma’lumotlarni sotmaymiz va reklama uchun uzatmaymiz, geolokatsiya, kontaktlar, biometrik va genetik ma’lumotlarni yig‘maymiz.</p>
+
+      <h2>3. Ma’lumotlarni nima uchun qayta ishlaymiz</h2>
+      <ul>
+        <li>ovqatlanish kundaligingizni yuritish, kaloriya va nutriyentlarni hisoblash, statistikani ko‘rsatish;</li>
+        <li>so‘rovnoma asosida shaxsiy me’yorni hisoblash;</li>
+        <li>taomlarni foto va matn bo‘yicha aniqlash hamda AI-yordamchi orqali savollarga javob berish;</li>
+        <li>kundalikni qurilmalaringiz o‘rtasida sinxronlash;</li>
+        <li>akkauntga kirish, parolni tiklash va pochtani tasdiqlashni ta’minlash;</li>
+        <li>Xizmatni suiiste’mollardan himoya qilish: so‘rovlar va kirish urinishlari sonini cheklash.</li>
+      </ul>
+      <p>Huquqiy asos — shaxsga doir ma’lumotlarni, shu jumladan salomatlik haqidagi ma’lumotlarni qayta ishlashga va ularni transchegaraviy uzatishga roziligingiz. Rozilik ro‘yxatdan o‘tishda va sun’iy intellektdan birinchi marta foydalanishdan oldin beriladi.</p>
+
+      <h2>4. Ma’lumotlar kimga uzatiladi va qayerda saqlanadi</h2>
+      <p>Xizmat ishlashi uchun quyidagi kompaniyalar xizmatlaridan foydalanamiz. Ularning serverlari O‘zbekiston Respublikasidan tashqarida joylashgan. Roziligingiz mavjud bo‘lsa, qonun bunga yo‘l qo‘yadi; NutriLens ma’lumotlari qonunga ko‘ra O‘zbekistonda majburiy saqlanishi lozim bo‘lgan toifalarga (biometrik, genetik ma’lumotlar va aloqa operatorlari abonentlari ma’lumotlari) kirmaydi.</p>
+      <div class="tablewrap"><table>
+        <tr><th>Kompaniya</th><th>Mamlakat</th><th>Nimani oladi va nima uchun</th></tr>
+        <tr><td>Vercel Inc.</td><td>AQSh</td><td>Sayt va server funksiyalari xostingi. Xizmatga barcha so‘rovlarni, shu jumladan texnik jurnallardagi IP-manzil va brauzer ma’lumotlarini qayta ishlaydi.</td></tr>
+        <tr><td>Neon Inc. (Amazon Web Services infratuzilmasi)</td><td>AQSh (Ogayo)</td><td>Ma’lumotlar bazasi: akkauntlar, seanslar va akkauntli foydalanuvchilar kundaligining nusxasi.</td></tr>
+        <tr><td>Google LLC — Gemini API</td><td>AQSh va boshqa mamlakatlar</td><td>Aniqlash uchun yuborgan matn va fotosuratlaringiz hamda AI-yordamchiga xabarlar, javob uchun kerakli kontekst bilan (kunlik yozuvlar, me’yor, profil ma’lumotlari).</td></tr>
+        <tr><td>Resend, Inc.</td><td>AQSh</td><td>Elektron pochta manzili va xizmat xatlari matni: pochtani tasdiqlash, parolni tiklash.</td></tr>
+        <tr><td>Google LLC — Google Fonts</td><td>AQSh</td><td>Sayt shriftlarini yuklashda IP-manzil.</td></tr>
+      </table></div>
+      <div class="note"><b>Sun’iy intellekt haqida muhim.</b> Xizmat Gemini API’ning bepul tarifidan foydalanadi. Google shartlariga ko‘ra, ushbu tarifda yuborilgan matn va tasvirlar Google tomonidan o‘z mahsulotlarini yaxshilash uchun ishlatilishi va Google xodimlari tomonidan ko‘rib chiqilishi mumkin. Ulashishni istamagan ma’lumotlaringizni sun’iy intellektga yubormang. Agar sozlamalarda o‘z AI kalitingizni ko‘rsatgan bo‘lsangiz, so‘rovlar brauzeringizdan to‘g‘ridan-to‘g‘ri Google’ga, kalitingiz shartlari asosida yuboriladi.</div>
+      <p>Biz shaxsga doir ma’lumotlarni sotmaymiz va yuqorida sanab o‘tilganlardan hamda O‘zbekiston Respublikasi qonunchiligida bevosita nazarda tutilgan hollardan tashqari uchinchi shaxslarga uzatmaymiz.</p>
+
+      <h2>5. Ma’lumotlar qancha saqlanadi</h2>
+      <ul>
+        <li>Akkaunt va kundalik nusxasi — akkaunt mavjud ekan. Akkaunt o‘chirilgach, ular seanslar va xatlardagi havolalar bilan birga bazadan darhol o‘chiriladi.</li>
+        <li>Kirish seansi — 30 kungacha yoki akkauntdan chiqquncha.</li>
+        <li>Parolni tiklash havolasi 1 soat, pochtani tasdiqlash havolasi 24 soat amal qiladi; eskirgan yozuvlar o‘chiriladi.</li>
+        <li>Sun’iy intellektga so‘rovlar va xatlar hisoblagichlari kunlar bo‘yicha yuritiladi va ichki identifikatorga yoki IP-manzil xeshiga bog‘lanadi, manzilning o‘zisiz.</li>
+        <li>Brauzerdagi ma’lumotlar siz ularni o‘chirmaguningizcha (Sozlamalar → Barcha ma’lumotlarni o‘chirish) yoki brauzer ma’lumotlarini tozalamaguningizcha saqlanadi.</li>
+      </ul>
+
+      <h2>6. Huquqlaringiz</h2>
+      <p>Qonunga muvofiq siz quyidagilarga haqlisiz:</p>
+      <ul>
+        <li>qaysi ma’lumotlaringiz va qanday qayta ishlanayotganini bilish hamda ularning nusxasini olish — <i>Sozlamalar → Zaxira nusxa / CSV eksport</i>;</li>
+        <li>ma’lumotlaringizni tuzatish — profil va kundalikda;</li>
+        <li>ma’lumotlarni o‘chirish — <i>Sozlamalar → Akkauntni o‘chirish</i> yoki <i>Barcha ma’lumotlarni o‘chirish</i>;</li>
+        <li>roziligingizni qaytarib olish — akkauntni o‘chirish orqali; ma’lumotlarni sun’iy intellektga yuborishga rozilik sozlamalarda qaytarib olinadi;</li>
+        <li>operatorga <mark>[EMAIL]</mark> manzili orqali murojaat qilish — qonunchilikda belgilangan muddatlarda javob beramiz;</li>
+        <li>operator harakatlari ustidan shaxsga doir ma’lumotlar sohasidagi vakolatli davlat organiga yoki sudga shikoyat qilish.</li>
+      </ul>
+
+      <h2>7. Ma’lumotlarni qanday himoya qilamiz</h2>
+      <ul>
+        <li>barcha ulanishlar — faqat himoyalangan HTTPS protokoli orqali;</li>
+        <li>parollar faqat scrypt xeshi ko‘rinishida, seans va xatlardagi havolalar tokenlari — faqat xesh ko‘rinishida saqlanadi;</li>
+        <li>seans cookie fayli sahifa skriptlari uchun yopiq (HttpOnly) va faqat HTTPS orqali uzatiladi;</li>
+        <li>saytlararo so‘rovlarni soxtalashtirishdan himoya, parolni tanlashni bloklash, so‘rovlar chastotasini cheklash;</li>
+        <li>Xizmatning AI kaliti faqat serverda saqlanadi va brauzerga uzatilmaydi.</li>
+      </ul>
+
+      <h2>8. Cookie fayllari va brauzer xotirasi</h2>
+      <p>Xizmat faqat bitta zarur cookie faylidan — <code>nl_session</code> — akkauntga kirish uchun foydalanadi. Kundalik, sozlamalar va fotosuratlar qurilmangizdagi brauzer xotirasida (localStorage va IndexedDB) saqlanadi. Reklama va tahliliy cookie fayllari yo‘q.</p>
+
+      <h2>9. Voyaga yetmaganlar</h2>
+      <p>Agar sizga 18 yosh to‘lmagan bo‘lsa, Xizmatdan faqat ota-onangiz yoki qonuniy vakillaringiz roziligi bilan foydalaning va akkaunt yarating.</p>
+
+      <h2>10. Xizmat tibbiy yordam emas</h2>
+      <p>Hisob-kitoblar va sun’iy intellekt javoblari ma’lumot uchun mo‘ljallangan, xatolarni o‘z ichiga olishi mumkin va shifokor yoki dietolog maslahatini almashtirmaydi.</p>
+
+      <h2>11. Siyosatdagi o‘zgarishlar</h2>
+      <p>Biz siyosatni yangilashimiz mumkin. Yangi versiya ushbu sahifada sana ko‘rsatilgan holda e’lon qilinadi. Muhim o‘zgarishlar haqida Xizmatda xabar beramiz va zarur bo‘lsa, rozilikni qayta so‘raymiz.</p>
+
+      <h2>12. Aloqa</h2>
+      <p><mark>[OPERATOR]</mark> · <mark>[EMAIL]</mark></p>
+    </div>
+  </article>
+
+  <!-- ═════════════════════════ ENGLISH ═════════════════════════ -->
+  <article data-lang="en" lang="en">
+    <span class="kicker">/ NutriLens · document</span>
+    <h1>Privacy policy</h1>
+    <p class="meta">Version 1.0 · effective 28 October 2026</p>
+    <div class="card">
+      <p>This policy explains what personal data NutriLens — a personal food diary with AI (the “Service”) — processes, why, where it is stored, who it is shared with, and what rights you have. It is prepared in accordance with the Law of the Republic of Uzbekistan “On Personal Data” No. ZRU-547 of 2 July 2019 (as amended, including by Law No. ZRU-1125 of 26 March 2026).</p>
+
+      <h2>1. Who processes the data</h2>
+      <p>Owner and operator of personal data: <mark>[OPERATOR — full name / company name]</mark>, <mark>[CITY]</mark>, Republic of Uzbekistan.<br>
+      Contact for personal data matters: <mark>[EMAIL]</mark>.</p>
+
+      <h2>2. What data we process</h2>
+      <h3>If you use the Service without an account</h3>
+      <p>Your diary, profile, targets and photos are stored only in your browser on your device. They are not sent to our server, except for AI requests (section 4) and an anonymised counter of such requests.</p>
+      <h3>If you created an account</h3>
+      <ul>
+        <li><b>Account data:</b> email address, name (optional), password — only as a cryptographic hash (scrypt with a random salt), email confirmation status, creation and last sign-in dates, failed sign-in counter.</li>
+        <li><b>Diary and profile:</b> meal entries (foods, grams, calories and nutrients), notes, your own foods, recent foods, sex, age, height, weight and weight history, activity level, goal, calorie and nutrient targets, pregnancy flag, AI assistant chat history, settings.</li>
+        <li><b>Technical data:</b> session identifier (only its hash on the server), browser information (user-agent) for the session list, hashes of one-time links sent by email.</li>
+      </ul>
+      <p>Meal photos are not synced to the server and stay only in your browser — 30 days by default, adjustable in settings.</p>
+      <h3>Health data</h3>
+      <p>Weight, diet, nutrition targets and pregnancy information are data about health. We process them only with your explicit consent and only to run the diary.</p>
+      <h3>What we don’t collect</h3>
+      <p>We use no advertising or analytics trackers, don’t sell data or share it for advertising, and don’t collect location, contacts, biometric or genetic data.</p>
+
+      <h2>3. Why we process data</h2>
+      <ul>
+        <li>to keep your food diary, calculate calories and nutrients and show statistics;</li>
+        <li>to calculate personal targets from the questionnaire;</li>
+        <li>to recognise meals from photos and text and answer questions through the AI assistant;</li>
+        <li>to sync your diary across your devices;</li>
+        <li>to provide sign-in, password reset and email confirmation;</li>
+        <li>to protect the Service from abuse by limiting requests and sign-in attempts.</li>
+      </ul>
+      <p>Legal basis: your consent to the processing of personal data, including health data, and to its cross-border transfer. Consent is given at sign-up and before the first use of AI.</p>
+
+      <h2>4. Who receives the data and where it is stored</h2>
+      <p>To run the Service we use the following companies. Their servers are located outside the Republic of Uzbekistan. The law allows this with your consent; NutriLens data does not fall into the categories that must be stored in Uzbekistan by law (biometric and genetic data and data of subscribers of telecom operators).</p>
+      <div class="tablewrap"><table>
+        <tr><th>Company</th><th>Country</th><th>What it receives and why</th></tr>
+        <tr><td>Vercel Inc.</td><td>USA</td><td>Hosting of the website and server functions. Processes all requests to the Service, including IP address and browser details in technical logs.</td></tr>
+        <tr><td>Neon Inc. (Amazon Web Services infrastructure)</td><td>USA (Ohio)</td><td>Database: accounts, sessions and the diary copy of users with an account.</td></tr>
+        <tr><td>Google LLC — Gemini API</td><td>USA and other countries</td><td>Text and photos you send for recognition, and messages to the AI assistant with the context needed to answer (today’s entries, targets, profile data).</td></tr>
+        <tr><td>Resend, Inc.</td><td>USA</td><td>Email address and the text of service emails: email confirmation, password reset.</td></tr>
+        <tr><td>Google LLC — Google Fonts</td><td>USA</td><td>IP address when the website fonts load.</td></tr>
+      </table></div>
+      <div class="note"><b>Important about AI.</b> The Service uses the free tier of the Gemini API. Under Google’s terms, text and images sent on this tier may be used by Google to improve its products and may be reviewed by Google staff. Don’t send the AI anything you don’t want to share. If you entered your own AI key in settings, requests go to Google directly from your browser under the terms of your key.</div>
+      <p>We don’t sell personal data and don’t share it with third parties other than those listed above and cases expressly required by the laws of the Republic of Uzbekistan.</p>
+
+      <h2>5. How long data is kept</h2>
+      <ul>
+        <li>Account and diary copy — as long as the account exists. When you delete the account, they are deleted from the database immediately, together with sessions and email links.</li>
+        <li>Sign-in session — up to 30 days or until you sign out.</li>
+        <li>A password reset link works for 1 hour, an email confirmation link for 24 hours; expired records are deleted.</li>
+        <li>Counters of AI requests and emails are kept per day and linked to an internal identifier or to a hash of the IP address, never the address itself.</li>
+        <li>Data in the browser stays until you delete it (Settings → Delete all data) or clear your browser data.</li>
+      </ul>
+
+      <h2>6. Your rights</h2>
+      <p>Under the law you have the right to:</p>
+      <ul>
+        <li>know what data about you is processed and how, and get a copy — <i>Settings → Backup / Export CSV</i>;</li>
+        <li>correct your data — in the profile and the diary;</li>
+        <li>delete your data — <i>Settings → Delete account</i> or <i>Delete all data</i>;</li>
+        <li>withdraw consent — by deleting the account; consent to send data to AI can be withdrawn in settings;</li>
+        <li>contact the operator at <mark>[EMAIL]</mark> — we reply within the time limits set by law;</li>
+        <li>appeal against the operator to the authorised state body for personal data or to a court.</li>
+      </ul>
+
+      <h2>7. How we protect data</h2>
+      <ul>
+        <li>all connections use HTTPS only;</li>
+        <li>passwords are stored only as scrypt hashes, session and email-link tokens only as hashes;</li>
+        <li>the session cookie is not accessible to page scripts (HttpOnly) and is sent over HTTPS only;</li>
+        <li>protection against cross-site request forgery, password-guessing lockout, request rate limits;</li>
+        <li>the Service’s AI key is kept only on the server and never sent to the browser.</li>
+      </ul>
+
+      <h2>8. Cookies and browser storage</h2>
+      <p>The Service uses one necessary cookie — <code>nl_session</code> — for signing in only. The diary, settings and photos are stored in your browser storage (localStorage and IndexedDB) on your device. There are no advertising or analytics cookies.</p>
+
+      <h2>9. Minors</h2>
+      <p>If you are under 18, use the Service and create an account only with the consent of your parents or legal guardians.</p>
+
+      <h2>10. The Service is not medical care</h2>
+      <p>Calculations and AI answers are for information only, may contain mistakes and don’t replace advice from a doctor or dietitian.</p>
+
+      <h2>11. Changes to this policy</h2>
+      <p>We may update this policy. The new version is published on this page with its date. We will announce significant changes in the Service and, if needed, ask for consent again.</p>
+
+      <h2>12. Contact</h2>
+      <p><mark>[OPERATOR]</mark> · <mark>[EMAIL]</mark></p>
+    </div>
+  </article>
+</div>
+<script>
+  // язык из адреса (#ru / #uz / #en), иначе — язык браузера
+  function show() {
+    var h = location.hash.replace('#', '');
+    var lang = ['ru', 'uz', 'en'].indexOf(h) >= 0 ? h : (/^uz/.test(navigator.language) ? 'uz' : /^ru/.test(navigator.language) ? 'ru' : 'en');
+    document.querySelectorAll('[data-lang]').forEach(function (a) { a.classList.toggle('on', a.dataset.lang === lang); });
+    document.querySelectorAll('[data-tab]').forEach(function (a) { a.setAttribute('aria-current', a.dataset.tab === lang ? 'true' : 'false'); });
+    document.documentElement.lang = lang;
+    document.title = { ru: 'NutriLens — политика конфиденциальности', uz: 'NutriLens — maxfiylik siyosati', en: 'NutriLens — privacy policy' }[lang];
+  }
+  window.addEventListener('hashchange', show);
+  show();
+</script>
+</body>
+</html>

@@ -36,7 +36,7 @@ function ok(c, msg) { if (!c) throw new Error(msg); }
 
 async function register(email = `e2e-${rnd()}@example.com`, password = strongPw(), name = 'API') {
   const c = new Client();
-  const r = await c.req('POST', 'auth/register', { email, password, name });
+  const r = await c.req('POST', 'auth/register', { consent: true, email, password, name });
   if (r.status === 201) cleanup.push([c, password]);
   return { c, r, email, password };
 }
@@ -55,18 +55,25 @@ await test('Регистрация: 201, пользователь и защищ�
 
 await test('Регистрация: проверки email и пароля', async () => {
   const c = new Client();
-  eq((await c.req('POST', 'auth/register', { email: 'not-an-email', password: strongPw() })).json.code, 'INVALID_EMAIL', 'неверный email');
-  eq((await c.req('POST', 'auth/register', { email: `e2e-${rnd()}@example.com`, password: 'short' })).json.code, 'PASSWORD_TOO_SHORT', 'короткий пароль');
-  eq((await c.req('POST', 'auth/register', { email: `e2e-${rnd()}@example.com`, password: '1234567890' })).json.code, 'PASSWORD_WEAK', 'слабый пароль');
-  eq((await c.req('POST', 'auth/register', { email: `e2e-${rnd()}@example.com`, password: 'x'.repeat(201) })).json.code, 'PASSWORD_TOO_LONG', 'длинный пароль');
+  eq((await c.req('POST', 'auth/register', { consent: true, email: 'not-an-email', password: strongPw() })).json.code, 'INVALID_EMAIL', 'неверный email');
+  eq((await c.req('POST', 'auth/register', { consent: true, email: `e2e-${rnd()}@example.com`, password: 'short' })).json.code, 'PASSWORD_TOO_SHORT', 'короткий пароль');
+  eq((await c.req('POST', 'auth/register', { consent: true, email: `e2e-${rnd()}@example.com`, password: '1234567890' })).json.code, 'PASSWORD_WEAK', 'слабый пароль');
+  eq((await c.req('POST', 'auth/register', { consent: true, email: `e2e-${rnd()}@example.com`, password: 'x'.repeat(201) })).json.code, 'PASSWORD_TOO_LONG', 'длинный пароль');
   const e = `e2e-${rnd()}@example.com`;
-  eq((await c.req('POST', 'auth/register', { email: e, password: e })).json.code, 'PASSWORD_WEAK', 'пароль совпадает с email');
-  eq((await c.req('POST', 'auth/register', { email: "x'; drop table users;--@example.com", password: strongPw() })).status, 400, 'попытка SQL-инъекции в email');
+  eq((await c.req('POST', 'auth/register', { consent: true, email: e, password: e })).json.code, 'PASSWORD_WEAK', 'пароль совпадает с email');
+  eq((await c.req('POST', 'auth/register', { consent: true, email: "x'; drop table users;--@example.com", password: strongPw() })).status, 400, 'попытка SQL-инъекции в email');
+});
+
+await test('Регистрация без согласия с политикой конфиденциальности → 400', async () => {
+  const c = new Client();
+  const r = await c.req('POST', 'auth/register', { email: `e2e-${rnd()}@example.com`, password: strongPw() });
+  eq(r.status, 400, 'код'); eq(r.json.code, 'CONSENT_REQUIRED', 'код ошибки');
+  eq((await c.req('POST', 'auth/register', { consent: 'yes', email: `e2e-${rnd()}@example.com`, password: strongPw() })).json.code, 'CONSENT_REQUIRED', 'только true');
 });
 
 await test('Регистрация: повтор email (без учёта регистра) → 409', async () => {
   const { email } = await register();
-  const r = await new Client().req('POST', 'auth/register', { email: email.toUpperCase(), password: strongPw() });
+  const r = await new Client().req('POST', 'auth/register', { consent: true, email: email.toUpperCase(), password: strongPw() });
   eq(r.status, 409, 'код ответа'); eq(r.json.code, 'EMAIL_TAKEN', 'код ошибки');
 });
 

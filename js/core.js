@@ -2,6 +2,8 @@
 
 const STORE_KEY = 'nutrilens.v1';
 const MEALS = ['breakfast', 'lunch', 'dinner', 'snack'];
+const POLICY_VERSION = '1.0'; // версия политики конфиденциальности (privacy.html)
+const policyHref = () => 'privacy.html#' + ((typeof Store !== 'undefined' && Store.state && Store.state.settings.lang) || 'ru');
 
 /* ---------- utils ---------- */
 const uid = () => Math.random().toString(36).slice(2, 9) + Date.now().toString(36).slice(-4);

@@ -174,7 +174,8 @@ const Cloud = {
     this.saveMeta();
   },
   async register(email, password, name) {
-    const r = await this.api('auth/register', { method: 'POST', body: { email, password, name, lang: Store.state.settings.lang } });
+    const r = await this.api('auth/register', { method: 'POST', body: { email, password, name, lang: Store.state.settings.lang, consent: true, policy: POLICY_VERSION } });
+    Store.state.settings.consent = { policy: POLICY_VERSION, at: Date.now() };
     this.verifySent = !!r.verify_sent;
     this.resetMeta(); this.remember(r.user);
     this.meta.dirty = true; this.saveMeta();

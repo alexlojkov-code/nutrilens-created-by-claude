@@ -7,6 +7,7 @@ export default route(['POST'], async (req, res) => {
   const email = normEmail(b.email);
   const name = String(b.name || '').trim().slice(0, 60);
   if (!validEmail(email)) return problem(res, 400, 'INVALID_EMAIL', 'Invalid email');
+  if (b.consent !== true) return problem(res, 400, 'CONSENT_REQUIRED', 'Consent to the privacy policy is required');
   const pwErr = passwordProblem(b.password, email);
   if (pwErr) return problem(res, 400, pwErr, 'Password does not meet requirements');
   const hash = await hashPassword(b.password);

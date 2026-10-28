@@ -435,6 +435,7 @@ Views.welcome = {
         <div class="row rv" style="--d:6">
           ${['onb.s1', 'onb.s2', 'onb.s3', 'onb.s4'].map(k => `<span class="pill"><span class="tick">${ICON.check}</span>${t(k)}</span>`).join('')}
         </div>
+        <p class="muted rv" style="--d:7;font-size:14px;margin:0">${t('priv.welcome', { link: `<a href="${policyHref()}" target="_blank" rel="noopener">${t('priv.name')}</a>` })}</p>
       </div>
       <div class="nav-b">${Cloud.available
         ? `<button class="link" data-next>${t('auth.local')}</button>
@@ -666,7 +667,7 @@ Views.auth = {
           <label class="field"><span>${t('auth.email')}</span><input class="input" name="email" type="email" inputmode="email" autocomplete="${reg ? 'email' : 'username'}" autocapitalize="off" spellcheck="false" required></label>
           <label class="field"><span>${t('auth.password')}${reg ? ' · ' + t('auth.pw.hint') : ''}</span>
             <span class="pwwrap"><input class="input" name="password" type="password" autocomplete="${reg ? 'new-password' : 'current-password'}" required><button type="button" class="pwtoggle" data-pw>${t('auth.show')}</button></span></label>
-          ${reg ? '' : `<button type="button" class="link" id="forgot" style="justify-self:start">${t('auth.forgot')}</button>`}
+          ${reg ? `<label class="check consent"><input type="checkbox" name="consent"> <span>${t('auth.consent', { link: `<a href="${policyHref()}" target="_blank" rel="noopener">${t('priv.name')}</a>` })}</span></label>` : `<button type="button" class="link" id="forgot" style="justify-self:start">${t('auth.forgot')}</button>`}
           <div class="autherr" id="autherr" role="alert"></div>
           <button class="btn big" type="submit">${t(reg ? 'auth.submit.register' : 'auth.submit.login')}<span class="arr">${ICON.arrow}</span></button>
           <a class="link" href="#/auth?mode=${reg ? 'login' : 'register'}">${t(reg ? 'auth.toLogin' : 'auth.toRegister')}</a>
@@ -690,6 +691,7 @@ Views.auth = {
       const email = f.email.value.trim(), pw = f.password.value, name = reg ? f.elements.displayName.value.trim() : '';
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { err.textContent = t('err.INVALID_EMAIL'); f.email.focus(); return; }
       if (reg && pw.length < 10) { err.textContent = t('err.PASSWORD_TOO_SHORT'); f.password.focus(); return; }
+      if (reg && !f.consent.checked) { err.textContent = t('err.CONSENT_REQUIRED'); f.consent.focus(); return; }
       if (!pw) { f.password.focus(); return; }
       const btn = f.querySelector('[type=submit]');
       btn.disabled = true;
@@ -1664,6 +1666,7 @@ Views.settings = {
 
         <div class="card wide rv" style="--d:4"><h3 class="h3">${t('set.data')}</h3>
           <p class="lead" style="margin:0">${t('set.data.lead')}</p>
+          <p class="muted" style="margin:0"><a href="${policyHref()}" target="_blank" rel="noopener">${t('priv.name')}</a>${s.settings.aiConsent ? ` · ${t('ai.consent.given', { date: new Date(s.settings.aiConsent.at).toLocaleDateString(locale()) })} <button class="link" id="aiwithdraw">${t('ai.consent.withdraw')}</button>` : ''}</p>
           <div class="row">
             <button class="btn" id="dcsv">${t('set.csv')}<span class="arr">${ICON.arrow}</span></button>
             <button class="btn light" id="djson">${t('set.json')}<span class="arr">${ICON.arrow}</span></button>
@@ -1746,6 +1749,7 @@ Views.settings = {
       };
     };
     const acc = id => $(id, el);
+    $('#aiwithdraw', el) && ($('#aiwithdraw', el).onclick = () => { delete s.settings.aiConsent; Store.save(); UI.toast(t('ai.consent.withdrawn')); reload(); });
     acc('#averify') && (acc('#averify').onclick = e => sendVerifyMail(e.currentTarget));
     acc('#async') && (acc('#async').onclick = async () => { await Cloud.flush(); await Cloud.pull(); UI.toast(t('set.saved')); reload(); });
     acc('#achpw') && (acc('#achpw').onclick = () => pwSheet(t('auth.chpw'), '', [['current', t('auth.pw.current'), 'current-password'], ['next', t('auth.pw.new') + ' · ' + t('auth.pw.hint'), 'new-password']], t('set.save'), async f => {
