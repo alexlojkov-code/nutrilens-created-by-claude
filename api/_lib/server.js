@@ -89,7 +89,7 @@ export const dummyHash = async () => (_dummy ||= await hashPassword(randomBytes(
 /* ---------- сессии: случайный токен в httpOnly-cookie, в базе — только его хэш ---------- */
 const COOKIE = 'nl_session';
 const SESSION_DAYS = 30;
-const sha256 = s => createHash('sha256').update(s).digest('hex');
+export const sha256 = s => createHash('sha256').update(s).digest('hex');
 
 function readCookie(req, name) {
   const raw = req.headers.cookie || '';
@@ -115,7 +115,7 @@ export async function createSession(req, res, userId) {
 export async function currentSession(req) {
   const token = readCookie(req, COOKIE);
   if (!token) return null;
-  const rows = await db()`select u.id, u.email, u.name, u.password_hash, u.created_at, s.token_hash
+  const rows = await db()`select u.id, u.email, u.name, u.password_hash, u.email_verified_at, u.created_at, s.token_hash
                           from sessions s join users u on u.id = s.user_id
                           where s.token_hash = ${sha256(token)} and s.expires_at > now()`;
   return rows[0] || null;
@@ -128,4 +128,15 @@ export async function destroySession(req, res) {
 }
 export const clearCookie = res => setCookie(res, '', 0);
 
-export const publicUser = u => ({ id: u.id, email: u.email, name: u.name || '', created_at: u.created_at });
+export const publicUser = u => ({ id: u.id, email: u.email, name: u.name || '', email_verified: !!u.email_verified_at, created_at: u.created_at });
+
+/* ---------- лимиты по дням (таблица ai_usage общая: subject — «u:…», «ip:…», «mail-ip:…» и т. п.) ---------- */
+export const clientIp = req => String(req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '').split(',')[0].trim();
+// +1 к счётчику, только если лимит ещё не достигнут; false — лимит исчерпан
+export async function takeDaily(subject, limit) {
+  const r = await db()`
+    insert into ai_usage (subject, day, count) values (${subject}, (now() at time zone 'utc')::date, 1)
+    on conflict (subject, day) do update set count = ai_usage.count + 1 where ai_usage.count < ${limit}
+    returning count`;
+  return r[0] ? r[0].count : false;
+}

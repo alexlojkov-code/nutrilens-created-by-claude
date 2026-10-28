@@ -8,7 +8,7 @@ export default route(['POST'], async (req, res) => {
   const b = body(req);
   const email = normEmail(b.email);
   const password = String(b.password || '');
-  const rows = email ? await db()`select id, email, name, password_hash, failed_logins, locked_until, created_at
+  const rows = email ? await db()`select id, email, name, password_hash, failed_logins, locked_until, email_verified_at, created_at
                                   from users where email = ${email}` : [];
   const user = rows[0];
   if (!user) {

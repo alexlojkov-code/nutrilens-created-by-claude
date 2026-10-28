@@ -173,7 +173,7 @@ const Router = {
     const r = Router.parse();
     let main = $('#view');
     const onb =!Store.state.settings.onboarded;
-    if (onb && !['welcome', 'auth'].includes(r.name)) { history.replaceState(null, '', '#/welcome'); return Router.render(); }
+    if (onb && !['welcome', 'auth', 'reset', 'verify'].includes(r.name)) { history.replaceState(null, '', '#/welcome'); return Router.render(); }
     if ((!onb && r.name === 'welcome') || (r.name === 'auth' && Cloud.user)) { history.replaceState(null, '', '#/'); return Router.render(); }
     const view = Views[r.name] || Views.diary;
     const doWipe = !Router.first && !reduced() && !Router.silent;
@@ -532,6 +532,125 @@ const BODY_KG = [30, 300];
 const profileValid = p => p.age >= 10 && p.age <= 100 && p.height >= 120 && p.height <= 230 && p.weight >= BODY_KG[0] && p.weight <= BODY_KG[1];
 const resetOnb = () => { onb = { step: 0, name: '', sex: 'f', age: '', height: '', weight: '', pregnant: false, activity: 'light', goal: 'maintain', targets: null }; };
 
+/* Текст ошибки сервера по коду; неизвестный код — общая ошибка */
+const errMsg = ex => { const m = t('err.' + ((ex && ex.code) || 'SERVER_ERROR')); return m.startsWith('err.') ? t('err.SERVER_ERROR') : m; };
+const authTop = () => `<div class="row" style="position:relative;z-index:1"><a class="brand" href="#/"><span class="logo">${ICON.mono}</span><b>NutriLens</b></a><span class="spacer"></span>${themeBtn()}</div>`;
+
+/* «Забыл пароль?» — письмо со ссылкой для нового пароля */
+function forgotSheet(prefill = '') {
+  const sh = UI.modal(`<div class="kicker">${t('auth.account')}</div><h2 class="h2" style="margin:10px 0 14px">${t('auth.forgot.title')}</h2><p class="lead">${t('auth.forgot.lead')}</p>
+    <form id="fgf" class="grid" style="gap:14px;margin-top:16px" novalidate>
+      <label class="field"><span>${t('auth.email')}</span><input class="input" name="email" type="email" inputmode="email" autocomplete="username" autocapitalize="off" spellcheck="false" value="${esc(prefill)}" required></label>
+      <div class="autherr" id="fgerr" role="alert"></div>
+      <div class="row"><button class="btn" type="submit">${t('auth.forgot.send')}<span class="arr">${ICON.arrow}</span></button><button type="button" class="pill ghosty" data-close>${t('set.cancel')}</button></div>
+    </form>`);
+  const f = $('#fgf', sh), err = $('#fgerr', sh);
+  f.onsubmit = async e => {
+    e.preventDefault();
+    err.textContent = '';
+    const email = f.email.value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { err.textContent = t('err.INVALID_EMAIL'); f.email.focus(); return; }
+    const b = f.querySelector('[type=submit]'); b.disabled = true;
+    try {
+      await Cloud.forgot(email);
+      f.innerHTML = `<p class="lead" role="status"><b>${t('auth.forgot.sent')}</b></p><div class="row"><button type="button" class="btn light" data-close>${t('misc.close')}<span class="arr">${ICON.check}</span></button></div>`;
+    } catch (ex) { err.textContent = errMsg(ex); b.disabled = false; }
+  };
+}
+
+/* ===== Новый пароль по ссылке из письма: #/reset/<токен> ===== */
+let resetToken = '';
+Views.reset = {
+  html(r) {
+    if (r.parts[1]) resetToken = r.parts[1];
+    return `<div class="onb auth">${authTop()}
+      <div class="content">
+        <span class="kicker rv">NutriLens · ${t('auth.forgot.title').toLowerCase()}</span>
+        <h1 class="h1">${UI.split(t('auth.reset.title'), 'hoverable')}</h1>
+        <p class="lead rv" style="--d:3">${t('auth.reset.lead')}</p>
+        <form class="card authform rv" id="rsf" style="--d:5" novalidate>
+          <label class="field"><span>${t('auth.pw.new')} · ${t('auth.pw.hint')}</span>
+            <span class="pwwrap"><input class="input" name="password" type="password" autocomplete="new-password" required><button type="button" class="pwtoggle" data-pw>${t('auth.show')}</button></span></label>
+          <div class="autherr" id="rserr" role="alert"></div>
+          <button class="btn big" type="submit">${t('auth.reset.save')}<span class="arr">${ICON.arrow}</span></button>
+          <button type="button" class="link" id="rsagain" style="justify-self:start" hidden>${t('auth.reset.again')}</button>
+        </form>
+      </div>
+      <div class="nav-b"><a class="btn light" href="#/auth?mode=login">${t('onb.back')}<span class="arr">${ICON.left}</span></a></div>
+    </div>`;
+  },
+  mount(el) {
+    // токен из письма убираем из адресной строки и истории браузера
+    if (location.hash !== '#/reset') history.replaceState(null, '', '#/reset');
+    const f = $('#rsf', el), err = $('#rserr', el), again = $('#rsagain', el);
+    $('[data-pw]', el).onclick = e => {
+      const show = f.password.type === 'password';
+      f.password.type = show ? 'text' : 'password';
+      e.target.textContent = t(show ? 'auth.hide' : 'auth.show');
+    };
+    again.onclick = () => forgotSheet();
+    const fail = code => { err.textContent = errMsg({ code }); if (code === 'TOKEN_INVALID') again.hidden = false; };
+    if (!resetToken) fail('TOKEN_INVALID');
+    f.onsubmit = async e => {
+      e.preventDefault();
+      err.textContent = '';
+      const pw = f.password.value;
+      if (!resetToken) return fail('TOKEN_INVALID');
+      if (pw.length < 10) { err.textContent = t('err.PASSWORD_TOO_SHORT'); f.password.focus(); return; }
+      const btn = f.querySelector('[type=submit]'); btn.disabled = true;
+      try {
+        await Cloud.resetPassword(resetToken, pw);
+        resetToken = '';
+        UI.toast(t('auth.reset.done'), { ms: 5000 });
+        if (Store.state.settings.onboarded) Router.go('#/'); else { resetOnb(); onb.step = 1; Router.go('#/welcome'); }
+      } catch (ex) { fail(ex.code || 'SERVER_ERROR'); btn.disabled = false; }
+    };
+    setTimeout(() => f.password.focus({ preventScroll: true }), 500);
+  },
+};
+
+/* ===== Подтверждение почты по ссылке из письма: #/verify/<токен> ===== */
+let verifyToken = '', verifyOk = false;
+async function sendVerifyMail(btn) {
+  btn.disabled = true;
+  try {
+    const r = await Cloud.sendVerify();
+    if (r && r.verified) { Router.silent = true; Router.render(); return; }
+    UI.toast(t('auth.verify.sent', { email: Cloud.user.email }), { ms: 6000 });
+  } catch (ex) { UI.toast(errMsg(ex), { err: true }); btn.disabled = false; }
+}
+Views.verify = {
+  html(r) {
+    if (r.parts[1]) { verifyToken = r.parts[1]; verifyOk = false; }
+    return `<div class="onb auth">${authTop()}
+      <div class="content">
+        <span class="kicker rv">NutriLens · ${t('auth.verify.title').toLowerCase()}</span>
+        <h1 class="h1" id="vh">${UI.split(t(verifyOk ? 'auth.verify.ok' : 'auth.verify.title'), 'hoverable')}</h1>
+        <p class="lead rv" id="vlead" role="status" style="--d:3">${t(verifyOk ? 'auth.verify.okLead' : 'auth.verify.wait')}</p>
+        <div class="row rv" id="vrow" style="--d:5"></div>
+      </div>
+    </div>`;
+  },
+  async mount(el) {
+    if (location.hash !== '#/verify') history.replaceState(null, '', '#/verify');
+    const lead = $('#vlead', el), row = $('#vrow', el);
+    const home = `<a class="btn big" href="${Store.state.settings.onboarded ? '#/' : '#/welcome'}">${t('auth.verify.open')}<span class="arr">${ICON.arrow}</span></a>`;
+    if (verifyOk) { row.innerHTML = home; return; }
+    try {
+      if (!verifyToken) throw { code: 'TOKEN_INVALID' };
+      await Cloud.verifyEmail(verifyToken);
+      verifyToken = ''; verifyOk = true;
+      $('#vh', el).innerHTML = UI.split(t('auth.verify.ok'), 'hoverable');
+      lead.textContent = t('auth.verify.okLead');
+      row.innerHTML = home;
+    } catch (ex) {
+      lead.textContent = errMsg(ex);
+      row.innerHTML = (Cloud.user && !Cloud.user.email_verified ? `<button class="btn" id="vsend">${t('auth.verify.send')}<span class="arr">${ICON.arrow}</span></button>` : '') + home.replace('btn big', 'btn light big');
+      $('#vsend', el) && ($('#vsend', el).onclick = e => sendVerifyMail(e.currentTarget));
+    }
+  },
+};
+
 /* ===== Вход и регистрация ===== */
 Views.auth = {
   html(r) {
@@ -547,6 +666,7 @@ Views.auth = {
           <label class="field"><span>${t('auth.email')}</span><input class="input" name="email" type="email" inputmode="email" autocomplete="${reg ? 'email' : 'username'}" autocapitalize="off" spellcheck="false" required></label>
           <label class="field"><span>${t('auth.password')}${reg ? ' · ' + t('auth.pw.hint') : ''}</span>
             <span class="pwwrap"><input class="input" name="password" type="password" autocomplete="${reg ? 'new-password' : 'current-password'}" required><button type="button" class="pwtoggle" data-pw>${t('auth.show')}</button></span></label>
+          ${reg ? '' : `<button type="button" class="link" id="forgot" style="justify-self:start">${t('auth.forgot')}</button>`}
           <div class="autherr" id="autherr" role="alert"></div>
           <button class="btn big" type="submit">${t(reg ? 'auth.submit.register' : 'auth.submit.login')}<span class="arr">${ICON.arrow}</span></button>
           <a class="link" href="#/auth?mode=${reg ? 'login' : 'register'}">${t(reg ? 'auth.toLogin' : 'auth.toRegister')}</a>
@@ -563,6 +683,7 @@ Views.auth = {
       f.password.type = show ? 'text' : 'password';
       e.target.textContent = t(show ? 'auth.hide' : 'auth.show');
     };
+    $('#forgot', el) && ($('#forgot', el).onclick = () => forgotSheet(f.email.value.trim()));
     f.onsubmit = async e => {
       e.preventDefault();
       err.textContent = '';
@@ -575,7 +696,7 @@ Views.auth = {
       try {
         if (reg) {
           await Cloud.register(email, pw, name);
-          UI.toast(t('auth.created'));
+          UI.toast(t(Cloud.verifySent ? 'auth.created.verify' : 'auth.created'), { ms: 5000 });
           if (Store.state.settings.onboarded) {
             if (name && Store.state.profile && !Store.state.profile.name) { Store.state.profile.name = name; Store.save(); }
             Router.go('#/');
@@ -586,8 +707,7 @@ Views.auth = {
           if (Store.state.settings.onboarded) Router.go('#/'); else { resetOnb(); onb.step = 1; Router.go('#/welcome'); }
         }
       } catch (ex) {
-        const msg = t('err.' + (ex.code || 'SERVER_ERROR'));
-        err.textContent = msg.startsWith('err.') ? t('err.SERVER_ERROR') : msg;
+        err.textContent = errMsg(ex);
         btn.disabled = false;
       }
     };
@@ -1496,7 +1616,8 @@ Views.settings = {
       <h1 class="h1" style="margin-top:12px">${UI.split(t('set.title'), 'hoverable')}</h1>
       <div class="settings">
         ${Cloud.available ? `<div class="card wide rv account"><h3 class="h3">${t('auth.account')}</h3>${Cloud.user ? `
-          <div class="row"><span class="pill"><span class="tick">${ICON.check}</span>${t('auth.signedAs')}&nbsp;<b>${esc(Cloud.user.email)}</b></span>${syncBadge()}</div>
+          <div class="row"><span class="pill"><span class="tick">${ICON.check}</span>${t('auth.signedAs')}&nbsp;<b>${esc(Cloud.user.email)}</b>${Cloud.user.email_verified ? `&nbsp;<span class="muted">· ${t('auth.verified')}</span>` : ''}</span>${syncBadge()}</div>
+          ${Cloud.user.email_verified ? '' : `<div class="callout warn" style="margin:0"><b>${t('auth.unverified')}.</b> ${t('auth.unverified.lead')} <button class="link" id="averify">${t('auth.verify.send')}</button></div>`}
           <p class="mono muted" style="margin:0">${t('auth.lastSync')}: ${Cloud.meta.syncedAt ? new Date(Cloud.meta.syncedAt).toLocaleString(locale(), { dateStyle: 'medium', timeStyle: 'short' }) : t('auth.never')} · ${t('auth.photosLocal')}</p>
           <div class="row"><button class="btn" id="async">${t('auth.sync.now')}<span class="arr">${ICON.arrow}</span></button>
             <button class="pill ghosty" id="achpw">${t('auth.chpw')}</button><button class="pill ghosty" id="alogout">${t('auth.logout')}</button>
@@ -1625,6 +1746,7 @@ Views.settings = {
       };
     };
     const acc = id => $(id, el);
+    acc('#averify') && (acc('#averify').onclick = e => sendVerifyMail(e.currentTarget));
     acc('#async') && (acc('#async').onclick = async () => { await Cloud.flush(); await Cloud.pull(); UI.toast(t('set.saved')); reload(); });
     acc('#achpw') && (acc('#achpw').onclick = () => pwSheet(t('auth.chpw'), '', [['current', t('auth.pw.current'), 'current-password'], ['next', t('auth.pw.new') + ' · ' + t('auth.pw.hint'), 'new-password']], t('set.save'), async f => {
       if (f.next.value.length < 10) throw { code: 'PASSWORD_TOO_SHORT' };

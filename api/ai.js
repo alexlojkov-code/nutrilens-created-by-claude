@@ -6,7 +6,7 @@
    Лимиты в сутки (UTC): вошедший пользователь, гость (по IP, хранится только хэш), и общий потолок,
    чтобы не выйти за бюджет. Значения можно поменять переменными окружения. */
 import { createHash } from 'node:crypto';
-import { route, body, db, send, problem, currentSession } from './_lib/server.js';
+import { route, body, db, send, problem, currentSession, clientIp, takeDaily as take } from './_lib/server.js';
 
 const GEMINI_URL = process.env.GEMINI_URL || 'https://generativelanguage.googleapis.com/v1beta/interactions'; // GEMINI_URL — только для локальных тестов
 const MODELS = ['gemini-3.8-flash', 'gemini-3.5-flash-lite', 'gemini-4-argon']; // и порядок перебора при перегрузке
@@ -21,21 +21,12 @@ const enabled = () => !!process.env.GEMINI_API_KEY;
 async function subjectOf(req) {
   const s = await currentSession(req);
   if (s) return { subject: 'u:' + s.id, limit: LIMIT_USER };
-  const ip = String(req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '').split(',')[0].trim();
-  return { subject: 'ip:' + createHash('sha256').update('nl-ai:' + ip).digest('hex').slice(0, 32), limit: LIMIT_GUEST };
+  return { subject: 'ip:' + createHash('sha256').update('nl-ai:' + clientIp(req)).digest('hex').slice(0, 32), limit: LIMIT_GUEST };
 }
 
 async function usedToday(subject) {
   const r = await db()`select count from ai_usage where subject = ${subject} and day = (now() at time zone 'utc')::date`;
   return r[0] ? r[0].count : 0;
-}
-// +1 к счётчику, только если лимит ещё не достигнут; false — лимит исчерпан
-async function take(subject, limit) {
-  const r = await db()`
-    insert into ai_usage (subject, day, count) values (${subject}, (now() at time zone 'utc')::date, 1)
-    on conflict (subject, day) do update set count = ai_usage.count + 1 where ai_usage.count < ${limit}
-    returning count`;
-  return r[0] ? r[0].count : false;
 }
 async function refund(subject) {
   await db()`update ai_usage set count = greatest(count - 1, 0) where subject = ${subject} and day = (now() at time zone 'utc')::date`;

@@ -46,5 +46,20 @@ await sql`create table if not exists ai_model_busy (
   until timestamptz not null
 )`;
 
+// подтверждение почты: время подтверждения (null — не подтверждена)
+await sql`alter table users add column if not exists email_verified_at timestamptz`;
+
+// одноразовые ссылки из писем (сброс пароля, подтверждение почты); хранится только хэш токена
+await sql`create table if not exists auth_tokens (
+  token_hash text primary key,
+  user_id    uuid not null references users(id) on delete cascade,
+  kind       text not null check (kind in ('reset', 'verify')),
+  email      text not null,
+  created_at timestamptz not null default now(),
+  expires_at timestamptz not null,
+  used_at    timestamptz
+)`;
+await sql`create index if not exists auth_tokens_user_idx on auth_tokens (user_id, kind, created_at)`;
+
 const tables = await sql`select table_name from information_schema.tables where table_schema = 'public' order by 1`;
 console.log('tables:', tables.map(t => t.table_name).join(', '));

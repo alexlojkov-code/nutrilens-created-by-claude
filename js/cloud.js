@@ -174,7 +174,8 @@ const Cloud = {
     this.saveMeta();
   },
   async register(email, password, name) {
-    const r = await this.api('auth/register', { method: 'POST', body: { email, password, name } });
+    const r = await this.api('auth/register', { method: 'POST', body: { email, password, name, lang: Store.state.settings.lang } });
+    this.verifySent = !!r.verify_sent;
     this.resetMeta(); this.remember(r.user);
     this.meta.dirty = true; this.saveMeta();
     if (Store.state.settings.onboarded) await this.push();
@@ -183,8 +184,12 @@ const Cloud = {
   },
   async login(email, password) {
     const r = await this.api('auth/login', { method: 'POST', body: { email, password } });
+    return this.signedIn(r.user);
+  },
+  // общее для входа по паролю и по ссылке сброса: подтянуть дневник с сервера и объединить с локальным
+  async signedIn(user) {
     const hadLocal = this.hasLocalDiary();
-    this.resetMeta(); this.remember(r.user);
+    this.resetMeta(); this.remember(user);
     const d = await this.api('data');
     if (d.data) {
       this.apply(hadLocal ? this.merge(d.data, this.snapshot()) : d.data);
@@ -193,7 +198,7 @@ const Cloud = {
     } else if (hadLocal) { this.meta.dirty = true; await this.push(); }
     this.meta.syncedAt = Date.now(); this.saveMeta();
     this.setStatus('synced');
-    return r.user;
+    return user;
   },
   async logout() {
     try { await this.flush(); } catch (e) {}
@@ -201,6 +206,16 @@ const Cloud = {
     this.user = null; this.resetMeta(); this.setStatus('off');
     await Store.wipe(); // на общем устройстве дневник не должен оставаться после выхода
   },
+  /* ---------- письма: сброс пароля и подтверждение почты ---------- */
+  email(action, extra = {}) { return this.api('auth/email', { method: 'POST', body: Object.assign({ action, lang: Store.state.settings.lang }, extra) }); },
+  async forgot(email) { await this.email('forgot', { email }); },
+  async resetPassword(token, password) { const r = await this.email('reset', { token, password }); return this.signedIn(r.user); },
+  async verifyEmail(token) {
+    const r = await this.email('verify', { token });
+    if (this.user && this.user.email === r.email) this.user.email_verified = true;
+    return r;
+  },
+  async sendVerify() { const r = await this.email('send'); if (r && r.verified && this.user) this.user.email_verified = true; return r; },
   async changePassword(current, next) { await this.api('auth/password', { method: 'POST', body: { current, next } }); },
   async deleteAccount(password) {
     await this.api('account', { method: 'DELETE', body: { password } });

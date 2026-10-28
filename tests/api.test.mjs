@@ -160,6 +160,73 @@ await test('Удаление аккаунта: неверный пароль →
   eq((await new Client().req('POST', 'auth/login', { email, password })).status, 401, 'вход после удаления');
 });
 
+/* ---------- письма: подтверждение почты и сброс пароля ----------
+   Нужен тестовый «почтовый сервер»: сервер разработки запускается с MAIL_URL=http://127.0.0.1:<порт>/emails
+   и APP_URL=http://localhost:3000, а этот файл — с MAIL_MOCK_PORT=<порт>. Письма никуда не уходят, а копятся здесь. */
+const mails = [];
+if (process.env.MAIL_MOCK_PORT) {
+  const { createServer } = await import('node:http');
+  const mock = createServer(async (req, res) => {
+    let raw = ''; for await (const ch of req) raw += ch;
+    try { mails.push(JSON.parse(raw)); } catch {}
+    res.setHeader('content-type', 'application/json'); res.end('{"id":"test"}');
+  });
+  await new Promise(r => mock.listen(Number(process.env.MAIL_MOCK_PORT), '127.0.0.1', r));
+  mock.unref();
+  const lastMail = to => [...mails].reverse().find(m => m.to && m.to[0] === to);
+  const tokenFrom = (m, kind) => { const x = m && m.text.match(new RegExp(`#/${kind}/([A-Za-z0-9_-]{20,})`)); return x && x[1]; };
+
+  await test('Подтверждение почты: письмо при регистрации, ссылка подтверждает, повтор не ломает, чужой токен — 400', async () => {
+    const { c, r, email } = await register();
+    eq(r.json.verify_sent, true, 'письмо отправлено'); eq(r.json.user.email_verified, false, 'сначала не подтверждена');
+    const token = tokenFrom(lastMail(email), 'verify');
+    ok(token, 'в письме ссылка #/verify/<токен>');
+    const anon = new Client(); // ссылку открывают на другом устройстве — вход не нужен
+    eq((await anon.req('POST', 'auth/email', { action: 'verify', token })).status, 200, 'подтверждение');
+    eq((await c.req('GET', 'auth/me')).json.user.email_verified, true, '/me: почта подтверждена');
+    eq((await anon.req('POST', 'auth/email', { action: 'verify', token })).status, 200, 'повторное открытие ссылки');
+    eq((await anon.req('POST', 'auth/email', { action: 'verify', token: 'x' + token.slice(1) })).json.code, 'TOKEN_INVALID', 'поддельный токен');
+    eq((await c.req('POST', 'auth/email', { action: 'send' })).json.verified, true, 'повторное письмо не нужно');
+  });
+
+  await test('Повторное письмо подтверждения: только со входом, не больше 3 в час', async () => {
+    const { c } = await register();
+    eq((await new Client().req('POST', 'auth/email', { action: 'send' })).status, 401, 'без входа');
+    eq((await c.req('POST', 'auth/email', { action: 'send' })).status, 202, 'второе письмо');
+    eq((await c.req('POST', 'auth/email', { action: 'send' })).status, 202, 'третье письмо');
+    eq((await c.req('POST', 'auth/email', { action: 'send' })).json.code, 'TOO_MANY', 'четвёртое за час');
+  });
+
+  await test('Сброс пароля: одинаковый ответ, одноразовая ссылка, выход на других устройствах', async () => {
+    const { c: old, email, password } = await register();
+    const before = mails.length;
+    const unknown = await new Client().req('POST', 'auth/email', { action: 'forgot', email: `nobody-${rnd()}@example.com` });
+    eq(unknown.status, 202, 'нет такого аккаунта — всё равно 202'); eq(mails.length, before, 'письмо не отправлено');
+    eq((await new Client().req('POST', 'auth/email', { action: 'forgot', email: email.toUpperCase() })).status, 202, 'есть аккаунт — 202');
+    const token = tokenFrom(lastMail(email), 'reset');
+    ok(token, 'в письме ссылка #/reset/<токен>');
+    const dev = new Client();
+    eq((await dev.req('POST', 'auth/email', { action: 'reset', token, password: 'short' })).json.code, 'PASSWORD_TOO_SHORT', 'слабый пароль не тратит ссылку');
+    const next = strongPw();
+    const r = await dev.req('POST', 'auth/email', { action: 'reset', token, password: next });
+    eq(r.status, 200, 'новый пароль'); eq(r.json.user.email_verified, true, 'почта считается подтверждённой');
+    cleanup.find(x => x[0] === old)[0] = dev; cleanup.find(x => x[0] === dev)[1] = next;
+    eq((await dev.req('GET', 'auth/me')).status, 200, 'вход по ссылке');
+    eq((await old.req('GET', 'auth/me')).status, 401, 'другие устройства вышли');
+    eq((await dev.req('POST', 'auth/email', { action: 'reset', token, password: strongPw() })).json.code, 'TOKEN_INVALID', 'ссылка одноразовая');
+    eq((await new Client().req('POST', 'auth/login', { email, password })).status, 401, 'старый пароль не подходит');
+    eq((await new Client().req('POST', 'auth/login', { email, password: next })).status, 200, 'новый пароль подходит');
+  });
+
+  await test('Сброс пароля: не больше 3 писем в час одному аккаунту, неизвестное действие → 400', async () => {
+    const { email } = await register();
+    for (let i = 0; i < 4; i++) eq((await new Client().req('POST', 'auth/email', { action: 'forgot', email })).status, 202, 'ответ ' + i);
+    eq(mails.filter(m => m.to[0] === email && /#\/reset\//.test(m.text)).length, 3, 'писем о сбросе');
+    eq((await new Client().req('POST', 'auth/email', { action: 'constructor' })).status, 400, 'action из прототипа');
+    eq((await new Client().req('POST', 'auth/email', { action: 'reset', token: '', password: strongPw() })).json.code, 'TOKEN_INVALID', 'пустой токен');
+  });
+}
+
 // уборка: удалить все созданные тестовые аккаунты
 let removed = 0;
 for (const [c, password] of cleanup) { const r = await c.req('DELETE', 'account', { password }); if (r.status === 204) removed++; }
